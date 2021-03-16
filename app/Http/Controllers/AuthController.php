@@ -14,7 +14,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         return User::create([
-            'name' => $request->input('name'),
+            'username' => $request->input('username'),
             'password' => Hash::make($request->input('password')),
             'employee_id' => $request->input('employee_id')
         ]);
@@ -22,13 +22,11 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only('name', 'password'))) {
+        if (!Auth::attempt($request->only('username', 'password'))) {
             return response(['message' => 'Invalid credentials!'], Response::HTTP_UNAUTHORIZED);
         }
 
-        $user = Auth::user();
-
-        $token = $user->createToken('token')->plainTextToken;
+        $token =  Auth::user()->createToken('token')->plainTextToken;
 
         $cookie = cookie('jwt', $token, 60 * 24);
         return response(['message' => 'success'])->withCookie($cookie);
