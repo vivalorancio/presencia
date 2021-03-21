@@ -20,6 +20,7 @@ class User extends Authenticatable
         'username',
         'password',
         'employee_id',
+        'is_blocked',
     ];
 
     /**
@@ -29,5 +30,10 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+    ];
+
+    protected $casts = [
+        'is_blocked' => 'boolean',
+        'is_admin' => 'boolean',
     ];
 }
