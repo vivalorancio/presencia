@@ -16,8 +16,10 @@ class Booking extends Model
      */
     protected $fillable = [
         'employee_id',
-        'datetime',
-        'incidence_id'
+        'date',
+        'time',
+        'incidence_id',
+        'user_id'
     ];
 
     /**
@@ -26,4 +28,14 @@ class Booking extends Model
      * @var array
      */
     protected $hidden = [];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

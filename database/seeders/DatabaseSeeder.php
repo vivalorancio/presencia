@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,5 +16,40 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
+
+        // Usuari administrador sense empleat.
+        DB::table('users')->insert([
+            'username' => 'a',
+            'password' => Hash::make('1'),
+            'employee_id' => null,
+            'is_admin' => true,
+            'is_blocked' => false
+
+        ]);
+        DB::table('users')->insert([
+            'username' => 'b',
+            'password' => Hash::make('1'),
+            'employee_id' => 1,
+            'is_admin' => false,
+            'is_blocked' => false
+
+        ]);
+        DB::table('users')->insert([
+            'username' => 'c',
+            'password' => Hash::make('1'),
+            'employee_id' => 2,
+            'is_admin' => true,
+            'is_blocked' => false
+
+        ]);
+        DB::table('users')->insert([
+            'username' => 'd',
+            'password' => Hash::make('1'),
+            'employee_id' => 3,
+            'is_admin' => false,
+            'is_blocked' => true
+
+        ]);
+        \App\Models\Employee::factory(50)->create();
     }
 }

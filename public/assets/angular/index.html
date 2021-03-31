@@ -10,5 +10,5 @@
   <link rel="stylesheet" href="/assets/angular/styles.09e2c710755c8867a460.css"></head>
   <body>
     <app-root></app-root>
-  <script src="/assets/angular/runtime.564f6e47d0f3d32ffe39.js" defer></script><script src="/assets/angular/polyfills.00096ed7d93ed26ee6df.js" defer></script><script src="/assets/angular/main.e27eb319feb029abb2be.js" defer></script></body>
+  <script src="/assets/angular/runtime.564f6e47d0f3d32ffe39.js" defer></script><script src="/assets/angular/polyfills.00096ed7d93ed26ee6df.js" defer></script><script src="/assets/angular/main.b2441ae3da4fb3895ea6.js" defer></script></body>
 </html>

@@ -21,6 +21,7 @@ class User extends Authenticatable
         'password',
         'employee_id',
         'is_blocked',
+        'is_admin'
     ];
 
     /**
@@ -30,10 +31,17 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [
         'is_blocked' => 'boolean',
         'is_admin' => 'boolean',
     ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
 }

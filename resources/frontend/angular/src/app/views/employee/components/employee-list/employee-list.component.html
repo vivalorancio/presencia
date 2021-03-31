@@ -1,0 +1,107 @@
+<h3>Employees</h3>
+
+<button
+  mat-raised-button
+  color="primary"
+  type="button"
+  [routerLink]="['employee']"
+  [disabled]="pending"
+>
+  New Employee (inside list)
+</button>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Code</th>
+      <th>ID Card</th>
+      <th>email</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Shift Id</th>
+      <th>Sup.Gr. Id</th>
+      <th>Username</th>
+      <th>Admin</th>
+      <th>Blocked</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of employees.data">
+      <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+      <td>{{ employee.code }}</td>
+      <td>{{ employee.national_id }}</td>
+      <td>{{ employee.email }}</td>
+      <td>{{ employee.start_date | date: "dd/MM/yyyy" }}</td>
+      <td>{{ employee.end_date | date: "dd/MM/yyyy" }}</td>
+      <td>{{ employee.shift_id }}</td>
+      <td>{{ employee.supervision_group_id }}</td>
+      <td>{{ employee.user?.username }}</td>
+      <td>{{ employee.user?.is_admin }}</td>
+      <td>{{ employee.user?.is_blocked }}</td>
+      <td>
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          [routerLink]="['employee', employee.id]"
+          [disabled]="pending"
+        >
+          Edit
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          type="button"
+          (click)="deleteEmployee(employee.id)"
+          [disabled]="pending"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<button
+  mat-raised-button
+  color="primary"
+  type="button"
+  (click)="firstpage()"
+  [disabled]="pending || employees.meta?.current_page == 1"
+>
+  &laquo;
+</button>
+<button
+  mat-raised-button
+  color="primary"
+  type="button"
+  (click)="previouspage()"
+  [disabled]="pending || employees.meta?.current_page == 1"
+>
+  &lt;
+</button>
+<button
+  mat-raised-button
+  color="primary"
+  type="button"
+  (click)="nextpage()"
+  [disabled]="
+    pending || employees.meta?.current_page == employees.meta?.last_page
+  "
+>
+  &gt;
+</button>
+<button
+  mat-raised-button
+  color="primary"
+  type="button"
+  (click)="lastpage()"
+  [disabled]="
+    pending || employees.meta?.current_page == employees.meta?.last_page
+  "
+>
+  &raquo;
+</button>
+
+<div class="pending" *ngIf="pending">SPINNER</div>

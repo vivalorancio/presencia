@@ -3,6 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Store } from '@ngrx/store';
+import * as authenticationActions from '../actions';
+import { AppState } from 'src/app/app.reducers';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -13,6 +17,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private store: Store<AppState>,
     private http: HttpClient,
     private router: Router
   ) {}
@@ -25,13 +30,6 @@ export class LoginComponent implements OnInit {
   }
 
   submit(): void {
-    this.http
-      .post('/api/login', this.form.getRawValue(), {
-        withCredentials: true,
-      })
-      .subscribe(
-        () => this.router.navigate(['/']),
-        (err) => console.log(err)
-      );
+    this.store.dispatch(authenticationActions.login({ ...this.form.value }));
   }
 }

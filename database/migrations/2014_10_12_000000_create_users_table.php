@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('password');
-            $table->foreignId('employee_id'); //->constrained('employees');
+            $table->foreignId('employee_id')->nullable()->onDelete('cascade');
             $table->boolean('is_blocked')->default(false);
             $table->boolean('is_admin')->default(false);
             $table->timestamps();

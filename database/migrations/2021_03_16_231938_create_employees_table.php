@@ -24,7 +24,6 @@ class CreateEmployeesTable extends Migration
             $table->date('end_date')->nullable();
             $table->foreignId('supervision_group_id')->nullable();
             $table->foreignId('shift_id')->nullable();
-            $table->boolean('is_editor')->default(false);
             $table->timestamps();
         });
     }

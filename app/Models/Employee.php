@@ -18,13 +18,20 @@ class Employee extends Model
         'start_date',
         'end_date',
         'supervision_group_id',
-        'shift_id',
-        'is_editor'
+        'shift_id'
     ];
 
     protected $hidden = [];
 
-    protected $casts = [
-        'is_editor' => 'boolean',
-    ];
+    protected $casts = [];
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

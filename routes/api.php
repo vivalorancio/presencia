@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,13 +22,15 @@ use App\Http\Controllers\EmployeeController;
 //     return $request->user();
 // });
 
-Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::resource('employees', EmployeeController::class);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('employees', EmployeeController::class);
+    Route::post('employees/search', [EmployeeController::class, 'search']);
+    Route::apiResource('employees/{employee}/bookings', BookingController::class);
 });
 
 Route::fallback(function () {

@@ -16,11 +16,13 @@ class CreateBookingsTable extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id');
-            $table->dateTimeTz('datetime');
-            $table->foreignId('incidence_id');
+            $table->date('date');
+            $table->time('time');
+            $table->foreignId('incidence_id')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
 
-            $table->index(['employee_id', 'datetime']);
+            $table->unique(['employee_id', 'date', 'time'], 'unique_employee_id_date_time');
         });
     }
 
