@@ -2,80 +2,133 @@
 <div id="employee">
   <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
     <section>
-      <label for="first_name">First Name:</label
-      ><input type="text" id="first_name" [formControlName]="'first_name'" />
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("first_name"), "First Name")
-      }}</span>
-      <label for="last_name">Last Name:</label
-      ><input type="text" id="last_name" [formControlName]="'last_name'" />
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("last_name"), "Larst Name")
-      }}</span>
+      <label class="form-label" for="first_name">First Name:</label
+      ><input
+        class="form-control"
+        type="text"
+        id="first_name"
+        [formControlName]="'first_name'"
+      />
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{
+          getControlErrorMessage(employeeForm.get("first_name"), "First Name")
+        }}
+      </div>
+      <label class="form-label" for="last_name">Last Name:</label
+      ><input
+        class="form-control"
+        type="text"
+        id="last_name"
+        [formControlName]="'last_name'"
+      />
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{
+          getControlErrorMessage(employeeForm.get("last_name"), "Larst Name")
+        }}
+      </div>
     </section>
     <section>
-      <label for="code">Code:</label
-      ><input type="text" id="code" [formControlName]="'code'" />
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("code"), "Code")
-      }}</span>
-      <label for="national_id">ID Card:</label
-      ><input type="text" id="national_id" [formControlName]="'national_id'" />
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("national_id"), "ID Card")
-      }}</span>
-      <label for="email">Email:</label
-      ><input type="email" id="email" [formControlName]="'email'" />
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("email"), "Email")
-      }}</span>
+      <label class="form-label" for="code">Code:</label
+      ><input
+        class="form-control"
+        type="text"
+        id="code"
+        [formControlName]="'code'"
+      />
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{ getControlErrorMessage(employeeForm.get("code"), "Code") }}
+      </div>
+      <label class="form-label" for="national_id">ID Card:</label
+      ><input
+        class="form-control"
+        type="text"
+        id="national_id"
+        [formControlName]="'national_id'"
+      />
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{ getControlErrorMessage(employeeForm.get("national_id"), "ID Card") }}
+      </div>
+      <label class="form-label" for="email">Email:</label
+      ><input
+        class="form-control"
+        type="email"
+        id="email"
+        [formControlName]="'email'"
+      />
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{ getControlErrorMessage(employeeForm.get("email"), "Email") }}
+      </div>
     </section>
     <section>
-      <label for="start_date">Start Date: </label>
-      <input type="date" id="start_date" [formControlName]="'start_date'" />
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("start_date"), "Start Date")
-      }}</span>
-      <label for="end_date">End Date: </label>
-      <input type="date" id="end_date" [formControlName]="'end_date'" />
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("end_date"), "End Date")
-      }}</span>
+      <label class="form-label" for="start_date">Start Date: </label>
+      <input
+        class="form-control"
+        type="date"
+        id="start_date"
+        [formControlName]="'start_date'"
+      />
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{
+          getControlErrorMessage(employeeForm.get("start_date"), "Start Date")
+        }}
+      </div>
+      <label class="form-label" for="end_date">End Date: </label>
+      <input
+        class="form-control"
+        type="date"
+        id="end_date"
+        [formControlName]="'end_date'"
+      />
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{ getControlErrorMessage(employeeForm.get("end_date"), "End Date") }}
+      </div>
     </section>
     <section>
-      <label for="shift">Shift: </label>
+      <label class="form-label" for="shift">Shift: </label>
       <select [formControlName]="'shift_id'" id="shift">
         <!-- <option *ngFor="let shift of shifts" [value]="shift.id">
           {{ shift.name }}
         </option> -->
       </select>
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("shift_id"), "Shift")
-      }}</span>
-      <label for="shift">Supervision Group: </label>
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{ getControlErrorMessage(employeeForm.get("shift_id"), "Shift") }}
+      </div>
+      <label class="form-label" for="shift">Supervision Group: </label>
       <select [formControlName]="'supervision_group_id'" id="supervision_group">
         <!-- <option *ngFor="let supervision_group of supervision_groups" [value]="supervision_group.id">
           {{ supervision_group.name }}
         </option> -->
       </select>
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(
-          employeeForm.get("supervision_group_id"),
-          "Supervision Group"
-        )
-      }}</span>
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{
+          getControlErrorMessage(
+            employeeForm.get("supervision_group_id"),
+            "Supervision Group"
+          )
+        }}
+      </div>
     </section>
     <section>
-      <label for="username">Username:</label
-      ><input type="text" id="username" [formControlName]="'username'" />
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("username"), "Username")
-      }}</span>
-      <label for="password">Password:</label
-      ><input type="password" id="password" [formControlName]="'password'" />
-      <span *ngIf="employeeForm.invalid">{{
-        getControlErrorMessage(employeeForm.get("password"), "Password")
-      }}</span>
+      <label class="form-label" for="username">Username:</label
+      ><input
+        class="form-control"
+        type="text"
+        id="username"
+        [formControlName]="'username'"
+      />
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{ getControlErrorMessage(employeeForm.get("username"), "Username") }}
+      </div>
+      <label class="form-label" for="password">Password:</label
+      ><input
+        class="form-control"
+        type="password"
+        id="password"
+        [formControlName]="'password'"
+      />
+      <div class="form-text" *ngIf="employeeForm.invalid">
+        {{ getControlErrorMessage(employeeForm.get("password"), "Password") }}
+      </div>
     </section>
     <section>
       <input
@@ -84,20 +137,18 @@
         name="is_admin"
         [formControlName]="'is_admin'"
       />
-      <label for="is_admin"> Admin </label>
+      <label class="form-label" for="is_admin"> Admin </label>
       <input
         type="checkbox"
         id="is_blocked"
         name="is_blocked"
         [formControlName]="'is_blocked'"
       />
-      <label for="is_blocked"> Blocked </label>
+      <label class="form-label" for="is_blocked"> Blocked </label>
     </section>
     <section class="centerbutton">
       <button
-        mat-raised-button
-        color="primary"
-        type="button"
+        class="btn btn-primary mb-3"
         type="submit"
         [disabled]="!employeeForm.valid || pending"
       >
