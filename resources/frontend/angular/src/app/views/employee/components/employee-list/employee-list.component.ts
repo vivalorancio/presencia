@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
+import { getTextColor } from 'src/app/shared/color-picker/colors';
 import {
   Employee,
   EmployeeCollection,
@@ -11,7 +12,7 @@ import * as employeesActions from '../../actions';
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.sass'],
+  styleUrls: ['./employee-list.component.css'],
 })
 export class EmployeeListComponent implements OnInit {
   employees!: EmployeeCollection;
@@ -28,6 +29,8 @@ export class EmployeeListComponent implements OnInit {
     if (this.employees.meta === null)
       this.store.dispatch(employeesActions.loadEmployees({ page: '1' }));
   }
+
+  getTextColor = getTextColor;
 
   deleteEmployee(id: number) {
     // const employee = this.employees.data.find(

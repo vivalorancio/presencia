@@ -25,7 +25,7 @@ class EmployeeResource extends JsonResource
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
             'supervision_group_id' => $this->supervision_group_id,
-            'shift_id' => $this->shift_id,
+            'default_shift' => $this->shift,
             'user' => $this->user,
         ];
     }

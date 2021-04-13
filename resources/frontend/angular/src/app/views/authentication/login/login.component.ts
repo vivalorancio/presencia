@@ -10,7 +10,7 @@ import { AppState } from 'src/app/app.reducers';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.sass'],
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   form!: FormGroup;

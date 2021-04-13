@@ -34,4 +34,9 @@ class Employee extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
+    }
 }

@@ -1,26 +1,44 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-  <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">Home</a>
-
-    <div>
-      <ul class="navbar-nav me-auto mb-2 mb-md-0">
-        <li class="nav-item" *ngIf="!user">
-          <a class="nav-link" aria-current="page" routerLink="/login">Login</a>
-        </li>
-        <li class="nav-item" *ngIf="user && user.employee_id != null">
-          <a class="nav-link" aria-current="page" routerLink="/dashboard"
-            >Dashboard</a
-          >
-        </li>
-        <li class="nav-item" *ngIf="user?.is_admin">
-          <a class="nav-link" aria-current="page" routerLink="/management"
-            >Management</a
-          >
-        </li>
-        <li class="nav-item" *ngIf="user">
-          <a class="nav-link" aria-current="page" (click)="logout()">Logout</a>
-        </li>
-      </ul>
+<div>
+  <nav class="bg-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <img class="h-8 w-8" src="" alt="logo" />
+          </div>
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a
+                *ngIf="user && user.employee_id != null"
+                routerLink="/dashboard"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Dashboard</a
+              ><a
+                *ngIf="user?.is_admin"
+                routerLink="/management"
+                class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >Management</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="hidden md:block">
+          <div class="ml-4 flex items-baseline md:ml-6">
+            <a
+              *ngIf="!user"
+              routerLink="/login"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >Login</a
+            >
+            <a
+              *ngIf="user"
+              (click)="logout()"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>

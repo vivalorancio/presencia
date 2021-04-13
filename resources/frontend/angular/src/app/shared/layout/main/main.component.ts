@@ -8,7 +8,7 @@ import * as authenticationActions from 'src/app/views/authentication/actions';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.sass'],
+  styleUrls: ['./main.component.css'],
 })
 export class MainComponent implements OnInit {
   user: any;

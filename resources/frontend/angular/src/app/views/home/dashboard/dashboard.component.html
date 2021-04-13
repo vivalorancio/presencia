@@ -1,5 +1,33 @@
-<div class="w-50">
-  <h3 *ngIf="employeedisplayname">Hello, {{ employeedisplayname }}.</h3>
-  <app-clock></app-clock>
-  <button class="w-50 btn btn-lg btn-primary" (click)="book()">Book</button>
+<div class="flex items-center justify-center">
+  <div class="max-w-md w-full space-y-8 m-4">
+    <h2
+      class="mt-6 text-center text-3xl font-bold text-gray900"
+      *ngIf="employeedisplayname"
+    >
+      Hello, {{ employeedisplayname }}.
+    </h2>
+    <div class="text-center text-3xl font-bold text-gray900">
+      <app-clock></app-clock>
+    </div>
+    <button
+      class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      (click)="book()"
+    >
+      <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </span>
+      Book
+    </button>
+  </div>
 </div>

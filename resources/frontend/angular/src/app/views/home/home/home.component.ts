@@ -9,7 +9,7 @@ import * as authenticationActions from 'src/app/views/authentication/actions';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.sass'],
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
   user: any;

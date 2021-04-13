@@ -1,160 +1,284 @@
-<h2>Employee</h2>
-<div id="employee">
+<h2 class="text-lg font-medium leading-6 text-gray-900">Employee</h2>
+
+<div class="mt-5 md:mt-0">
   <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
-    <section>
-      <label class="form-label" for="first_name">First Name:</label
-      ><input
-        class="form-control"
-        type="text"
-        id="first_name"
-        [formControlName]="'first_name'"
-      />
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{
-          getControlErrorMessage(employeeForm.get("first_name"), "First Name")
-        }}
+    <div class="shadow overflow-hidden sm:rounded-md">
+      <div class="px-4 py-5 bg-white sm:p-6">
+        <div class="grid grid-cols-6 gap-6">
+          <div class="col-span-6 sm:col-span-3">
+            <label
+              for="first_name"
+              class="block text-sm font-medium text-gray-700"
+              >First name</label
+            >
+            <input
+              type="text"
+              id="first_name"
+              [formControlName]="'first_name'"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            />
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{
+                getControlErrorMessage(
+                  employeeForm.get("first_name"),
+                  "First Name"
+                )
+              }}
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-3">
+            <label
+              for="last_name"
+              class="block text-sm font-medium text-gray-700"
+              >Last name</label
+            >
+            <input
+              type="text"
+              id="last_name"
+              [formControlName]="'last_name'"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            />
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{
+                getControlErrorMessage(
+                  employeeForm.get("last_name"),
+                  "Last name"
+                )
+              }}
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-2">
+            <label for="code" class="block text-sm font-medium text-gray-700"
+              >Code</label
+            >
+            <input
+              type="text"
+              id="code"
+              [formControlName]="'code'"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            />
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{ getControlErrorMessage(employeeForm.get("code"), "Code") }}
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-2">
+            <label
+              for="national_id"
+              class="block text-sm font-medium text-gray-700"
+              >ID Card</label
+            >
+            <input
+              type="text"
+              id="national_id"
+              [formControlName]="'national_id'"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            />
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{
+                getControlErrorMessage(
+                  employeeForm.get("national_id"),
+                  "ID Card"
+                )
+              }}
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-2">
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
+            <input
+              type="email"
+              id="email"
+              [formControlName]="'email'"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            />
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{ getControlErrorMessage(employeeForm.get("email"), "Email") }}
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-1">
+            <label
+              for="start_date"
+              class="block text-sm font-medium text-gray-700"
+              >Start Date</label
+            >
+            <input
+              type="date"
+              id="start_date"
+              [formControlName]="'start_date'"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            />
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{
+                getControlErrorMessage(
+                  employeeForm.get("start_date"),
+                  "Start Date"
+                )
+              }}
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-1">
+            <label
+              for="end_date"
+              class="block text-sm font-medium text-gray-700"
+              >End Date</label
+            >
+            <input
+              type="date"
+              id="end_date"
+              [formControlName]="'end_date'"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            />
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{
+                getControlErrorMessage(employeeForm.get("end_date"), "End Date")
+              }}
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-2">
+            <label for="shift" class="block text-sm font-medium text-gray-700"
+              >Default Shift</label
+            >
+
+            <select
+              class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              [formControlName]="'shift_id'"
+              id="shift_id"
+            >
+              <option label=" "></option>
+              <option *ngFor="let shift of shifts.data" [ngValue]="shift.id">
+                {{ shift.code }} - {{ shift.description }}
+              </option>
+            </select>
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{
+                getControlErrorMessage(employeeForm.get("shift_id"), "Shift")
+              }}
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-2">
+            <label
+              for="supervision_group"
+              class="block text-sm font-medium text-gray-700"
+              >Supervision Group</label
+            >
+            <select
+              class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              [formControlName]="'supervision_group_id'"
+              id="supervision_group"
+            >
+              <option [value]="1">AAA - asdqwpoqwejw qeo</option>
+              <option [value]="2">BBB - asdqwpoqwejw qeo</option>
+              <option [value]="3">CCC - asdqwpoqwejw qeo</option>
+              <option [value]="4">DDD - asdqwpoqwejw qeo</option>
+              <option [value]="5">EEE - asdqwpoqwejw qeo</option>
+              <!-- <option *ngFor="let supervision_group of supervision_groups" [value]="supervision_group.id">
+            {{ supervision_group.name }}
+          </option> -->
+            </select>
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{
+                getControlErrorMessage(
+                  employeeForm.get("supervision_group_id"),
+                  "Supervision Group"
+                )
+              }}
+            </div>
+          </div>
+
+          <div class="col-span-6 sm:col-span-2">
+            <label
+              for="username"
+              class="block text-sm font-medium text-gray-700"
+              >Username</label
+            >
+            <input
+              type="text"
+              id="username"
+              [formControlName]="'username'"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            />
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{
+                getControlErrorMessage(employeeForm.get("username"), "Username")
+              }}
+            </div>
+          </div>
+
+          <div class="col-span-6 sm:col-span-2">
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              [formControlName]="'password'"
+              class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+            />
+            <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">
+              {{
+                getControlErrorMessage(employeeForm.get("password"), "Password")
+              }}
+            </div>
+          </div>
+
+          <div class="col-span-6 sm:col-span-1">
+            <div class="flex h-full space-x-2">
+              <input
+                class="self-center"
+                type="checkbox"
+                id="is_admin"
+                name="is_admin"
+                [formControlName]="'is_admin'"
+              />
+              <label
+                class="block text-sm font-medium text-gray-700 self-center"
+                for="is_admin"
+              >
+                Admin
+              </label>
+            </div>
+          </div>
+          <div class="col-span-6 sm:col-span-1">
+            <div class="flex h-full space-x-2">
+              <input
+                class="self-center"
+                type="checkbox"
+                id="is_blocked"
+                name="is_blocked"
+                [formControlName]="'is_blocked'"
+              />
+              <label
+                class="block text-sm font-medium text-gray-700 self-center"
+                for="is_blocked"
+              >
+                Blocked
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
-      <label class="form-label" for="last_name">Last Name:</label
-      ><input
-        class="form-control"
-        type="text"
-        id="last_name"
-        [formControlName]="'last_name'"
-      />
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{
-          getControlErrorMessage(employeeForm.get("last_name"), "Larst Name")
-        }}
+      <div class="px-4 py-3 bg-gray-50 text-right space-x-2 sm:px-6">
+        <button
+          class="disabled:opacity-50 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          type="submit"
+          [disabled]="!employeeForm.valid || pending"
+        >
+          Save
+        </button>
+
+        <button
+          class="disabled:opacity-50 inline-flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-blue-600 hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+          type="button"
+          [routerLink]="['/management/employees']"
+          [disabled]="pending"
+        >
+          Cancel
+        </button>
       </div>
-    </section>
-    <section>
-      <label class="form-label" for="code">Code:</label
-      ><input
-        class="form-control"
-        type="text"
-        id="code"
-        [formControlName]="'code'"
-      />
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{ getControlErrorMessage(employeeForm.get("code"), "Code") }}
-      </div>
-      <label class="form-label" for="national_id">ID Card:</label
-      ><input
-        class="form-control"
-        type="text"
-        id="national_id"
-        [formControlName]="'national_id'"
-      />
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{ getControlErrorMessage(employeeForm.get("national_id"), "ID Card") }}
-      </div>
-      <label class="form-label" for="email">Email:</label
-      ><input
-        class="form-control"
-        type="email"
-        id="email"
-        [formControlName]="'email'"
-      />
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{ getControlErrorMessage(employeeForm.get("email"), "Email") }}
-      </div>
-    </section>
-    <section>
-      <label class="form-label" for="start_date">Start Date: </label>
-      <input
-        class="form-control"
-        type="date"
-        id="start_date"
-        [formControlName]="'start_date'"
-      />
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{
-          getControlErrorMessage(employeeForm.get("start_date"), "Start Date")
-        }}
-      </div>
-      <label class="form-label" for="end_date">End Date: </label>
-      <input
-        class="form-control"
-        type="date"
-        id="end_date"
-        [formControlName]="'end_date'"
-      />
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{ getControlErrorMessage(employeeForm.get("end_date"), "End Date") }}
-      </div>
-    </section>
-    <section>
-      <label class="form-label" for="shift">Shift: </label>
-      <select [formControlName]="'shift_id'" id="shift">
-        <!-- <option *ngFor="let shift of shifts" [value]="shift.id">
-          {{ shift.name }}
-        </option> -->
-      </select>
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{ getControlErrorMessage(employeeForm.get("shift_id"), "Shift") }}
-      </div>
-      <label class="form-label" for="shift">Supervision Group: </label>
-      <select [formControlName]="'supervision_group_id'" id="supervision_group">
-        <!-- <option *ngFor="let supervision_group of supervision_groups" [value]="supervision_group.id">
-          {{ supervision_group.name }}
-        </option> -->
-      </select>
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{
-          getControlErrorMessage(
-            employeeForm.get("supervision_group_id"),
-            "Supervision Group"
-          )
-        }}
-      </div>
-    </section>
-    <section>
-      <label class="form-label" for="username">Username:</label
-      ><input
-        class="form-control"
-        type="text"
-        id="username"
-        [formControlName]="'username'"
-      />
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{ getControlErrorMessage(employeeForm.get("username"), "Username") }}
-      </div>
-      <label class="form-label" for="password">Password:</label
-      ><input
-        class="form-control"
-        type="password"
-        id="password"
-        [formControlName]="'password'"
-      />
-      <div class="form-text" *ngIf="employeeForm.invalid">
-        {{ getControlErrorMessage(employeeForm.get("password"), "Password") }}
-      </div>
-    </section>
-    <section>
-      <input
-        type="checkbox"
-        id="is_admin"
-        name="is_admin"
-        [formControlName]="'is_admin'"
-      />
-      <label class="form-label" for="is_admin"> Admin </label>
-      <input
-        type="checkbox"
-        id="is_blocked"
-        name="is_blocked"
-        [formControlName]="'is_blocked'"
-      />
-      <label class="form-label" for="is_blocked"> Blocked </label>
-    </section>
-    <section class="centerbutton">
-      <button
-        class="btn btn-primary mb-3"
-        type="submit"
-        [disabled]="!employeeForm.valid || pending"
-      >
-        Save
-      </button>
-    </section>
+    </div>
   </form>
 </div>
 <div class="pending" *ngIf="pending">

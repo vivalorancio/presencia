@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ShiftController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('employees', EmployeeController::class);
     Route::post('employees/search', [EmployeeController::class, 'search']);
     Route::apiResource('employees/{employee}/bookings', BookingController::class);
+    Route::apiResource('shifts', ShiftController::class);
 });
+
 
 Route::fallback(function () {
     return response()->json([

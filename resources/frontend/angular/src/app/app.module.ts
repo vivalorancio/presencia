@@ -20,6 +20,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthenticationEffects } from './views/authentication/effects';
 import { EmployeeModule } from './views/employee/employee.module';
 import { EmployeesEffects } from './views/employee/effects';
+import { ShiftModule } from './views/shift/shift.module';
+import { ShiftsEffects } from './views/shift/effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, MainComponent, FooterComponent],
@@ -32,12 +34,17 @@ import { EmployeesEffects } from './views/employee/effects';
     HomeModule,
     AuthenticationModule,
     EmployeeModule,
+    ShiftModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
     }),
-    EffectsModule.forRoot([AuthenticationEffects, EmployeesEffects]),
+    EffectsModule.forRoot([
+      AuthenticationEffects,
+      EmployeesEffects,
+      ShiftsEffects,
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent],

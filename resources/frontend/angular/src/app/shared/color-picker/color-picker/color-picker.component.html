@@ -1,0 +1,97 @@
+<div class="relative inline-block">
+  <div>
+    <button
+      type="button"
+      class="inline-flex justify-center h-10 w-12 rounded-md border border-gray-300 shadow-sm px-4 py-2
+      {{ colorItem.name }}
+      {{ colorItem.text }}
+    text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100
+    "
+      (click)="toggleColors()"
+    ></button>
+  </div>
+
+  <div
+    [class]="{
+      hidden: hidden,
+      'opacity-100': !hidden,
+      'scale-100': !hidden,
+      'duration-100': !hidden,
+      'ease-out': !hidden,
+      'opacity-0': hidden,
+      'scale-95': hidden,
+      'duration-75': hidden,
+      'ease-in': hidden,
+      'right-0': position === 'right',
+      'origin-top-right': position === 'right',
+      'left-0': position === 'left',
+      'origin-top-left': position === 'left'
+    }"
+    class="absolute mt-1 p-1 w-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none tansform transition"
+    (click)="!hidden ? toggleColors() : ''"
+  >
+    <div class="flex" *ngFor="let group of colors">
+      <div class="flex" *ngFor="let color of group">
+        <color-swatch
+          class="flex"
+          [color]="color"
+          (onClick)="setColorItem($event)"
+        >
+          <div class="m-1 h-3 w-3">
+            <svg
+              *ngIf="isActive(color)"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3 w-3 {{ colorItem.text }}"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </color-swatch>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div
+  class="relative m-4 h-6 w-10 font-bold border rounded-sm border-gray-500
+  {{ getTextColor(colorItem.color) }}
+  {{ colorItem.name }}"
+  (click)="toggleColors()"
+>
+  <div
+    [class.hidden]="hidden"
+    class="absolute ml-0 mt-8 bg-gray-300 p-2 shadow-sm"
+  >
+    <div class="flex" *ngFor="let group of colors">
+      <div class="flex" *ngFor="let color of group">
+        <color-swatch
+          class="flex"
+          [color]="color"
+          (onClick)="setColorItem($event)"
+        >
+          <div class="m-1 h-3 w-3">
+            <svg
+              *ngIf="isActive(color)"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3 w-3 {{ getTextColor(color) }}"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </color-swatch>
+      </div>
+    </div>
+  </div>
+</div> -->

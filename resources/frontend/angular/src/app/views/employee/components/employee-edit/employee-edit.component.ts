@@ -8,21 +8,28 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
-import { Employee } from 'src/app/shared/models/employee.model';
+import {
+  Employee,
+  EmployeeCollection,
+} from 'src/app/shared/models/employee.model';
 import { User } from 'src/app/shared/models/user.model';
 
 import * as employeesActions from '../../actions';
+import * as shiftsActions from '../../../shift/actions';
+import { ShiftCollection } from 'src/app/shared/models/shift.model';
 
 @Component({
   selector: 'app-employee-edit',
   templateUrl: './employee-edit.component.html',
-  styleUrls: ['./employee-edit.component.sass'],
+  styleUrls: ['./employee-edit.component.css'],
 })
 export class EmployeeEditComponent implements OnInit {
   employeeForm!: FormGroup;
-  employees!: any;
+  employees!: EmployeeCollection;
+  shifts!: ShiftCollection;
   employee: Employee = {} as Employee;
   pending: boolean = false;
+  pending_shifts: boolean = false;
   hidepassword: boolean = false;
 
   constructor(
@@ -34,10 +41,15 @@ export class EmployeeEditComponent implements OnInit {
   ngOnInit(): void {
     this.store.select('employees').subscribe((employees) => {
       this.employees = employees.employees;
+      this.pending = employees.pending;
     });
-    this.store.select('employees', 'pending').subscribe((pending) => {
-      this.pending = pending;
+    this.store.select('shifts').subscribe((shifts) => {
+      this.shifts = shifts.shifts;
+      this.pending_shifts = shifts.pending;
     });
+    if (this.shifts.meta === null)
+      this.store.dispatch(shiftsActions.loadShifts({ page: '1' }));
+
     this.route.params.subscribe((params) => {
       const id = +params.id;
       const the_employee: any = (this.employees?.data.find(
@@ -95,8 +107,8 @@ export class EmployeeEditComponent implements OnInit {
       end_date: [
         this.employee.end_date /* DD/MM/YY !!!!!!AFTER START DATE!!!!! */,
       ],
-      shift_id: [''],
-      supervision_group_id: [''],
+      shift_id: [this.employee.default_shift?.id],
+      supervision_group_id: [this.employee.supervision_group_id],
       username: [this.employee.user?.username /*[Validators.***]*/],
       password: ['' /*[Validators.***]*/],
       is_admin: [this.employee.user?.is_admin],

@@ -7,7 +7,7 @@ import * as authenticationActions from 'src/app/views/authentication/actions';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.sass'],
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
   user: any;

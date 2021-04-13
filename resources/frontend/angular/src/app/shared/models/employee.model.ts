@@ -1,3 +1,4 @@
+import { Shift } from './shift.model';
 import { User } from './user.model';
 export interface Employee {
   id: number;
@@ -9,7 +10,7 @@ export interface Employee {
   start_date: string;
   end_date: string;
   supervision_group_id: number;
-  shift_id: number;
+  default_shift: Shift;
   is_manager: boolean;
   user: User;
 }
