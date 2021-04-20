@@ -30,10 +30,6 @@ export class ShiftListComponent implements OnInit {
   getTextColorFromName = getTextColorFromName;
 
   deleteShift(id: number) {
-    // const shift = this.shifts.data.find(
-    //   (shift: Shift) => shift.id === id
-    // );
-    //console.log(shift);
     this.store.dispatch(shiftsActions.deleteShift({ id }));
   }
 

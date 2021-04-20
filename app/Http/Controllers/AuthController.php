@@ -15,13 +15,13 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('username', 'password'))) {
-            return response(['message' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
+            return response(['message' => 'Invalid Credentials. Please, try again.', 'code' => 'LOGIN_ERR_InvalidCredentials'], Response::HTTP_UNAUTHORIZED);
         }
 
         $user = Auth::user();
 
         if ($user->is_blocked) {
-            return response(['message' => 'Blocked user'], Response::HTTP_UNAUTHORIZED);
+            return response(['message' => 'User Blocked. Please, contact your system administrator.', 'code' => 'LOGIN_ERR_BlockedUser'], Response::HTTP_UNAUTHORIZED);
         }
 
         $token =  $user->createToken('token')->plainTextToken;
@@ -39,6 +39,6 @@ class AuthController extends Controller
     {
         $cookie = Cookie::forget('jwt');
 
-        return response(['message' => 'success'])->withCookie($cookie);
+        return response(['message' => 'Logout Successful', 'code' => 'LOGOUT_MSG_Successful'])->withCookie($cookie);
     }
 }

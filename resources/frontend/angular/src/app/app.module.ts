@@ -22,6 +22,8 @@ import { EmployeeModule } from './views/employee/employee.module';
 import { EmployeesEffects } from './views/employee/effects';
 import { ShiftModule } from './views/shift/shift.module';
 import { ShiftsEffects } from './views/shift/effects';
+import { CalendarModule } from './views/calendar/calendar.module';
+import { CalendarsEffects } from './views/calendar/effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, MainComponent, FooterComponent],
@@ -35,6 +37,7 @@ import { ShiftsEffects } from './views/shift/effects';
     AuthenticationModule,
     EmployeeModule,
     ShiftModule,
+    CalendarModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -44,6 +47,7 @@ import { ShiftsEffects } from './views/shift/effects';
       AuthenticationEffects,
       EmployeesEffects,
       ShiftsEffects,
+      CalendarsEffects,
     ]),
   ],
   providers: [],

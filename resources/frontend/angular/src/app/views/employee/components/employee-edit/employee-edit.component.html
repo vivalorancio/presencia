@@ -139,7 +139,6 @@
             <label for="shift" class="block text-sm font-medium text-gray-700"
               >Default Shift</label
             >
-
             <select
               class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               [formControlName]="'shift_id'"
@@ -147,7 +146,8 @@
             >
               <option label=" "></option>
               <option *ngFor="let shift of shifts.data" [ngValue]="shift.id">
-                {{ shift.code }} - {{ shift.description }}
+                {{ shift.code }}
+                - {{ shift.description }}
               </option>
             </select>
             <div class="text-sm text-red-900" *ngIf="employeeForm.invalid">

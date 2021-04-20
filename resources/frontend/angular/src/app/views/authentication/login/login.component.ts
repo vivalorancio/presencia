@@ -15,6 +15,8 @@ import { AppState } from 'src/app/app.reducers';
 export class LoginComponent implements OnInit {
   form!: FormGroup;
 
+  loginerror!: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private store: Store<AppState>,
@@ -23,6 +25,9 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.store.select('authentication', 'error').subscribe((error) => {
+      this.loginerror = error;
+    });
     this.form = this.formBuilder.group({
       username: '',
       password: '',

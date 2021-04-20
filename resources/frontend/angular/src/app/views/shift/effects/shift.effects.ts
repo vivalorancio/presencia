@@ -28,7 +28,7 @@ export class ShiftsEffects {
   loadShifts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(shiftsActions.loadShifts),
-      tap((action) => console.log(action)),
+      // tap((action) => console.log(action)),
       mergeMap((action) =>
         this.shiftService.getShifts(action.page).pipe(
           map((shifts) => shiftsActions.loadShiftsSuccess({ shifts })),
@@ -43,7 +43,7 @@ export class ShiftsEffects {
   addShift$ = createEffect(() =>
     this.actions$.pipe(
       ofType(shiftsActions.addShift),
-      tap((action) => console.log(action)),
+      // tap((action) => console.log(action)),
       mergeMap((action) =>
         this.shiftService.postShift(action.shift).pipe(
           map((shift) => shiftsActions.addShiftSuccess({ shift })),
@@ -57,7 +57,7 @@ export class ShiftsEffects {
   addShiftSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(shiftsActions.addShiftSuccess),
-      tap((action) => console.log(action)),
+      // tap((action) => console.log(action)),
       withLatestFrom(this.store.select('shifts', 'page')),
       map(([action, page]) => shiftsActions.loadShifts({ page: page }))
     )
@@ -68,7 +68,7 @@ export class ShiftsEffects {
   updateShift$ = createEffect(() =>
     this.actions$.pipe(
       ofType(shiftsActions.updateShift),
-      tap((action) => console.log(action)),
+      // tap((action) => console.log(action)),
       mergeMap((action) =>
         this.shiftService.putShift(action.shift).pipe(
           map((shift) => shiftsActions.updateShiftSuccess({ shift })),
@@ -82,7 +82,7 @@ export class ShiftsEffects {
   updateShiftSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(shiftsActions.updateShiftSuccess),
-      tap((action) => console.log(action)),
+      // tap((action) => console.log(action)),
       withLatestFrom(this.store.select('shifts', 'page')),
       map(([action, page]) => shiftsActions.loadShifts({ page: page }))
     )
@@ -93,7 +93,7 @@ export class ShiftsEffects {
   deleteShift$ = createEffect(() =>
     this.actions$.pipe(
       ofType(shiftsActions.deleteShift),
-      tap((action) => console.log(action)),
+      // tap((action) => console.log(action)),
       mergeMap((action) =>
         this.shiftService.deleteShift(action.id).pipe(
           map((message) => shiftsActions.deleteShiftSuccess({ message })),
@@ -107,7 +107,7 @@ export class ShiftsEffects {
   deleteShiftSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(shiftsActions.deleteShiftSuccess),
-      tap((action) => console.log(action)),
+      // tap((action) => console.log(action)),
       withLatestFrom(this.store.select('shifts', 'page')),
       map(([action, page]) => shiftsActions.loadShifts({ page: page }))
     )

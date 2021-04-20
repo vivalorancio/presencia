@@ -1,0 +1,123 @@
+<div *ngIf="showSelectionControls" class="py-4 space-x-2">
+  <button
+    type="button"
+    class="relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    (click)="selectAll()"
+  >
+    Select All
+  </button>
+  <button
+    type="button"
+    class="relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    (click)="clearAll()"
+  >
+    Clear
+  </button>
+  <button
+    type="button"
+    class="relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    (click)="selectMoFr()"
+  >
+    Mo-Fr
+  </button>
+  <button
+    type="button"
+    class="relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    (click)="selectSaSu()"
+  >
+    Sa-Su
+  </button>
+  <form
+    class="inline-block space-x-2 border border-blue-400 rounded-md px-2 py-1"
+    [formGroup]="rangeForm"
+    (ngSubmit)="selectRange()"
+  >
+    <div class="inline-block">
+      <label for="range_from" class="block text-sm font-medium text-gray-700"
+        >From
+      </label>
+      <input
+        type="date"
+        id="range_from"
+        min="{{ year.year + '-01-01' }}"
+        max="{{
+          rangeForm['controls']['range_to'].value
+            ? rangeForm['controls']['range_to'].value
+            : year.year + '-12-31'
+        }}"
+        [formControlName]="'range_from'"
+        class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+      />
+    </div>
+    <div class="inline-block">
+      <label for="range_to" class="block text-sm font-medium text-gray-700"
+        >To</label
+      >
+      <input
+        type="date"
+        id="range_to"
+        min="{{
+          rangeForm['controls']['range_from'].value
+            ? rangeForm['controls']['range_from'].value
+            : year.year + '-01-01'
+        }}"
+        max="{{ year.year + '-12-31' }}"
+        [formControlName]="'range_to'"
+        class="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+      />
+    </div>
+    <button
+      type="submit"
+      class="disabled:opacity-50 relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      [disabled]="!rangeForm.valid"
+    >
+      Select Range
+    </button>
+    <span
+      class="text-sm text-red-600"
+      *ngIf="rangeForm.touched && rangeForm.invalid"
+    >
+      Please add a valid from and to date
+    </span>
+  </form>
+</div>
+
+<!-- Flex. 1a línia el màxim -->
+
+<!-- <div class="flex flex-wrap place-content-start">
+  <div class="m-2" *ngFor="let month of year.months">
+    <app-calendar-month
+      [year]="year"
+      [month]="month"
+      (daySelected)="selectDay($event)"
+    ></app-calendar-month>
+  </div>
+</div> -->
+
+<!-- Grid. 6,4,3,2,1 -->
+<div class="flex place-content-center">
+  <div class="grid grid-cols-12 gap-3">
+    <div
+      class="col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 2xl:col-span-2 my-2"
+      *ngFor="let month of year.months"
+    >
+      <app-calendar-month
+        [year]="year"
+        [month]="month"
+        (daySelected)="selectDay($event)"
+      ></app-calendar-month>
+    </div>
+  </div>
+</div>
+
+<!-- <div
+  class="grid grid-flow-col auto-cols-max auto-rows-auto gap-1 justify-start"
+>
+  <div class="my-2" *ngFor="let month of year.months">
+    <app-calendar-month
+      [year]="year"
+      [month]="month"
+      (daySelected)="selectDay($event)"
+    ></app-calendar-month>
+  </div>
+</div> -->

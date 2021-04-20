@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CalendarShiftsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,11 +35,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('employees/search', [EmployeeController::class, 'search']);
     Route::apiResource('employees/{employee}/bookings', BookingController::class);
     Route::apiResource('shifts', ShiftController::class);
+
+    Route::apiResource('calendars', CalendarController::class);
+    Route::apiResource('calendars/{calendar}/shifts', CalendarShiftsController::class);
 });
 
 
 Route::fallback(function () {
     return response()->json([
-        'message' => 'Page Not Found'
+        'message' => 'Page Not Found',
+        'code' => 'ACTION_ERR_PageNotFound',
     ], 404);
 });

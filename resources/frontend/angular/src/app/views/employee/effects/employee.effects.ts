@@ -28,7 +28,6 @@ export class EmployeesEffects {
   loadEmployees$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.loadEmployees),
-      tap((action) => console.log(action)),
       mergeMap((action) =>
         this.employeeService.getEmployees(action.page).pipe(
           map((employees) =>
@@ -47,7 +46,6 @@ export class EmployeesEffects {
   addEmployee$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.addEmployee),
-      tap((action) => console.log(action)),
       mergeMap((action) =>
         this.employeeService.postEmployee(action.employee).pipe(
           map((employee) => employeesActions.addEmployeeSuccess({ employee })),
@@ -63,7 +61,6 @@ export class EmployeesEffects {
   addEmployeeSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.addEmployeeSuccess),
-      tap((action) => console.log(action)),
       withLatestFrom(this.store.select('employees', 'page')),
       map(([action, page]) => employeesActions.loadEmployees({ page: page }))
     )
@@ -74,7 +71,6 @@ export class EmployeesEffects {
   updateEmployee$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.updateEmployee),
-      tap((action) => console.log(action)),
       mergeMap((action) =>
         this.employeeService.putEmployee(action.employee).pipe(
           map((employee) =>
@@ -92,7 +88,6 @@ export class EmployeesEffects {
   updateEmployeeSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.updateEmployeeSuccess),
-      tap((action) => console.log(action)),
       withLatestFrom(this.store.select('employees', 'page')),
       map(([action, page]) => employeesActions.loadEmployees({ page: page }))
     )
@@ -103,7 +98,6 @@ export class EmployeesEffects {
   deleteEmployee$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.deleteEmployee),
-      tap((action) => console.log(action)),
       mergeMap((action) =>
         this.employeeService.deleteEmployee(action.id).pipe(
           map((message) => employeesActions.deleteEmployeeSuccess({ message })),
@@ -119,7 +113,6 @@ export class EmployeesEffects {
   deleteEmployeeSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.deleteEmployeeSuccess),
-      tap((action) => console.log(action)),
       withLatestFrom(this.store.select('employees', 'page')),
       map(([action, page]) => employeesActions.loadEmployees({ page: page }))
     )

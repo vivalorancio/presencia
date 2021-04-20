@@ -33,10 +33,8 @@ export class EmployeeListComponent implements OnInit {
   getTextColor = getTextColor;
 
   deleteEmployee(id: number) {
-    // const employee = this.employees.data.find(
-    //   (employee: Employee) => employee.id === id
-    // );
-    //console.log(employee);
+    /// Confirmation DIALOG!!!!!
+
     this.store.dispatch(employeesActions.deleteEmployee({ id }));
   }
 

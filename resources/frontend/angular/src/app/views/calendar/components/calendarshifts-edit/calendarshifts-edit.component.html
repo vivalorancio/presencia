@@ -1,0 +1,30 @@
+<h2 class="text-3xl text-gray-800">{{ calendar.name }}</h2>
+<h3 class="text-2xl text-gray-600 italic">{{ calendar.year }}</h3>
+
+<div class="m-2">
+  <label class="block text-sm font-medium text-gray-700"> Shift </label>
+
+  <app-shift-dropdown
+    [shifts]="shifts.data"
+    (selectedShiftEvent)="selected($event)"
+  ></app-shift-dropdown>
+
+  <button
+    type="button"
+    class="disabled:opacity-50 relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    (click)="assignToSelected()"
+    [disabled]="selection.length === 0"
+  >
+    Assign Shift
+  </button>
+</div>
+
+<div class="mx-auto flex">
+  <div class="w-full px-4">
+    <app-calendar-year
+      [calendarData]="getCalendarDayData()"
+      [(selection)]="selection"
+      [showSelectionControls]="true"
+    ></app-calendar-year>
+  </div>
+</div>

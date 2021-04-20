@@ -30,7 +30,6 @@ export class AuthenticationEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authenticationActions.login),
-      tap((action) => console.log(action)),
       mergeMap((action) =>
         this.authenticationService
           .login({
@@ -52,7 +51,6 @@ export class AuthenticationEffects {
       this.actions$.pipe(
         ofType(authenticationActions.loginSuccess),
         tap((action) => {
-          console.log(action.user);
           if (action.user.is_admin) {
             this.router.navigate(['/management']);
           } else {
@@ -71,7 +69,6 @@ export class AuthenticationEffects {
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authenticationActions.logout),
-      tap((action) => console.log(action)),
       mergeMap((action) =>
         this.authenticationService.logout().pipe(
           map(() => authenticationActions.logoutSuccess()),
@@ -91,7 +88,6 @@ export class AuthenticationEffects {
           authenticationActions.logoutFailure
         ),
         tap((action) => {
-          console.log(action);
           this.router.navigate(['/login']);
         })
       ),
@@ -101,7 +97,6 @@ export class AuthenticationEffects {
   getUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authenticationActions.getUser),
-      tap((action) => console.log(action)),
       mergeMap((action) =>
         this.authenticationService.getUser().pipe(
           map((user) => authenticationActions.getUserSuccess({ user })),
@@ -116,7 +111,6 @@ export class AuthenticationEffects {
   getUserSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authenticationActions.getUserSuccess),
-      tap((action) => console.log(action.user)),
       map((action) =>
         authenticationActions.getEmployee({
           employee_id: action.user.employee_id,
@@ -129,7 +123,6 @@ export class AuthenticationEffects {
     () =>
       this.actions$.pipe(
         ofType(authenticationActions.getUserFailure),
-        tap((action) => console.log(action)),
         tap(() => this.router.navigate(['/login']))
       ),
     { dispatch: false }
@@ -138,7 +131,6 @@ export class AuthenticationEffects {
   getEmployee$ = createEffect(() =>
     this.actions$.pipe(
       ofType(authenticationActions.getEmployee),
-      tap((action) => console.log(action)),
       mergeMap((action) =>
         this.authenticationService.getEmployee(action.employee_id).pipe(
           map((employee) =>

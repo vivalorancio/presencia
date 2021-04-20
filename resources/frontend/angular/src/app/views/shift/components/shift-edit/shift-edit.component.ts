@@ -8,7 +8,10 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
-import { ColorCollectionItem } from 'src/app/shared/color-picker/colors';
+import {
+  ColorCollectionItem,
+  getFromName,
+} from 'src/app/shared/color-picker/colors';
 import { Shift, ShiftCollection } from 'src/app/shared/models/shift.model';
 
 import * as shiftsActions from '../../../shift/actions';
@@ -24,7 +27,7 @@ export class ShiftEditComponent implements OnInit {
   shift: Shift = {} as Shift;
   pending: boolean = false;
 
-  colorItem: ColorCollectionItem = { name: 'bg-white', color: '#FFFFFF' };
+  colorItem: ColorCollectionItem = { name: 'bg-gray-50', color: '#F9FAFB' };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,7 +40,7 @@ export class ShiftEditComponent implements OnInit {
       this.shifts = shifts.shifts;
       this.pending = shifts.pending;
     });
-
+    this.colorItem = { name: 'bg-gray-50', color: '#F9FAFB' };
     this.route.params.subscribe((params) => {
       const id = +params.id;
       const the_shift: any = (this.shifts?.data.find(
@@ -45,7 +48,10 @@ export class ShiftEditComponent implements OnInit {
       ) || {}) as Shift;
       if (the_shift !== {}) {
         this.shift = the_shift;
-        this.colorItem.name = this.shift.colour;
+        this.colorItem.name = this.shift.colour
+          ? this.shift.colour
+          : this.colorItem.name;
+        this.colorItem.color = getFromName(this.colorItem.name).color;
       }
     });
 
@@ -58,30 +64,28 @@ export class ShiftEditComponent implements OnInit {
         this.shift.description,
         [Validators.required, Validators.maxLength(50)],
       ],
-      colour: [this.shift.colour],
+      //colour: [this.shift.colour],
       start_time: [this.shift.start_time],
       end_time: [this.shift.end_time],
       expected_time: [this.shift.expected_time],
       recess_time: [this.shift.recess_time],
-      is_holiday: [this.shift.is_holiday],
+      is_holiday: [this.shift.is_holiday ? this.shift.is_holiday : false],
     });
   }
 
   onSubmit() {
-    console.log(this.shiftForm.getRawValue());
-    console.log(this.colorItem.name);
-
+    let shiftToSave = {
+      ...this.shiftForm.value,
+      colour: this.colorItem.name,
+    };
+    console.log(this.colorItem);
+    console.log(shiftToSave);
     if (this.shift.id == null) {
-      let shiftToSave = {
-        ...this.shiftForm.value,
-        colour: this.colorItem.name,
-      };
       this.store.dispatch(shiftsActions.addShift({ shift: shiftToSave }));
     } else {
-      let shiftToSave = {
+      shiftToSave = {
         id: this.shift.id,
-        ...this.shiftForm.value,
-        colour: this.colorItem.name,
+        ...shiftToSave,
       };
       this.store.dispatch(shiftsActions.updateShift({ shift: shiftToSave }));
     }
