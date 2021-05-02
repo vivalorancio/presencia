@@ -7,12 +7,14 @@ import * as authenticationActions from '../actions';
 import { User } from 'src/app/shared/models/user.model';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import { EmployeeService } from '../../employee/services/employee.service';
 
 @Injectable()
 export class AuthenticationEffects {
   constructor(
     private actions$: Actions,
     private authenticationService: AuthenticationService,
+    private employeeService: EmployeeService,
     private router: Router
   ) {}
 
@@ -132,12 +134,66 @@ export class AuthenticationEffects {
     this.actions$.pipe(
       ofType(authenticationActions.getEmployee),
       mergeMap((action) =>
-        this.authenticationService.getEmployee(action.employee_id).pipe(
+        this.employeeService.getEmployee(action.employee_id).pipe(
           map((employee) =>
             authenticationActions.getEmployeeSuccess({ employee })
           ),
           catchError((error) =>
             of(authenticationActions.getEmployeeFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  getEmployeeSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authenticationActions.getEmployeeSuccess),
+      map((action) =>
+        authenticationActions.getEmployeeShift({
+          employee_id: action.employee.data.id,
+        })
+      )
+    )
+  );
+
+  getEmployeeShift$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authenticationActions.getEmployeeShift),
+      mergeMap((action) =>
+        this.employeeService.getEmployeeShift(action.employee_id).pipe(
+          map((shift) =>
+            authenticationActions.getEmployeeShiftSuccess({ shift })
+          ),
+          catchError((error) =>
+            of(authenticationActions.getEmployeeShiftFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  getEmployeeSuccess2$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authenticationActions.getEmployeeSuccess),
+      map((action) =>
+        authenticationActions.getEmployeeIncidences({
+          employee_id: action.employee.data.id,
+        })
+      )
+    )
+  );
+
+  getEmployeeIncidences$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authenticationActions.getEmployeeIncidences),
+      mergeMap((action) =>
+        this.employeeService.getEmployeeIncidences(action.employee_id).pipe(
+          map((incidences) =>
+            authenticationActions.getEmployeeIncidencesSuccess({ incidences })
+          ),
+          catchError((error) =>
+            of(authenticationActions.getEmployeeIncidencesFailure({ error }))
           )
         )
       )

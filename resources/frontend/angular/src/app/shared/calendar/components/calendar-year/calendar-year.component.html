@@ -1,29 +1,33 @@
 <div *ngIf="showSelectionControls" class="py-4 space-x-2">
   <button
     type="button"
-    class="relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    class="disabled:opacity-50 relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
     (click)="selectAll()"
+    [disabled]="pending"
   >
     Select All
   </button>
   <button
     type="button"
-    class="relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    class="disabled:opacity-50 relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
     (click)="clearAll()"
+    [disabled]="pending"
   >
     Clear
   </button>
   <button
     type="button"
-    class="relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    class="disabled:opacity-50 relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
     (click)="selectMoFr()"
+    [disabled]="pending"
   >
     Mo-Fr
   </button>
   <button
     type="button"
-    class="relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    class="disabled:opacity-50 relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
     (click)="selectSaSu()"
+    [disabled]="pending"
   >
     Sa-Su
   </button>
@@ -69,7 +73,7 @@
     <button
       type="submit"
       class="disabled:opacity-50 relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      [disabled]="!rangeForm.valid"
+      [disabled]="!rangeForm.valid || pending"
     >
       Select Range
     </button>

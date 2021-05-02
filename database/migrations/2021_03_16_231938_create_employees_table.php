@@ -22,6 +22,7 @@ class CreateEmployeesTable extends Migration
             $table->string('email')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->foreignId('incidences_group_id')->nullable();
             $table->foreignId('supervision_group_id')->nullable();
             $table->foreignId('shift_id')->nullable();
             $table->timestamps();

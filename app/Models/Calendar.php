@@ -18,4 +18,9 @@ class Calendar extends Model
     {
         return $this->hasMany(CalendarShifts::class);
     }
+
+    public function employeecalendars()
+    {
+        return $this->hasMany(EmployeeCalendar::class);
+    }
 }

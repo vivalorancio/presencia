@@ -53,55 +53,61 @@
     <tr>
       <th
         scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
       >
         Name
       </th>
       <th
         scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
       >
         Code
       </th>
       <th
         scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
       >
         ID Card
       </th>
       <th
         scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
       >
         email
       </th>
       <th
         scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
       >
         Start Date
       </th>
       <th
         scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
       >
         End Date
       </th>
       <th
         scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
       >
         Default Shift (!Today)
       </th>
       <th
         scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+      >
+        Inc.Group
+      </th>
+      <th
+        scope="col"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
       >
         Sup.Gr. Id
       </th>
       <th
         scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
       >
         Username
       </th>
@@ -114,56 +120,77 @@
   </thead>
   <tbody class="bg-white divide-y divide-gray-200">
     <tr *ngFor="let employee of employees.data">
-      <td class="px-6 py-4 whitespace-nowrap">
+      <td class="px-4 py-2 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
           {{ employee.first_name }} {{ employee.last_name }}
         </div>
       </td>
-      <td class="px-6 py-4 whitespace-nowrap">
+      <td class="px-4 py-2 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
           {{ employee.code }}
         </div>
       </td>
-      <td class="px-6 py-4 whitespace-nowrap">
+      <td class="px-4 py-2 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
           {{ employee.national_id }}
         </div>
       </td>
-      <td class="px-6 py-4 whitespace-nowrap">
+      <td class="px-4 py-2 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
           {{ employee.email }}
         </div>
       </td>
-      <td class="px-6 py-4 whitespace-nowrap">
+      <td class="px-4 py-2 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
           {{ employee.start_date | date: "dd/MM/yyyy" }}
         </div>
       </td>
-      <td class="px-6 py-4 whitespace-nowrap">
+      <td class="px-4 py-2 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
           {{ employee.end_date | date: "dd/MM/yyyy" }}
         </div>
       </td>
-      <td class="px-6 py-4 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
+      <td class="px-4 py-2 whitespace-nowrap">
+        <div class="group text-sm font-medium text-gray-900 w-max">
           {{ employee.default_shift?.code }}
+          <span
+            class="invisible opacity-0 transition-all delay-300 ease-in duration-200 absolute mt-1 p-1 w-auto rounded-md shadow-lg bg-gray-50 text-gray-800 group-hover:visible group-hover:z-50 group-hover:opacity-100"
+            >{{ employee.default_shift?.description }}</span
+          >
         </div>
       </td>
-      <td class="px-6 py-4 whitespace-nowrap">
+      <td class="px-4 py-2 whitespace-nowrap">
+        <div class="group text-sm font-medium text-gray-900 w-max">
+          {{ employee.incidences_group?.code }}
+          <span
+            class="invisible opacity-0 transition-all delay-300 ease-in duration-200 absolute mt-1 p-1 w-auto rounded-md shadow-lg bg-gray-50 text-gray-800 group-hover:visible group-hover:z-50 group-hover:opacity-100"
+            >{{ employee.incidences_group?.description }}</span
+          >
+        </div>
+      </td>
+      <td class="px-4 py-2 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
           {{ employee.supervision_group_id }}
         </div>
       </td>
-      <td class="px-6 py-4 whitespace-nowrap">
+      <td class="px-4 py-2 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
           {{ employee.user?.username }}
         </div>
       </td>
       <!-- <td>{{ employee.user?.is_admin }}</td>
       <td>{{ employee.user?.is_blocked }}</td> -->
-      <td>
+      <td class="space-x-2">
         <button
-          class="disabled:opacity-50 group relative py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          type="button"
+          [routerLink]="['employee', employee.id, 'calendars']"
+          [disabled]="pending"
+        >
+          Calendars
+        </button>
+        <button
+          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           type="button"
           [routerLink]="['employee', employee.id]"
           [disabled]="pending"
@@ -171,7 +198,7 @@
           Edit
         </button>
         <button
-          class="disabled:opacity-50 group relative py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           type="button"
           (click)="deleteEmployee(employee.id)"
           [disabled]="pending"

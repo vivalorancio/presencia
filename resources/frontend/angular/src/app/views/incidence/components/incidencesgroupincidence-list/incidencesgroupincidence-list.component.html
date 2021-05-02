@@ -1,0 +1,158 @@
+<h3 class="text-3xl my-4 font-bold">Incidences Group Incidences</h3>
+
+<div>
+  <app-colour-dropdown
+    [items]="availableincidences"
+    [(selectedId)]="selectedIncidenceId"
+  ></app-colour-dropdown>
+  <button
+    type="button"
+    class="disabled:opacity-50 relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    (click)="addIncidence()"
+    [disabled]="
+      pending || availableincidences.length === 0 || selectedIncidenceId === -1
+    "
+  >
+    Add Employee Incidence
+  </button>
+</div>
+
+<div class="my-4">
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="firstpage()"
+    [disabled]="pending || incidencesgroupincidences.meta?.current_page == 1"
+  >
+    &laquo;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="previouspage()"
+    [disabled]="pending || incidencesgroupincidences.meta?.current_page == 1"
+  >
+    &lt;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="nextpage()"
+    [disabled]="
+      pending ||
+      incidencesgroupincidences.meta?.current_page ==
+        incidencesgroupincidences.meta?.last_page
+    "
+  >
+    &gt;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="lastpage()"
+    [disabled]="
+      pending ||
+      incidencesgroupincidences.meta?.current_page ==
+        incidencesgroupincidences.meta?.last_page
+    "
+  >
+    &raquo;
+  </button>
+</div>
+
+<table class="min-w-full divide-y divide-gray-200">
+  <thead class="bg-gray-50">
+    <tr>
+      <th
+        scope="col"
+        class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+      >
+        Code
+      </th>
+      <th
+        scope="col"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+      >
+        Description
+      </th>
+      <th scope="col" class="relative px-6 py-3">
+        <span class="sr-only">Actions</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody class="bg-white divide-y divide-gray-200">
+    <tr *ngFor="let incidencesgroupincidence of incidencesgroupincidences.data">
+      <td class="px-4 py-2 whitespace-nowrap">
+        <div
+          class="text-center text-xs font-medium {{
+            getIncidence(incidencesgroupincidence.incidence_id).colour
+          }} {{
+            getTextColourFromName(
+              getIncidence(incidencesgroupincidence.incidence_id).colour
+            )
+          }} rounded-md py-1 px-2"
+        >
+          {{ getIncidence(incidencesgroupincidence.incidence_id).code }}
+        </div>
+      </td>
+      <td class="px-4 py-2 whitespace-nowrap">
+        <div class="text-sm font-medium text-gray-900">
+          {{ getIncidence(incidencesgroupincidence.incidence_id).description }}
+        </div>
+      </td>
+      <td class="space-x-2">
+        <button
+          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          type="button"
+          (click)="deleteIncidence(incidencesgroupincidence.id)"
+          [disabled]="pending"
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="my-4">
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="firstpage()"
+    [disabled]="pending || incidencesgroupincidences.meta?.current_page == 1"
+  >
+    &laquo;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="previouspage()"
+    [disabled]="pending || incidencesgroupincidences.meta?.current_page == 1"
+  >
+    &lt;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="nextpage()"
+    [disabled]="
+      pending ||
+      incidencesgroupincidences.meta?.current_page ==
+        incidencesgroupincidences.meta?.last_page
+    "
+  >
+    &gt;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="lastpage()"
+    [disabled]="
+      pending ||
+      incidencesgroupincidences.meta?.current_page ==
+        incidencesgroupincidences.meta?.last_page
+    "
+  >
+    &raquo;
+  </button>
+</div>

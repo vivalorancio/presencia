@@ -49,7 +49,12 @@ export class CalendarEditComponent implements OnInit {
 
     this.calendarForm = this.formBuilder.group({
       year: [
-        this.calendar.year ? this.calendar.year : new Date().getFullYear(),
+        {
+          value: this.calendar.year
+            ? this.calendar.year
+            : new Date().getFullYear(),
+          disabled: this.calendar.year != null,
+        },
         [Validators.required, Validators.min(1900), Validators.max(2999)],
       ],
       name: [

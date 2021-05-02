@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ShiftRoutingModule } from './shift-routing.module';
 import { ShiftListComponent } from './components/shift-list/shift-list.component';
 import { ShiftEditComponent } from './components/shift-edit/shift-edit.component';
-import { ColorPickerModule } from 'src/app/shared/color-picker/color-picker.module';
+import { ColourPickerModule } from 'src/app/shared/colour-picker/colour-picker.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ShiftRoutingModule,
     ReactiveFormsModule,
-    ColorPickerModule,
+    ColourPickerModule,
   ],
 })
 export class ShiftModule {}

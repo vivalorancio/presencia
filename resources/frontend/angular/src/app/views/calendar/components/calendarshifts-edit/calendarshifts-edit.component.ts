@@ -5,11 +5,10 @@ import { AppState } from 'src/app/app.reducers';
 import {
   Calendar,
   CalendarCollection,
-  CalendarShift,
   CalendarShiftCollection,
 } from 'src/app/shared/models/calendar.model';
 import { Shift, ShiftCollection } from 'src/app/shared/models/shift.model';
-import { getTextColorFromName } from 'src/app/shared/color-picker/colors';
+import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
 
 import * as shiftsActions from '../../../shift/actions';
 import * as calendarsActions from '../../actions';
@@ -35,7 +34,7 @@ export class CalendarshiftsEditComponent implements OnInit {
   shifts!: ShiftCollection;
   pending_shifts: boolean = false;
 
-  selectedShift: Shift = {} as Shift;
+  selectedShiftId: number = -1;
 
   calendardata: CalendarYearData = { year: -1, days: [] };
 
@@ -48,6 +47,7 @@ export class CalendarshiftsEditComponent implements OnInit {
       this.calendarshifts = calendarshifts.calendarshifts;
       this.pending = calendarshifts.pending;
       this.selection = [];
+      this.selectedShiftId = -1;
     });
 
     this.store.select('calendars').subscribe((calendars) => {
@@ -71,7 +71,6 @@ export class CalendarshiftsEditComponent implements OnInit {
         this.calendar = the_calendar;
         this.calendardata.year = this.calendar.year;
       }
-      //console.log(this.calendar);
       this.store.dispatch(
         calendarsActions.loadCalendarShifts({
           calendar_id: this.calendar.id,
@@ -79,14 +78,12 @@ export class CalendarshiftsEditComponent implements OnInit {
         })
       );
     });
-
-    this.selectedShift = {} as Shift;
   }
 
-  getTextColorFromName = getTextColorFromName;
+  getTextColourFromName = getTextColourFromName;
 
-  isPending() {
-    this.pending || this.pending_calendars || this.pending_shifts;
+  isPending(): boolean {
+    return this.pending || this.pending_calendars || this.pending_shifts;
   }
 
   shift(shift_id: number): Shift {
@@ -95,17 +92,13 @@ export class CalendarshiftsEditComponent implements OnInit {
     );
   }
 
-  selected(selectedShift: Shift) {
-    this.selectedShift = selectedShift;
-  }
-
   getCalendarDayData() {
     this.calendardata.days = [];
     for (let calendarshift of this.calendarshifts.data) {
       let calendardaydata: CalendarDayData = {} as CalendarDayData;
       calendardaydata.day = calendarshift.dayofyear;
-      calendardaydata.color = this.shift(calendarshift.shift_id)?.colour;
-      calendardaydata.textcolor = getTextColorFromName(
+      calendardaydata.colour = this.shift(calendarshift.shift_id)?.colour;
+      calendardaydata.textcolour = getTextColourFromName(
         this.shift(calendarshift.shift_id)?.colour
       );
       calendardaydata.label = this.shift(calendarshift.shift_id)?.code;
@@ -126,7 +119,7 @@ export class CalendarshiftsEditComponent implements OnInit {
       .map((dayselected) => {
         return {
           day: dayselected.day,
-          shift_id: this.selectedShift.id ? this.selectedShift.id : null,
+          shift_id: this.selectedShiftId !== -1 ? this.selectedShiftId : null,
         };
       });
 
@@ -141,7 +134,6 @@ export class CalendarshiftsEditComponent implements OnInit {
         calendarshiftstosave.push(calendarshiftsselected[i]);
       }
     }
-    //console.table(calendarshiftstosave);
 
     this.store.dispatch(
       calendarsActions.updateCalendarShifts({

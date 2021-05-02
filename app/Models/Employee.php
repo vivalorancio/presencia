@@ -17,6 +17,7 @@ class Employee extends Model
         'email',
         'start_date',
         'end_date',
+        'incidences_group_id',
         'supervision_group_id',
         'shift_id'
     ];
@@ -38,5 +39,15 @@ class Employee extends Model
     public function shift()
     {
         return $this->belongsTo(Shift::class);
+    }
+
+    public function incidences_group()
+    {
+        return $this->belongsTo(IncidencesGroup::class);
+    }
+
+    public function calendars()
+    {
+        return $this->hasMany(EmployeeCalendar::class);
     }
 }

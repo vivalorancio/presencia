@@ -31,7 +31,7 @@ class BookingUpdateRequest extends AuthorizeAdminRequest
                     ->where('time', $this->time)
             ],
             'time' => 'required|dateformat:H:i:s',
-            'incidence_id' => 'sometimes|integer|exists:incidences,id',
+            'incidence_id' => 'nullable|sometimes|integer|exists:incidences,id',
             'user_id' => [
                 'required', 'integer', 'exists:users,id',
                 //Ha de correspondre a l'usuari del login

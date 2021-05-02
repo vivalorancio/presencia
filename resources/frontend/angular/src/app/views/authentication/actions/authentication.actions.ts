@@ -3,6 +3,8 @@ import {
   Employee,
   EmployeeResource,
 } from 'src/app/shared/models/employee.model';
+import { Incidence } from 'src/app/shared/models/incidence.model';
+import { ShiftResource } from 'src/app/shared/models/shift.model';
 import { User } from 'src/app/shared/models/user.model';
 
 // ------------ Login ----------
@@ -54,5 +56,34 @@ export const getEmployeeSuccess = createAction(
 
 export const getEmployeeFailure = createAction(
   '[Authentication] Get Employee Failure',
+  props<{ error: any }>()
+);
+
+// ------------ Employee Today Shift----------
+export const getEmployeeShift = createAction(
+  '[Authentication] Get EmployeeShift',
+  props<{ employee_id: number }>()
+);
+export const getEmployeeShiftSuccess = createAction(
+  '[Authentication] Get EmployeeShift Success',
+  props<{ shift: ShiftResource }>()
+);
+
+export const getEmployeeShiftFailure = createAction(
+  '[Authentication] Get EmployeeShift Failure',
+  props<{ error: any }>()
+);
+// ------------ Employee Today Shift----------
+export const getEmployeeIncidences = createAction(
+  '[Authentication] Get Employee Incidences',
+  props<{ employee_id: number }>()
+);
+export const getEmployeeIncidencesSuccess = createAction(
+  '[Authentication] Get Employee Incidences Success',
+  props<{ incidences: Incidence[] }>()
+);
+
+export const getEmployeeIncidencesFailure = createAction(
+  '[Authentication] Get Employee Incidences Failure',
   props<{ error: any }>()
 );

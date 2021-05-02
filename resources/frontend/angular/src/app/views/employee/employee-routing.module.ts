@@ -5,6 +5,7 @@ import { EmployeeManagementComponent } from './components/employee-management/em
 import { AdminGuard } from '../authentication/guards/admin.guard';
 import { AuthenticationGuard } from '../authentication/guards/authentication.guard';
 import { EmployeeEditComponent } from './components/employee-edit/employee-edit.component';
+import { EmployeecalendarListComponent } from './components/employeecalendar-list/employeecalendar-list.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
       {
         path: 'employees/employee/:id',
         component: EmployeeEditComponent,
+      },
+      {
+        path: 'employees/employee/:employee_id/calendars',
+        component: EmployeecalendarListComponent,
       },
     ],
     canActivate: [AuthenticationGuard, AdminGuard],

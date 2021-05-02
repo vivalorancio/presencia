@@ -2,8 +2,8 @@ export interface CalendarDayData {
   day: number;
   label?: string;
   tooltip?: string;
-  color?: string;
-  textcolor?: string;
+  colour?: string;
+  textcolour?: string;
 }
 
 export interface CalendarYearData {

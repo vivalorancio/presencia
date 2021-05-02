@@ -103,7 +103,7 @@ export class EmployeesEffects {
           map((message) => employeesActions.deleteEmployeeSuccess({ message })),
           //tap(() => this.router.navigate(['/management/employees'])),
           catchError((error) =>
-            of(employeesActions.updateEmployeeFailure({ error }))
+            of(employeesActions.deleteEmployeeFailure({ error }))
           )
         )
       )
@@ -119,4 +119,92 @@ export class EmployeesEffects {
   );
 
   //updateEmployeeFailure ---> PROCESS ERROR MESSAGE / retry /etc
+
+  loadEmployeeCalendars$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeCalendars),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.employeeService
+          .getEmployeeCalendars(action.employee_id, action.page)
+          .pipe(
+            map((employeecalendars) =>
+              employeesActions.loadEmployeeCalendarsSuccess({
+                employeecalendars,
+              })
+            ),
+            catchError((error) =>
+              of(employeesActions.loadEmployeeCalendarsFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  addEmployeeCalendar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.addEmployeeCalendar),
+      mergeMap((action) =>
+        this.employeeService
+          .postEmployeeCalendar(action.employee_id, action.employeecalendar)
+          .pipe(
+            map((employeecalendar) =>
+              employeesActions.addEmployeeCalendarSuccess({ employeecalendar })
+            ),
+            //tap(() => this.router.navigate(['/management/employees'])),
+            catchError((error) =>
+              of(employeesActions.addEmployeeCalendarFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  addEmployeeCalendarSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.addEmployeeCalendarSuccess),
+      withLatestFrom(this.store.select('employeecalendars')),
+      map(([action, employeecalendars]) =>
+        employeesActions.loadEmployeeCalendars({
+          employee_id: employeecalendars.employee_id,
+          page: employeecalendars.page,
+        })
+      )
+    )
+  );
+
+  deleteEmployeeCalendar$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.deleteEmployeeCalendar),
+      mergeMap((action) =>
+        this.employeeService
+          .deleteEmployeeCalendar(
+            action.employee_id,
+            action.employeecalendar_id
+          )
+          .pipe(
+            map((message) =>
+              employeesActions.deleteEmployeeCalendarSuccess({ message })
+            ),
+            //tap(() => this.router.navigate(['/management/employees'])),
+            catchError((error) =>
+              of(employeesActions.deleteEmployeeCalendarFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  deleteEmployeeCalendarSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.deleteEmployeeCalendarSuccess),
+      withLatestFrom(this.store.select('employeecalendars')),
+      map(([action, employeecalendars]) =>
+        employeesActions.loadEmployeeCalendars({
+          employee_id: employeecalendars.employee_id,
+          page: employeecalendars.page,
+        })
+      )
+    )
+  );
 }

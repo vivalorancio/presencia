@@ -7,6 +7,9 @@ use App\Http\Requests\EmployeeSelfRequest;
 use App\Http\Requests\EmployeeStoreRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\ShiftResource;
+use App\Http\Resources\IncidenceResource;
+use App\Models\Calendar;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -78,5 +81,40 @@ class EmployeeController extends Controller
     {
         //WIP
         return ["a" => "OK"];
+    }
+
+    public function shift(EmployeeSelfRequest $request, Employee $employee)
+    {
+        $employeeshift = $employee->shift;
+        $calendar = null;
+        $year = date("Y");
+        $dayofyear = date("z");
+        $employeecalendars = $employee->calendars;
+        foreach ($employeecalendars as $employeecalendar) {
+            if ($employeecalendar->year == $year) {
+                $calendar = $employeecalendar->calendar;
+                break;
+            }
+        }
+        if ($calendar != null) {
+            foreach ($calendar->shifts as $shift) {
+                if ($shift->day == $dayofyear) {
+                    $employeeshift = $shift->shift;
+                }
+            }
+        }
+        return new ShiftResource($employeeshift);
+    }
+
+    public function incidences(EmployeeSelfRequest $request, Employee $employee)
+    {
+        $result = [];
+        $employeeincidencesgroupincidences = $employee->incidences_group->incidences;
+
+        foreach ($employeeincidencesgroupincidences as $employeeincidencesgroupincidence) {
+            array_push($result, $employeeincidencesgroupincidence->incidence);
+        }
+
+        return $result;
     }
 }

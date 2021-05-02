@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
-import {
-  Employee,
-  EmployeeResource,
-} from 'src/app/shared/models/employee.model';
+import { Employee } from 'src/app/shared/models/employee.model';
+import { Shift } from 'src/app/shared/models/shift.model';
+import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
+import { Incidence } from 'src/app/shared/models/incidence.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +16,12 @@ export class DashboardComponent implements OnInit {
   employee!: Employee;
   employeedisplayname = '';
   bookingmessage = '';
+  bookingerror: boolean = false;
+
+  shift!: Shift;
+
+  incidences: Incidence[] = [];
+  selectedIncidenceId: number = -1;
 
   constructor(private store: Store<AppState>, private http: HttpClient) {}
 
@@ -24,7 +30,17 @@ export class DashboardComponent implements OnInit {
       this.employee = employee.data;
       this.employeedisplayname = employee.data?.first_name;
     });
+    this.store.select('authentication', 'shift').subscribe((shift) => {
+      this.shift = shift.data;
+    });
+    this.store
+      .select('authentication', 'incidences')
+      .subscribe((incidences) => {
+        this.incidences = incidences;
+      });
   }
+
+  getTextColourFromName = getTextColourFromName;
 
   book() {
     const datetime = new Date(Date.now());
@@ -41,15 +57,31 @@ export class DashboardComponent implements OnInit {
       ':' +
       `00${datetime.getSeconds()}`.slice(-2);
 
+    let incidence_id =
+      this.selectedIncidenceId != -1 ? this.selectedIncidenceId : null;
+
     this.http
       .post(
         `/api/employees/${this.employee.id}/bookings`,
-        { date, time },
+        { date, time, incidence_id },
         {
           withCredentials: true,
-          observe: 'response',
+          // observe: 'response',
         }
       )
-      .subscribe((res) => console.log(res));
+      .subscribe(
+        (res: any) => {
+          this.bookingerror = false;
+          this.bookingmessage = res.message;
+          this.selectedIncidenceId = -1;
+          console.log(res);
+        },
+        (err) => {
+          this.bookingerror = true;
+          this.bookingmessage = err.error.errors.date;
+          this.selectedIncidenceId = -1;
+          console.log(err.error);
+        }
+      );
   }
 }

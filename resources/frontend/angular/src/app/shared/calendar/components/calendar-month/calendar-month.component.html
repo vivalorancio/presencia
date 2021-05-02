@@ -85,12 +85,12 @@
             {{
               year.days[day].selected
                 ? 'bg-gray-500'
-                : year.days[day].data?.color
+                : year.days[day].data?.colour
             }}
             {{
               year.days[day].selected
                 ? 'text-white'
-                : year.days[day].data?.textcolor
+                : year.days[day].data?.textcolour
             }}
             "
             (click)="selectDay($event, year.days[day])"
@@ -102,7 +102,7 @@
               {{ year.days[day].data?.label }}
               <span
                 *ngIf="year.days[day].data?.tooltip"
-                class="hidden group-hover:block absolute -mt-2 p-1 w-auto rounded-md shadow-lg bg-gray-50 text-gray-800 z-index:100"
+                class="invisible opacity-0 transition-all delay-300 ease-in duration-200 absolute -mt-2 p-1 w-auto rounded-md shadow-lg bg-gray-50 text-gray-800 group-hover:visible group-hover:z-50 group-hover:opacity-100"
               >
                 {{ year.days[day].data?.tooltip }}
               </span>

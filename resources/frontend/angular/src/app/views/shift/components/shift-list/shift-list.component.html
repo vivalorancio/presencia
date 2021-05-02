@@ -59,12 +59,6 @@
       >
         Description
       </th>
-      <!-- <th
-        scope="col"
-        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        Colour
-      </th> -->
       <th
         scope="col"
         class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -96,8 +90,6 @@
         Holiday?
       </th>
 
-      <!-- <th>Admin</th>
-      <th>Blocked</th>-->
       <th scope="col" class="relative px-6 py-3">
         <span class="sr-only">Actions</span>
       </th>
@@ -108,7 +100,7 @@
       <td class="px-4 py-2 whitespace-nowrap">
         <div
           class="text-center text-xs font-medium {{ shift.colour }} {{
-            getTextColorFromName(shift.colour)
+            getTextColourFromName(shift.colour)
           }} rounded-md py-1 px-2"
         >
           {{ shift.code }}
@@ -119,11 +111,7 @@
           {{ shift.description }}
         </div>
       </td>
-      <!-- <td class="px-6 py-4 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ shift.colour }}
-        </div>
-      </td> -->
+
       <td class="px-4 py-2 whitespace-nowrap">
         <div class="text-sm font-medium text-gray-900">
           {{ shift.start_time }}

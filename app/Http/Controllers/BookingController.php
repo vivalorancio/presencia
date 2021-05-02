@@ -11,6 +11,7 @@ use App\Http\Requests\EmployeeSelfRequest;
 use App\Http\Resources\BookingResource;
 use App\Models\Booking;
 use App\Models\Employee;
+use Symfony\Component\HttpFoundation\Response;
 
 class BookingController extends Controller
 {
@@ -24,7 +25,7 @@ class BookingController extends Controller
     {
         $booking = new Booking($request->validated());
         $employee->bookings()->save($booking);
-        return new BookingResource($booking);
+        return response(['message' => 'Booking Successful.', 'code' => 'BOOKING_MSG_Successful'], Response::HTTP_CREATED);
     }
 
     public function show(BookingShowRequest $request, Employee $employee, Booking $booking)

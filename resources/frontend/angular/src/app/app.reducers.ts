@@ -3,26 +3,29 @@ import { ActionReducerMap } from '@ngrx/store';
 import * as authentication from './views/authentication/reducers';
 import * as employees from './views/employee/reducers';
 import * as shifts from './views/shift/reducers';
+import * as incidences from './views/incidence/reducers';
 import * as calendars from './views/calendar/reducers';
-// import * as home from './views/home/reducers';
-// import * as activities from './views/activities/reducers';
 
 export interface AppState {
   authentication: authentication.AuthenticationState;
   employees: employees.EmployeesState;
+  employeecalendars: employees.EmployeeCalendarsState;
   shifts: shifts.ShiftsState;
   calendars: calendars.CalendarsState;
   calendarshifts: calendars.CalendarShiftsState;
-  // home: home.HomeState;
-  // activities: activities.ActivitiesState;
+  incidences: incidences.IncidencesState;
+  incidencesgroups: incidences.IncidencesGroupsState;
+  incidencesgroupincidences: incidences.IncidencesGroupIncidencesState;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
   authentication: authentication.authenticationReducer,
   employees: employees.employeesReducer,
+  employeecalendars: employees.employeecalendarsReducer,
   shifts: shifts.shiftsReducer,
   calendars: calendars.calendarsReducer,
   calendarshifts: calendars.calendarshiftsReducer,
-  // home: home.homeReducer,
-  // activities: activities.activitiesReducer,
+  incidences: incidences.incidencesReducer,
+  incidencesgroups: incidences.incidencesgroupsReducer,
+  incidencesgroupincidences: incidences.incidencesgroupincidencesReducer,
 };

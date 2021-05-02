@@ -3,6 +3,8 @@ import {
   Employee,
   EmployeeResource,
 } from 'src/app/shared/models/employee.model';
+import { Incidence } from 'src/app/shared/models/incidence.model';
+import { ShiftResource } from 'src/app/shared/models/shift.model';
 import { User } from 'src/app/shared/models/user.model';
 import * as authenticationActions from '../actions';
 
@@ -12,6 +14,8 @@ export interface AuthenticationState {
   pending: boolean;
   user: User;
   employee: EmployeeResource;
+  shift: ShiftResource;
+  incidences: Incidence[];
 }
 
 export const initialState: AuthenticationState = {
@@ -20,6 +24,8 @@ export const initialState: AuthenticationState = {
   pending: false,
   user: {} as User,
   employee: {} as EmployeeResource,
+  shift: {} as ShiftResource,
+  incidences: [],
 };
 
 export const _authenticationReducer = createReducer(
@@ -70,7 +76,43 @@ export const _authenticationReducer = createReducer(
     ...state,
     error,
     employee: {} as EmployeeResource,
-  }))
+  })),
+  on(authenticationActions.getEmployeeShift, (state) => ({
+    ...state,
+    pending: true,
+  })),
+  on(authenticationActions.getEmployeeShiftSuccess, (state, { shift }) => ({
+    ...state,
+    error: null,
+    pending: false,
+    shift,
+  })),
+  on(authenticationActions.getEmployeeShiftFailure, (state, { error }) => ({
+    ...state,
+    error,
+    shift: {} as ShiftResource,
+  })),
+  on(authenticationActions.getEmployeeIncidences, (state) => ({
+    ...state,
+    pending: true,
+  })),
+  on(
+    authenticationActions.getEmployeeIncidencesSuccess,
+    (state, { incidences }) => ({
+      ...state,
+      error: null,
+      pending: false,
+      incidences,
+    })
+  ),
+  on(
+    authenticationActions.getEmployeeIncidencesFailure,
+    (state, { error }) => ({
+      ...state,
+      error,
+      incidences: [],
+    })
+  )
 );
 
 export function authenticationReducer(state: any, action: any) {

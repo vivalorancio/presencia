@@ -70,6 +70,8 @@ export class CalendarYearComponent implements OnInit, DoCheck {
 
   rangeForm!: FormGroup;
 
+  @Input() pending: boolean = true;
+
   @Input() showSelectionControls: boolean = true;
 
   constructor(private formBuilder: FormBuilder) {}

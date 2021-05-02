@@ -9,6 +9,12 @@
     <div class="text-center text-3xl font-bold text-gray900">
       <app-clock></app-clock>
     </div>
+    <div class="mt-2">
+      <app-colour-dropdown
+        [items]="incidences"
+        [(selectedId)]="selectedIncidenceId"
+      ></app-colour-dropdown>
+    </div>
     <button
       class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       (click)="book()"
@@ -29,5 +35,22 @@
       </span>
       Book
     </button>
+    <div
+      class="{{
+        bookingerror ? 'text-red-600' : 'text-green-600'
+      }} font-semibold"
+    >
+      {{ bookingmessage }}
+    </div>
+  </div>
+  <div *ngIf="shift">
+    <div
+      class="{{ shift.colour }} {{
+        getTextColourFromName(shift.colour)
+      }} p-1 rounded-md"
+    >
+      {{ shift.code }}
+    </div>
+    <div>{{ shift.start_time }} - {{ shift.end_time }}</div>
   </div>
 </div>

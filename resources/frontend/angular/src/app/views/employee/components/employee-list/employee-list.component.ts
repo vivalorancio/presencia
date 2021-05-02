@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
-import { getTextColor } from 'src/app/shared/color-picker/colors';
+import { getTextColour } from 'src/app/shared/colour-picker/colours';
 import {
   Employee,
   EmployeeCollection,
@@ -30,7 +30,7 @@ export class EmployeeListComponent implements OnInit {
       this.store.dispatch(employeesActions.loadEmployees({ page: '1' }));
   }
 
-  getTextColor = getTextColor;
+  getTextColour = getTextColour;
 
   deleteEmployee(id: number) {
     /// Confirmation DIALOG!!!!!

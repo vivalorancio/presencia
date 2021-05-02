@@ -1,9 +1,5 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
-import {
-  Employee,
-  EmployeeCollection,
-} from 'src/app/shared/models/employee.model';
+import { EmployeeCollection } from 'src/app/shared/models/employee.model';
 import * as employeesActions from '../actions';
 
 export interface EmployeesState {

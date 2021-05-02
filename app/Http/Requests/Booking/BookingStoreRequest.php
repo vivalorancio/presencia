@@ -20,7 +20,7 @@ class BookingStoreRequest extends EmployeeSelfRequest
                     ->where('time', $this->time)
             ],
             'time' => 'required|dateformat:H:i:s',
-            'incidence_id' => 'sometimes|integer|exists:incidences,id',
+            'incidence_id' => 'nullable|sometimes|integer|exists:incidences,id',
             'user_id' => [
                 'integer', 'exists:users,id',
                 //Required si és un marcatge de tercers

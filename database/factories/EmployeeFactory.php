@@ -29,6 +29,7 @@ class EmployeeFactory extends Factory
             'email' => $this->faker->email,
             'start_date' => $this->faker->date('Y-m-d', 'now'),
             'end_date' => null,
+            'incidences_group_id' => null,
             'supervision_group_id' => null,
             'shift_id' => null
         ];

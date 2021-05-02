@@ -5,12 +5,14 @@ import { EmployeeManagementComponent } from './components/employee-management/em
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { EmployeeEditComponent } from './components/employee-edit/employee-edit.component';
+import { EmployeecalendarListComponent } from './components/employeecalendar-list/employeecalendar-list.component';
 
 @NgModule({
   declarations: [
     EmployeeManagementComponent,
     EmployeeListComponent,
     EmployeeEditComponent,
+    EmployeecalendarListComponent,
   ],
   imports: [CommonModule, EmployeeRoutingModule, ReactiveFormsModule],
 })

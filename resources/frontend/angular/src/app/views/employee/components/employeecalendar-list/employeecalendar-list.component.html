@@ -1,0 +1,153 @@
+<h3 class="text-3xl my-4 font-bold">Employee Calendars</h3>
+
+<div>
+  <form [formGroup]="employeecalendarForm" (ngSubmit)="addCalendar()">
+    <select
+      class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+      [formControlName]="'calendar_id'"
+    >
+      <option
+        *ngFor="let calendar of getAvailableCalendars()"
+        [ngValue]="calendar.id"
+      >
+        {{ calendar.year }}
+        - {{ calendar.name }}
+      </option>
+    </select>
+    <button
+      class="disabled:opacity-50 group relative py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      type="submit"
+      [disabled]="pending || getAvailableCalendars().length === 0"
+    >
+      Add Employee Calendar
+    </button>
+  </form>
+</div>
+
+<div class="my-4">
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="firstpage()"
+    [disabled]="pending || employeecalendars.meta?.current_page == 1"
+  >
+    &laquo;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="previouspage()"
+    [disabled]="pending || employeecalendars.meta?.current_page == 1"
+  >
+    &lt;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="nextpage()"
+    [disabled]="
+      pending ||
+      employeecalendars.meta?.current_page == employeecalendars.meta?.last_page
+    "
+  >
+    &gt;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="lastpage()"
+    [disabled]="
+      pending ||
+      employeecalendars.meta?.current_page == employeecalendars.meta?.last_page
+    "
+  >
+    &raquo;
+  </button>
+</div>
+
+<table class="min-w-full divide-y divide-gray-200">
+  <thead class="bg-gray-50">
+    <tr>
+      <th
+        scope="col"
+        class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+      >
+        Year
+      </th>
+      <th
+        scope="col"
+        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+      >
+        Name
+      </th>
+      <th scope="col" class="relative px-6 py-3">
+        <span class="sr-only">Actions</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody class="bg-white divide-y divide-gray-200">
+    <tr *ngFor="let employeecalendar of employeecalendars.data">
+      <td class="px-4 py-2 whitespace-nowrap">
+        <div class="text-sm text-center font-medium text-gray-900">
+          {{ getCalendar(employeecalendar.calendar_id).year }}
+        </div>
+      </td>
+      <td class="px-4 py-2 whitespace-nowrap">
+        <div class="text-sm font-medium text-gray-900">
+          {{ getCalendar(employeecalendar.calendar_id).name }}
+        </div>
+      </td>
+      <td class="space-x-2">
+        <button
+          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          type="button"
+          (click)="deleteCalendar(employeecalendar.id)"
+          [disabled]="pending"
+        >
+          Remove
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="my-4">
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="firstpage()"
+    [disabled]="pending || employeecalendars.meta?.current_page == 1"
+  >
+    &laquo;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="previouspage()"
+    [disabled]="pending || employeecalendars.meta?.current_page == 1"
+  >
+    &lt;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="nextpage()"
+    [disabled]="
+      pending ||
+      employeecalendars.meta?.current_page == employeecalendars.meta?.last_page
+    "
+  >
+    &gt;
+  </button>
+  <button
+    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    type="button"
+    (click)="lastpage()"
+    [disabled]="
+      pending ||
+      employeecalendars.meta?.current_page == employeecalendars.meta?.last_page
+    "
+  >
+    &raquo;
+  </button>
+</div>

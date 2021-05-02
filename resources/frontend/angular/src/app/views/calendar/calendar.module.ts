@@ -6,7 +6,7 @@ import { CalendarListComponent } from './components/calendar-list/calendar-list.
 import { CalendarEditComponent } from './components/calendar-edit/calendar-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CalendarshiftsEditComponent } from './components/calendarshifts-edit/calendarshifts-edit.component';
-import { ShiftDropdownModule } from 'src/app/shared/shift-dropdown/shift-dropdown.module';
+import { ColourDropdownModule } from 'src/app/shared/colour-dropdown/colour-dropdown.module';
 import { CalendarYearModule } from 'src/app/shared/calendar/calendar-year.module';
 
 @NgModule({
@@ -19,7 +19,7 @@ import { CalendarYearModule } from 'src/app/shared/calendar/calendar-year.module
     CommonModule,
     CalendarRoutingModule,
     ReactiveFormsModule,
-    ShiftDropdownModule,
+    ColourDropdownModule,
     CalendarYearModule,
   ],
 })

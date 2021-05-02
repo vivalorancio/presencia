@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
-import { getTextColorFromName } from 'src/app/shared/color-picker/colors';
+import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
 import { Shift, ShiftCollection } from 'src/app/shared/models/shift.model';
 
 import * as shiftsActions from '../../actions';
@@ -27,7 +27,7 @@ export class ShiftListComponent implements OnInit {
       this.store.dispatch(shiftsActions.loadShifts({ page: '1' }));
   }
 
-  getTextColorFromName = getTextColorFromName;
+  getTextColourFromName = getTextColourFromName;
 
   deleteShift(id: number) {
     this.store.dispatch(shiftsActions.deleteShift({ id }));

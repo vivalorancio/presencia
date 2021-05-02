@@ -1,9 +1,5 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
-import {
-  CalendarShift,
-  CalendarShiftCollection,
-} from 'src/app/shared/models/calendar.model';
+import { CalendarShiftCollection } from 'src/app/shared/models/calendar.model';
 import * as calendarsActions from '../actions';
 
 export interface CalendarShiftsState {

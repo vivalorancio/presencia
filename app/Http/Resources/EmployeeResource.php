@@ -24,6 +24,8 @@ class EmployeeResource extends JsonResource
             'email' => $this->email,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
+            'incidences_group' => $this->incidences_group,
+            // 'incidences' => $this->incidences_group->incidences,
             'supervision_group_id' => $this->supervision_group_id,
             'default_shift' => $this->shift,
             'user' => $this->user,

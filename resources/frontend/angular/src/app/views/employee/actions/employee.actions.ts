@@ -1,6 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import {
   Employee,
+  EmployeeCalendar,
+  EmployeeCalendarCollection,
+  EmployeeCalendarResource,
   EmployeeCollection,
   EmployeeResource,
 } from 'src/app/shared/models/employee.model';
@@ -55,5 +58,44 @@ export const deleteEmployeeSuccess = createAction(
 );
 export const deleteEmployeeFailure = createAction(
   '[Employee Management] Delete Employee Failure',
+  props<{ error: any }>()
+);
+// ------------ Load EmployeeCalendars ----------
+export const loadEmployeeCalendars = createAction(
+  '[Employee Management] Load EmployeeCalendars',
+  props<{ employee_id: number; page: string }>()
+);
+export const loadEmployeeCalendarsSuccess = createAction(
+  '[Employee Management] Load EmployeeCalendars Success',
+  props<{ employeecalendars: EmployeeCalendarCollection }>()
+);
+export const loadEmployeeCalendarsFailure = createAction(
+  '[Employee Management] Load EmployeeCalendars Failure',
+  props<{ error: any }>()
+);
+// ------------ Add EmployeeCalendar ----------
+export const addEmployeeCalendar = createAction(
+  '[Employee Management] Add EmployeeCalendar',
+  props<{ employee_id: number; employeecalendar: EmployeeCalendar }>()
+);
+export const addEmployeeCalendarSuccess = createAction(
+  '[Employee Management] Add EmployeeCalendar Success',
+  props<{ employeecalendar: EmployeeCalendarResource }>()
+);
+export const addEmployeeCalendarFailure = createAction(
+  '[Employee Management] Add EmployeeCalendar Failure',
+  props<{ error: any }>()
+);
+// ------------ Delete Employee ----------
+export const deleteEmployeeCalendar = createAction(
+  '[Employee Management] Delete EmployeeCalendar',
+  props<{ employee_id: number; employeecalendar_id: number }>()
+);
+export const deleteEmployeeCalendarSuccess = createAction(
+  '[Employee Management] Delete EmployeeCalendar Success',
+  props<{ message: string }>()
+);
+export const deleteEmployeeCalendarFailure = createAction(
+  '[Employee Management] Delete EmployeeCalendar Failure',
   props<{ error: any }>()
 );

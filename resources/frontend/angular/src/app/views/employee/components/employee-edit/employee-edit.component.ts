@@ -16,7 +16,9 @@ import { User } from 'src/app/shared/models/user.model';
 
 import * as employeesActions from '../../actions';
 import * as shiftsActions from '../../../shift/actions';
+import * as incidencesActions from '../../../incidence/actions';
 import { ShiftCollection } from 'src/app/shared/models/shift.model';
+import { IncidencesGroupCollection } from 'src/app/shared/models/incidence.model';
 
 @Component({
   selector: 'app-employee-edit',
@@ -26,10 +28,15 @@ import { ShiftCollection } from 'src/app/shared/models/shift.model';
 export class EmployeeEditComponent implements OnInit {
   employeeForm!: FormGroup;
   employees!: EmployeeCollection;
-  shifts!: ShiftCollection;
-  employee: Employee = {} as Employee;
   pending: boolean = false;
+  employee: Employee = {} as Employee;
+
+  shifts!: ShiftCollection;
   pending_shifts: boolean = false;
+
+  incidences_groups!: IncidencesGroupCollection;
+  pending_incidences_groups: boolean = false;
+
   hidepassword: boolean = false;
 
   constructor(
@@ -49,6 +56,16 @@ export class EmployeeEditComponent implements OnInit {
     });
     if (this.shifts.meta === null)
       this.store.dispatch(shiftsActions.loadShifts({ page: '1' }));
+
+    this.store.select('incidencesgroups').subscribe((incidencesgroups) => {
+      this.incidences_groups = incidencesgroups.incidencesgroups;
+      this.pending_incidences_groups = incidencesgroups.pending;
+    });
+
+    if (this.incidences_groups.meta === null)
+      this.store.dispatch(
+        incidencesActions.loadIncidencesGroups({ page: '1' })
+      );
 
     this.route.params.subscribe((params) => {
       const id = +params.id;
@@ -108,6 +125,7 @@ export class EmployeeEditComponent implements OnInit {
         this.employee.end_date /* DD/MM/YY !!!!!!AFTER START DATE!!!!! */,
       ],
       shift_id: [this.employee.default_shift?.id],
+      incidences_group_id: [this.employee.incidences_group?.id],
       supervision_group_id: [this.employee.supervision_group_id],
       username: [this.employee.user?.username /*[Validators.***]*/],
       password: ['' /*[Validators.***]*/],
