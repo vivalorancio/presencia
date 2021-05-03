@@ -25,6 +25,7 @@
     "@ngrx/store": "^11.0.1",
     "@ngrx/store-devtools": "^11.0.1",
     "@tailwindcss/forms": "^0.3.2",
+    "ng-click-outside": "^8.0.0",
     "ngx-color": "^6.2.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { dayOfYear } from '../../calendar';
 import {
   CalendarSelectionClick,
   ClickModifier,
@@ -33,11 +34,16 @@ export class CalendarMonthComponent implements OnInit {
     this._year = year;
   }
 
+  today!: number;
+
   @Output() daySelected = new EventEmitter<CalendarSelectionClick>();
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.today = dayOfYear(new Date());
+    //console.log(this.today);
+  }
 
   selectDay(event: MouseEvent, day: Day) {
     let calendarSelectionclick: CalendarSelectionClick = {

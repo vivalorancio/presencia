@@ -1,19 +1,19 @@
 <div *ngIf="month">
   <div
-    class="bg-gray-200 text-center select-none w-60 px-4 py-3 text-sm font-medium text-red-600 uppercase tracking-wider"
+    class="px-4 py-3 text-sm font-medium tracking-wider text-center text-red-600 uppercase bg-gray-200 select-none w-60"
     (click)="selectMonth($event, month)"
   >
     {{ month.name() }}
   </div>
   <table
-    class="bg-gray-50 table-fixed text-center border-0 border-collapse p-0"
+    class="p-0 text-center border-0 border-collapse table-fixed bg-gray-50"
   >
     <thead class="bg-gray-100">
       <tr>
         <th class="w-4 p-0"></th>
         <th class="w-8 p-0">
           <div
-            class="py-2 select-none font-medium"
+            class="py-2 font-medium select-none"
             (click)="selectDayOfWeek($event, month, 0)"
           >
             Mo
@@ -21,7 +21,7 @@
         </th>
         <th class="w-8 p-0">
           <div
-            class="py-2 select-none font-medium"
+            class="py-2 font-medium select-none"
             (click)="selectDayOfWeek($event, month, 1)"
           >
             Tu
@@ -29,7 +29,7 @@
         </th>
         <th class="w-8 p-0">
           <div
-            class="py-2 select-none font-medium"
+            class="py-2 font-medium select-none"
             (click)="selectDayOfWeek($event, month, 2)"
           >
             We
@@ -37,7 +37,7 @@
         </th>
         <th class="w-8 p-0">
           <div
-            class="py-2 select-none font-medium"
+            class="py-2 font-medium select-none"
             (click)="selectDayOfWeek($event, month, 3)"
           >
             Th
@@ -45,7 +45,7 @@
         </th>
         <th class="w-8 p-0">
           <div
-            class="py-2 select-none font-medium"
+            class="py-2 font-medium select-none"
             (click)="selectDayOfWeek($event, month, 4)"
           >
             Fr
@@ -53,7 +53,7 @@
         </th>
         <th class="w-8 p-0">
           <div
-            class="py-2 select-none font-medium"
+            class="py-2 font-medium select-none"
             (click)="selectDayOfWeek($event, month, 5)"
           >
             Sa
@@ -61,7 +61,7 @@
         </th>
         <th class="w-8 p-0">
           <div
-            class="py-2 select-none font-medium"
+            class="py-2 font-medium select-none"
             (click)="selectDayOfWeek($event, month, 6)"
           >
             Su
@@ -73,7 +73,7 @@
       <tr *ngFor="let week of month.weeks">
         <td
           *ngIf="week.index >= 0"
-          class="text-xs select-none text-gray-400 p-0"
+          class="p-0 text-xs text-gray-400 select-none"
           (click)="selectWeek($event, week)"
         >
           <div class="w-4">{{ week.index }}</div>
@@ -82,9 +82,11 @@
           <div
             *ngIf="day >= 0"
             class=" group select-none w-8 py-1
+
+            {{ day === today ? 'ring-2 ring-red-600 ring-inset' : '' }}
             {{
               year.days[day].selected
-                ? 'bg-gray-500'
+                ? 'bg-primary-700'
                 : year.days[day].data?.colour
             }}
             {{
@@ -98,11 +100,11 @@
             <div>
               {{ year.days[day].day | date: "d" }}
             </div>
-            <div class="text-xs h-4">
+            <div class="h-4 text-xs">
               {{ year.days[day].data?.label }}
               <span
                 *ngIf="year.days[day].data?.tooltip"
-                class="invisible opacity-0 transition-all delay-300 ease-in duration-200 absolute -mt-2 p-1 w-auto rounded-md shadow-lg bg-gray-50 text-gray-800 group-hover:visible group-hover:z-50 group-hover:opacity-100"
+                class="absolute invisible w-auto p-1 -mt-2 text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0 bg-gray-50 group-hover:visible group-hover:z-20 group-hover:opacity-100"
               >
                 {{ year.days[day].data?.tooltip }}
               </span>

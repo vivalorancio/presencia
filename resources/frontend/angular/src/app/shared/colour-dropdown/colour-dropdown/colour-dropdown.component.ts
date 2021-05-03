@@ -42,6 +42,10 @@ export class ColourDropdownComponent implements OnInit {
     this.is_hidden = !this.is_hidden;
   }
 
+  closelist() {
+    this.is_hidden = true;
+  }
+
   isSelected(item: ColourDropdownItem): boolean {
     return this.selectedId === item.id;
   }

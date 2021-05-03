@@ -7,6 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { dayOfYear } from '../../calendar';
 import { CalendarYearData } from '../../models/calendar-data.model';
 import {
   CalendarSelectionClick,
@@ -300,37 +301,13 @@ export class CalendarYearComponent implements OnInit, DoCheck {
   }
 
   selectRange() {
-    let f = new Date(this.rangeForm.value.range_from);
-    let from = this.dayNo(
-      f.getFullYear(),
-      f.getMonth() + 1,
-      f.getDate()
-    ) as number;
+    let from = dayOfYear(new Date(this.rangeForm.value.range_from));
+    let to = dayOfYear(new Date(this.rangeForm.value.range_to));
 
-    let t = new Date(this.rangeForm.value.range_to);
-    let to = this.dayNo(
-      t.getFullYear(),
-      t.getMonth() + 1,
-      t.getDate()
-    ) as number;
     this.clear();
     for (let i = from; i <= to; i++) {
       this.addOne(i);
     }
     this.emitSelected();
-  }
-
-  dayNo(y: number, m: number, d: number) {
-    return (
-      --m >= 0 &&
-      m < 12 &&
-      d > 0 &&
-      d <
-        29 +
-          (((4 * (y = y & 3 || (!(y % 25) && y & 15) ? 0 : 1) + 15662003) >>
-            (m * 2)) &
-            3) &&
-      m * 31 - (m > 1 ? ((1054267675 >> (m * 3 - 6)) & 7) - y : 0) + d - 1
-    );
   }
 }

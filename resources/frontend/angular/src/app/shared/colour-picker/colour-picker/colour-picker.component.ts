@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { getContrastingColor } from 'ngx-color';
 import {
   colourCollection,
   ColourCollectionItem,
@@ -32,6 +31,10 @@ export class ColourPickerComponent implements OnInit {
 
   toggleColours() {
     this.hidden = !this.hidden;
+  }
+
+  closeColours() {
+    this.hidden = true;
   }
 
   isActive(colour: string) {

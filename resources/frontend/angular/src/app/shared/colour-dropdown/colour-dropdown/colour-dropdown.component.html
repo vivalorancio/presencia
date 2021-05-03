@@ -1,8 +1,9 @@
-<div class="mt-1 relative">
+<div class="relative mt-1">
   <button
     type="button"
-    class="relative w-96 bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+    class="relative py-2 pl-3 pr-10 text-left bg-white border border-gray-300 rounded-md shadow-sm cursor-default w-96 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
     (click)="togglelist()"
+    (clickOutside)="closelist()"
   >
     <span class="flex items-center">
       <span
@@ -19,11 +20,11 @@
       </span>
     </span>
     <span
-      class="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"
+      class="absolute inset-y-0 right-0 flex items-center pr-2 ml-3 pointer-events-none"
     >
       <!-- Heroicon name: solid/selector -->
       <svg
-        class="h-5 w-5 text-gray-400"
+        class="w-5 h-5 text-gray-400"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
@@ -48,12 +49,12 @@
       'opacity-0': is_hidden,
       'opacity-100': !is_hidden
     }"
-    class="z-10 absolute mt-1 w-96 bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm"
+    class="absolute z-10 py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg w-96 max-h-56 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
     tabindex="-1"
     role="listbox"
   >
     <li
-      class="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9"
+      class="relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9"
       id="listbox-option-0"
       role="option"
       (click)="!is_hidden && selectItem(none)"
@@ -75,10 +76,10 @@
       </div>
       <span
         *ngIf="isSelected(none)"
-        class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4"
+        class="absolute inset-y-0 right-0 flex items-center pr-4 text-primary-600"
       >
         <svg
-          class="h-5 w-5"
+          class="w-5 h-5"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
@@ -94,7 +95,7 @@
     </li>
 
     <li
-      class="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9"
+      class="relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9"
       id="listbox-option-0"
       role="option"
       *ngFor="let item of items"
@@ -117,10 +118,10 @@
       </div>
       <span
         *ngIf="isSelected(item)"
-        class="text-indigo-600 absolute inset-y-0 right-0 flex items-center pr-4"
+        class="absolute inset-y-0 right-0 flex items-center pr-4 text-primary-600"
       >
         <svg
-          class="h-5 w-5"
+          class="w-5 h-5"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"

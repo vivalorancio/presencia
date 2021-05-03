@@ -8,11 +8,13 @@
     text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100
     "
       (click)="toggleColours()"
+      (clickOutside)="closeColours()"
     ></button>
   </div>
 
   <div
     [class]="{
+      hidden: hidden,
       'opacity-100': !hidden,
       'scale-100': !hidden,
       'duration-100': !hidden,
@@ -26,7 +28,7 @@
       'left-0': position === 'left',
       'origin-top-left': position === 'left'
     }"
-    class="absolute mt-1 p-1 w-auto rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none tansform transition"
+    class="absolute w-auto p-1 mt-1 transition bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none tansform"
     (click)="!hidden ? toggleColours() : ''"
   >
     <div class="flex" *ngFor="let group of colours">
@@ -36,7 +38,7 @@
           [color]="colour"
           (onClick)="setColourItem($event)"
         >
-          <div class="m-1 h-3 w-3">
+          <div class="w-3 h-3 m-1">
             <svg
               *ngIf="isActive(colour)"
               xmlns="http://www.w3.org/2000/svg"

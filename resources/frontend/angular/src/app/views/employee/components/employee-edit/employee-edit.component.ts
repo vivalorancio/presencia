@@ -20,6 +20,24 @@ import * as incidencesActions from '../../../incidence/actions';
 import { ShiftCollection } from 'src/app/shared/models/shift.model';
 import { IncidencesGroupCollection } from 'src/app/shared/models/incidence.model';
 
+const rangeValidator: any = (fg: FormGroup) => {
+  let invalid = false;
+  const from = fg.get('start_date')?.value;
+  const to = fg.get('end_date')?.value;
+  // if (!from || !to) invalid = true;
+  if (from && to) {
+    invalid = new Date(from).valueOf() > new Date(to).valueOf();
+  }
+  if (invalid) {
+    fg.get('start_date')?.setErrors({ rangenotvalid: true });
+    fg.get('end_date')?.setErrors({ rangenotvalid: true });
+  } else {
+    fg.get('start_date')?.updateValueAndValidity({ onlySelf: true });
+    fg.get('end_date')?.updateValueAndValidity({ onlySelf: true });
+  }
+  return null;
+};
+
 @Component({
   selector: 'app-employee-edit',
   templateUrl: './employee-edit.component.html',
@@ -77,61 +95,64 @@ export class EmployeeEditComponent implements OnInit {
       }
     });
 
-    this.employeeForm = this.formBuilder.group({
-      first_name: [
-        this.employee.first_name,
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(50),
-          Validators.pattern(
-            /^[A-Za-z\u00C0-\u017F0-9-']+(?: +[A-Za-z\u00C0-\u017F0-9-']+)*$/
-          ),
+    this.employeeForm = this.formBuilder.group(
+      {
+        first_name: [
+          this.employee.first_name,
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(50),
+            Validators.pattern(
+              /^[A-Za-z\u00C0-\u017F0-9-']+(?: +[A-Za-z\u00C0-\u017F0-9-']+)*$/
+            ),
+          ],
         ],
-      ],
-      last_name: [
-        this.employee.last_name,
-        [
-          Validators.minLength(3),
-          Validators.maxLength(100),
-          Validators.pattern(
-            /^[A-Za-z\u00C0-\u017F0-9-']+(?: +[A-Za-z\u00C0-\u017F0-9-']+)*$/
-          ),
+        last_name: [
+          this.employee.last_name,
+          [
+            Validators.minLength(3),
+            Validators.maxLength(100),
+            Validators.pattern(
+              /^[A-Za-z\u00C0-\u017F0-9-']+(?: +[A-Za-z\u00C0-\u017F0-9-']+)*$/
+            ),
+          ],
         ],
-      ],
-      code: [
-        this.employee.code,
-        [
-          Validators.minLength(3),
-          Validators.maxLength(32),
-          Validators.pattern(
-            /^[A-Za-z\u00C0-\u017F0-9-']+(?: +[A-Za-z\u00C0-\u017F0-9-']+)*$/
-          ),
+        code: [
+          this.employee.code,
+          [
+            Validators.minLength(3),
+            Validators.maxLength(32),
+            Validators.pattern(
+              /^[A-Za-z\u00C0-\u017F0-9-']+(?: +[A-Za-z\u00C0-\u017F0-9-']+)*$/
+            ),
+          ],
         ],
-      ],
-      national_id: [
-        this.employee.national_id,
-        [
-          Validators.minLength(3),
-          Validators.maxLength(32),
-          Validators.pattern(
-            /^[A-Za-z\u00C0-\u017F0-9-']+(?: +[A-Za-z\u00C0-\u017F0-9-']+)*$/
-          ),
+        national_id: [
+          this.employee.national_id,
+          [
+            Validators.minLength(3),
+            Validators.maxLength(32),
+            Validators.pattern(
+              /^[A-Za-z\u00C0-\u017F0-9-']+(?: +[A-Za-z\u00C0-\u017F0-9-']+)*$/
+            ),
+          ],
         ],
-      ],
-      email: [this.employee.email, [Validators.email]],
-      start_date: [this.employee.start_date /* DD/MM/YY */],
-      end_date: [
-        this.employee.end_date /* DD/MM/YY !!!!!!AFTER START DATE!!!!! */,
-      ],
-      shift_id: [this.employee.default_shift?.id],
-      incidences_group_id: [this.employee.incidences_group?.id],
-      supervision_group_id: [this.employee.supervision_group_id],
-      username: [this.employee.user?.username /*[Validators.***]*/],
-      password: ['' /*[Validators.***]*/],
-      is_admin: [this.employee.user?.is_admin],
-      is_blocked: [this.employee.user?.is_blocked],
-    });
+        email: [this.employee.email, [Validators.email]],
+        start_date: [this.employee.start_date /* DD/MM/YY */],
+        end_date: [
+          this.employee.end_date /* DD/MM/YY !!!!!!AFTER START DATE!!!!! */,
+        ],
+        shift_id: [this.employee.default_shift?.id],
+        incidences_group_id: [this.employee.incidences_group?.id],
+        supervision_group_id: [this.employee.supervision_group_id],
+        username: [this.employee.user?.username /*[Validators.***]*/],
+        password: ['' /*[Validators.***]*/],
+        is_admin: [this.employee.user?.is_admin],
+        is_blocked: [this.employee.user?.is_blocked],
+      },
+      { validator: rangeValidator }
+    );
   }
 
   onSubmit() {
@@ -158,8 +179,12 @@ export class EmployeeEditComponent implements OnInit {
       return label + ' too long';
     } else if (fc.hasError('pattern')) {
       return 'Invalid characters';
+    } else if (fc.hasError('email')) {
+      return 'Invalid email address';
     } else if (fc.hasError('min')) {
       return label + ' has to be at least 1';
+    } else if (fc.hasError('rangenotvalid')) {
+      return 'Invalid date range';
     } else if (fc.hasError('submiterror')) {
       return fc.getError('submiterror');
     }
