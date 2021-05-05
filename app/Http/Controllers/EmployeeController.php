@@ -58,7 +58,8 @@ class EmployeeController extends Controller
                 'employee_id' => $employee->id
             ]);
             $user->username = $request->username;
-            $user->password = $request->password == null ?: Hash::make($request->password);
+            $user->password = Hash::make($request->password);
+            // $user->password = $request->password == null ?: Hash::make($request->password);
             //$user->employee_id=$employee->id;
             $user->is_admin = $request->is_admin ?: false;
             $user->is_blocked = $request->is_blocked ?: false;

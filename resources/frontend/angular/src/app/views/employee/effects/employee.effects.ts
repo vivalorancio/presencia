@@ -101,7 +101,7 @@ export class EmployeesEffects {
       mergeMap((action) =>
         this.employeeService.deleteEmployee(action.id).pipe(
           map((message) => employeesActions.deleteEmployeeSuccess({ message })),
-          //tap(() => this.router.navigate(['/management/employees'])),
+          tap(() => this.router.navigate(['/management/employees'])),
           catchError((error) =>
             of(employeesActions.deleteEmployeeFailure({ error }))
           )

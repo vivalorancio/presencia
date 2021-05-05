@@ -48,9 +48,11 @@ export class EmployeeEditComponent implements OnInit {
   employees!: EmployeeCollection;
   pending: boolean = false;
   employee: Employee = {} as Employee;
+  submiterror: any;
 
   shifts!: ShiftCollection;
   pending_shifts: boolean = false;
+  selectedShiftId: number = -1;
 
   incidences_groups!: IncidencesGroupCollection;
   pending_incidences_groups: boolean = false;
@@ -67,6 +69,7 @@ export class EmployeeEditComponent implements OnInit {
     this.store.select('employees').subscribe((employees) => {
       this.employees = employees.employees;
       this.pending = employees.pending;
+      this.submiterror = employees.error;
     });
     this.store.select('shifts').subscribe((shifts) => {
       this.shifts = shifts.shifts;
@@ -95,6 +98,8 @@ export class EmployeeEditComponent implements OnInit {
       }
     });
 
+    this.selectedShiftId = this.employee.default_shift?.id || -1;
+
     this.employeeForm = this.formBuilder.group(
       {
         first_name: [
@@ -111,6 +116,7 @@ export class EmployeeEditComponent implements OnInit {
         last_name: [
           this.employee.last_name,
           [
+            Validators.required,
             Validators.minLength(3),
             Validators.maxLength(100),
             Validators.pattern(
@@ -143,11 +149,16 @@ export class EmployeeEditComponent implements OnInit {
         end_date: [
           this.employee.end_date /* DD/MM/YY !!!!!!AFTER START DATE!!!!! */,
         ],
-        shift_id: [this.employee.default_shift?.id],
+        // shift_id: [this.employee.default_shift?.id],
         incidences_group_id: [this.employee.incidences_group?.id],
         supervision_group_id: [this.employee.supervision_group_id],
         username: [this.employee.user?.username /*[Validators.***]*/],
-        password: ['' /*[Validators.***]*/],
+        password: [
+          {
+            value: '',
+            disabled: this.employee.id !== undefined,
+          } /*[Validators.***]*/,
+        ],
         is_admin: [this.employee.user?.is_admin],
         is_blocked: [this.employee.user?.is_blocked],
       },
@@ -155,14 +166,35 @@ export class EmployeeEditComponent implements OnInit {
     );
   }
 
+  togglePassword() {
+    if (this.employeeForm.get('password')?.disabled)
+      this.employeeForm.get('password')?.enable();
+    else this.employeeForm.get('password')?.disable();
+  }
+
+  deleteEmployee() {
+    /// Confirmation DIALOG!!!!!
+
+    this.store.dispatch(
+      employeesActions.deleteEmployee({ id: this.employee.id })
+    );
+  }
+
   onSubmit() {
     /* A les accions es passa empleat+usuari */
+    console.log(this.selectedShiftId);
+    console.log(this.employeeForm.value);
+    let employeeToSave = {
+      ...this.employeeForm.value,
+      shift_id: this.selectedShiftId === -1 ? null : this.selectedShiftId,
+    };
+    console.log(employeeToSave);
     if (this.employee.id == null) {
       this.store.dispatch(
-        employeesActions.addEmployee({ employee: this.employeeForm.value })
+        employeesActions.addEmployee({ employee: employeeToSave })
       );
     } else {
-      let employeeToSave = { id: this.employee.id, ...this.employeeForm.value };
+      employeeToSave = { id: this.employee.id, ...employeeToSave };
       this.store.dispatch(
         employeesActions.updateEmployee({ employee: employeeToSave })
       );
@@ -188,5 +220,17 @@ export class EmployeeEditComponent implements OnInit {
     } else if (fc.hasError('submiterror')) {
       return fc.getError('submiterror');
     }
+  }
+
+  getSubmitErrors(): string | null {
+    let error: string | null = null;
+    if (this.submiterror != null) {
+      error = this.submiterror.error.message + ' ';
+    }
+    Object.entries(this.submiterror.error.errors).forEach((item: any) => {
+      item[1].forEach((err: string) => (error += err + ' '));
+    });
+    console.log(Object.entries(this.submiterror.error.errors));
+    return error;
   }
 }

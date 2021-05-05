@@ -6,6 +6,7 @@ import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { EmployeeEditComponent } from './components/employee-edit/employee-edit.component';
 import { EmployeecalendarListComponent } from './components/employeecalendar-list/employeecalendar-list.component';
+import { ColourDropdownModule } from 'src/app/shared/colour-dropdown/colour-dropdown.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,11 @@ import { EmployeecalendarListComponent } from './components/employeecalendar-lis
     EmployeeEditComponent,
     EmployeecalendarListComponent,
   ],
-  imports: [CommonModule, EmployeeRoutingModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    EmployeeRoutingModule,
+    ReactiveFormsModule,
+    ColourDropdownModule,
+  ],
 })
 export class EmployeeModule {}
