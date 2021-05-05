@@ -1,251 +1,208 @@
-<h3 class="text-3xl my-4 font-bold">Employees</h3>
+<app-spinner-overlay
+  [active]="pending"
+  [text]="'Loading ...'"
+></app-spinner-overlay>
 
-<div class="my-4">
-  <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="firstpage()"
-    [disabled]="pending || employees.meta?.current_page == 1"
-  >
-    &laquo;
-  </button>
-  <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="previouspage()"
-    [disabled]="pending || employees.meta?.current_page == 1"
-  >
-    &lt;
-  </button>
-  <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="nextpage()"
-    [disabled]="
-      pending || employees.meta?.current_page == employees.meta?.last_page
-    "
-  >
-    &gt;
-  </button>
-  <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="lastpage()"
-    [disabled]="
-      pending || employees.meta?.current_page == employees.meta?.last_page
-    "
-  >
-    &raquo;
-  </button>
-  &nbsp;
-  <button
-    class="disabled:opacity-50 group relative py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-    type="button"
-    [routerLink]="['employee']"
-    [disabled]="pending"
-  >
-    New Employee
-  </button>
-</div>
+<div class="mx-auto max-w-screen-2xl">
+  <div class="mx-6 my-6 border-t-4 shadow border-secondary-500 sm:rounded-md">
+    <div class="px-4 py-5 bg-white rounded-md sm:p-6">
+      <h3 class="pb-6 text-2xl font-semibold leading-6 text-gray-700">
+        Employees
+      </h3>
+      <div class="flex justify-between space-x-4">
+        <app-pagination
+          [active]="!pending"
+          [meta]="employees.meta"
+          (page)="loadpage($event)"
+        ></app-pagination>
 
-<table class="min-w-full divide-y divide-gray-200">
-  <thead class="bg-gray-50">
-    <tr>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        Name
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        Code
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        ID Card
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        email
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        Start Date
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        End Date
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        Default Shift (!Today)
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        Inc.Group
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        Sup.Gr. Id
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-      >
-        Username
-      </th>
-      <!-- <th>Admin</th>
-      <th>Blocked</th>-->
-      <th scope="col" class="relative px-6 py-3">
-        <span class="sr-only">Actions</span>
-      </th>
-    </tr>
-  </thead>
-  <tbody class="bg-white divide-y divide-gray-200">
-    <tr *ngFor="let employee of employees.data">
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ employee.first_name }} {{ employee.last_name }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ employee.code }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ employee.national_id }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ employee.email }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ employee.start_date | date: "dd/MM/yyyy" }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ employee.end_date | date: "dd/MM/yyyy" }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="group text-sm font-medium text-gray-900 w-max">
-          {{ employee.default_shift?.code }}
-          <span
-            class="invisible opacity-0 transition-all delay-300 ease-in duration-200 absolute mt-1 p-1 w-auto rounded-md shadow-lg bg-gray-50 text-gray-800 group-hover:visible group-hover:z-50 group-hover:opacity-100"
-            >{{ employee.default_shift?.description }}</span
-          >
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="group text-sm font-medium text-gray-900 w-max">
-          {{ employee.incidences_group?.code }}
-          <span
-            class="invisible opacity-0 transition-all delay-300 ease-in duration-200 absolute mt-1 p-1 w-auto rounded-md shadow-lg bg-gray-50 text-gray-800 group-hover:visible group-hover:z-50 group-hover:opacity-100"
-            >{{ employee.incidences_group?.description }}</span
-          >
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ employee.supervision_group_id }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ employee.user?.username }}
-        </div>
-      </td>
-      <!-- <td>{{ employee.user?.is_admin }}</td>
-      <td>{{ employee.user?.is_blocked }}</td> -->
-      <td class="space-x-2">
         <button
-          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+          type="button"
+          [routerLink]="['employee']"
+          [disabled]="pending"
+        >
+          New Employee
+        </button>
+      </div>
+
+      <table class="min-w-full my-2 border-b divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Name
+            </th>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Code
+            </th>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              ID Card
+            </th>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              email
+            </th>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Start Date
+            </th>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              End Date
+            </th>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Default Shift
+            </th>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Inc.Group
+            </th>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Sup.Gr. Id
+            </th>
+            <th
+              scope="col"
+              class="px-2 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Username
+            </th>
+            <!-- <th>Admin</th>
+      <th>Blocked</th>-->
+            <th scope="col" class="relative px-6 py-3">
+              <span class="sr-only">Actions</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let employee of employees.data" class="hover:bg-gray-100">
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ employee.first_name }} {{ employee.last_name }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ employee.code }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ employee.national_id }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ employee.email }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ employee.start_date | date: "dd/MM/yyyy" }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ employee.end_date | date: "dd/MM/yyyy" }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div
+                class="text-xs text-center font-medium group w-12 {{
+                  employee.default_shift?.colour
+                }} {{
+                  getTextColourFromName(
+                    employee.default_shift?.colour || 'bg-white'
+                  )
+                }} rounded-md py-1 px-2"
+              >
+                {{ employee.default_shift?.code }}
+                <span
+                  class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0 bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
+                  >{{ employee.default_shift?.description }}</span
+                >
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div
+                class="text-xs text-center font-medium group w-12 text-gray-900 rounded-md py-1 px-2
+              {{ employee.incidences_group?.code ? 'bg-gray-300' : '' }}"
+              >
+                {{ employee.incidences_group?.code }}
+                <span
+                  class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0 bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
+                  >{{ employee.incidences_group?.description }}</span
+                >
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ employee.supervision_group_id }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ employee.user?.username }}
+              </div>
+            </td>
+            <!-- <td>{{ employee.user?.is_admin }}</td>
+      <td>{{ employee.user?.is_blocked }}</td> -->
+            <td class="space-x-2">
+              <!-- <button
+          class="relative px-2 py-1 text-sm font-medium text-white bg-green-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           type="button"
           [routerLink]="['employee', employee.id, 'calendars']"
           [disabled]="pending"
         >
           Calendars
-        </button>
-        <button
-          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          type="button"
-          [routerLink]="['employee', employee.id]"
-          [disabled]="pending"
-        >
-          Edit
-        </button>
-        <button
-          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        </button> -->
+              <button
+                class="relative w-full px-2 py-1 text-sm font-medium text-white border border-transparent rounded-md shadow-sm disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                type="button"
+                [routerLink]="['employee', employee.id]"
+                [disabled]="pending"
+              >
+                Edit
+              </button>
+              <!-- <button
+          class="relative px-2 py-1 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           type="button"
           (click)="deleteEmployee(employee.id)"
           [disabled]="pending"
         >
           Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<div class="my-4">
-  <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="firstpage()"
-    [disabled]="pending || employees.meta?.current_page == 1"
-  >
-    &laquo;
-  </button>
-  <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="previouspage()"
-    [disabled]="pending || employees.meta?.current_page == 1"
-  >
-    &lt;
-  </button>
-  <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="nextpage()"
-    [disabled]="
-      pending || employees.meta?.current_page == employees.meta?.last_page
-    "
-  >
-    &gt;
-  </button>
-  <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="lastpage()"
-    [disabled]="
-      pending || employees.meta?.current_page == employees.meta?.last_page
-    "
-  >
-    &raquo;
-  </button>
+        </button> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <app-pagination
+        [active]="!pending"
+        [meta]="employees.meta"
+        (page)="loadpage($event)"
+      ></app-pagination>
+    </div>
+  </div>
 </div>
-
-<div class="pending" *ngIf="pending">SPINNER</div>

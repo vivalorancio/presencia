@@ -1,6 +1,6 @@
 export interface ColourDropdownItem {
   id: number;
-  colour: string;
+  colour: string | undefined;
   code: string;
   description: string;
 }

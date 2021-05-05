@@ -19,6 +19,7 @@ import * as shiftsActions from '../../../shift/actions';
 import * as incidencesActions from '../../../incidence/actions';
 import { ShiftCollection } from 'src/app/shared/models/shift.model';
 import { IncidencesGroupCollection } from 'src/app/shared/models/incidence.model';
+import { ColourDropdownItem } from 'src/app/shared/colour-dropdown/colour-dropdown';
 
 const rangeValidator: any = (fg: FormGroup) => {
   let invalid = false;
@@ -56,8 +57,11 @@ export class EmployeeEditComponent implements OnInit {
 
   incidences_groups!: IncidencesGroupCollection;
   pending_incidences_groups: boolean = false;
+  selectedIncidencesGroupId: number = -1;
 
+  submitted: boolean = false;
   hidepassword: boolean = false;
+  showDeleteConfirmation = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -99,6 +103,8 @@ export class EmployeeEditComponent implements OnInit {
     });
 
     this.selectedShiftId = this.employee.default_shift?.id || -1;
+    this.selectedIncidencesGroupId = this.employee.incidences_group?.id || -1;
+    this.submitted = false;
 
     this.employeeForm = this.formBuilder.group(
       {
@@ -150,7 +156,7 @@ export class EmployeeEditComponent implements OnInit {
           this.employee.end_date /* DD/MM/YY !!!!!!AFTER START DATE!!!!! */,
         ],
         // shift_id: [this.employee.default_shift?.id],
-        incidences_group_id: [this.employee.incidences_group?.id],
+        // incidences_group_id: [this.employee.incidences_group?.id],
         supervision_group_id: [this.employee.supervision_group_id],
         username: [this.employee.user?.username /*[Validators.***]*/],
         password: [
@@ -166,29 +172,42 @@ export class EmployeeEditComponent implements OnInit {
     );
   }
 
+  getColourItemsArray(items: any[]): ColourDropdownItem[] {
+    return items.map((item: any) => {
+      return { ...item, colour: 'bg-gray-300' };
+    });
+  }
+
   togglePassword() {
     if (this.employeeForm.get('password')?.disabled)
       this.employeeForm.get('password')?.enable();
     else this.employeeForm.get('password')?.disable();
   }
 
-  deleteEmployee() {
-    /// Confirmation DIALOG!!!!!
+  askDelete() {
+    this.showDeleteConfirmation = true;
+    return;
+  }
 
-    this.store.dispatch(
-      employeesActions.deleteEmployee({ id: this.employee.id })
-    );
+  actionDelete(proceed: boolean) {
+    this.showDeleteConfirmation = false;
+    if (proceed)
+      this.store.dispatch(
+        employeesActions.deleteEmployee({ id: this.employee.id })
+      );
   }
 
   onSubmit() {
     /* A les accions es passa empleat+usuari */
-    console.log(this.selectedShiftId);
-    console.log(this.employeeForm.value);
+    this.submitted = true;
     let employeeToSave = {
       ...this.employeeForm.value,
       shift_id: this.selectedShiftId === -1 ? null : this.selectedShiftId,
+      incidences_group_id:
+        this.selectedIncidencesGroupId === -1
+          ? null
+          : this.selectedIncidencesGroupId,
     };
-    console.log(employeeToSave);
     if (this.employee.id == null) {
       this.store.dispatch(
         employeesActions.addEmployee({ employee: employeeToSave })
@@ -222,15 +241,17 @@ export class EmployeeEditComponent implements OnInit {
     }
   }
 
-  getSubmitErrors(): string | null {
-    let error: string | null = null;
-    if (this.submiterror != null) {
-      error = this.submiterror.error.message + ' ';
+  getSubmitErrorDescription(): string {
+    let error: string = '';
+    if (this.submitted && this.submiterror?.error) {
+      Object.entries(this.submiterror.error.errors).forEach((item: any) => {
+        item[1].forEach((err: string) => (error += err + ' '));
+      });
     }
-    Object.entries(this.submiterror.error.errors).forEach((item: any) => {
-      item[1].forEach((err: string) => (error += err + ' '));
-    });
-    console.log(Object.entries(this.submiterror.error.errors));
     return error;
+  }
+
+  acceptError() {
+    this.submitted = false;
   }
 }

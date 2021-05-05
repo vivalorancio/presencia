@@ -1,8 +1,8 @@
-<h3 class="text-3xl my-4 font-bold">Shifts</h3>
+<h3 class="my-4 text-3xl font-bold">Shifts</h3>
 
 <div class="my-4">
   <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
     type="button"
     (click)="firstpage()"
     [disabled]="pending || shifts.meta?.current_page == 1"
@@ -10,7 +10,7 @@
     &laquo;
   </button>
   <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
     type="button"
     (click)="previouspage()"
     [disabled]="pending || shifts.meta?.current_page == 1"
@@ -18,7 +18,7 @@
     &lt;
   </button>
   <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
     type="button"
     (click)="nextpage()"
     [disabled]="pending || shifts.meta?.current_page == shifts.meta?.last_page"
@@ -26,7 +26,7 @@
     &gt;
   </button>
   <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
     type="button"
     (click)="lastpage()"
     [disabled]="pending || shifts.meta?.current_page == shifts.meta?.last_page"
@@ -35,7 +35,7 @@
   </button>
   &nbsp;
   <button
-    class="disabled:opacity-50 group relative py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+    class="relative px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
     type="button"
     [routerLink]="['shift']"
     [disabled]="pending"
@@ -49,43 +49,43 @@
     <tr>
       <th
         scope="col"
-        class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase"
       >
         Code
       </th>
       <th
         scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
       >
         Description
       </th>
       <th
         scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
       >
         Start Time
       </th>
       <th
         scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
       >
         End Time
       </th>
       <th
         scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
       >
         Expected Time
       </th>
       <th
         scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
       >
         Recess Time
       </th>
       <th
         scope="col"
-        class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
       >
         Holiday?
       </th>
@@ -99,7 +99,7 @@
     <tr *ngFor="let shift of shifts.data">
       <td class="px-4 py-2 whitespace-nowrap">
         <div
-          class="text-center text-xs font-medium {{ shift.colour }} {{
+          class="text-center text-xs font-medium w-12 {{ shift.colour }} {{
             getTextColourFromName(shift.colour)
           }} rounded-md py-1 px-2"
         >
@@ -139,7 +139,7 @@
       </td>
       <td class="space-x-2">
         <button
-          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          class="relative px-2 py-1 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           type="button"
           [routerLink]="['shift', shift.id]"
           [disabled]="pending"
@@ -147,7 +147,7 @@
           Edit
         </button>
         <button
-          class="disabled:opacity-50 group relative py-1 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+          class="relative px-2 py-1 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           type="button"
           (click)="deleteShift(shift.id)"
           [disabled]="pending"
@@ -161,7 +161,7 @@
 
 <div class="my-4">
   <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
     type="button"
     (click)="firstpage()"
     [disabled]="pending || shifts.meta?.current_page == 1"
@@ -169,7 +169,7 @@
     &laquo;
   </button>
   <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
     type="button"
     (click)="previouspage()"
     [disabled]="pending || shifts.meta?.current_page == 1"
@@ -177,7 +177,7 @@
     &lt;
   </button>
   <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
     type="button"
     (click)="nextpage()"
     [disabled]="pending || shifts.meta?.current_page == shifts.meta?.last_page"
@@ -185,7 +185,7 @@
     &gt;
   </button>
   <button
-    class="disabled:opacity-50 group relative py-2 px-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
     type="button"
     (click)="lastpage()"
     [disabled]="pending || shifts.meta?.current_page == shifts.meta?.last_page"

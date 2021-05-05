@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from 'src/app/shared/layout/main/main.component';
-import { EmployeeManagementComponent } from './components/employee-management/employee-management.component';
 import { AdminGuard } from '../authentication/guards/admin.guard';
 import { AuthenticationGuard } from '../authentication/guards/authentication.guard';
 import { EmployeeEditComponent } from './components/employee-edit/employee-edit.component';
 import { EmployeecalendarListComponent } from './components/employeecalendar-list/employeecalendar-list.component';
+import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
     children: [
       {
         path: 'employees',
-        component: EmployeeManagementComponent,
+        component: EmployeeListComponent,
       },
       {
         path: 'employees/employee',

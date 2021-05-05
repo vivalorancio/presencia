@@ -1,0 +1,21 @@
+<div
+  *ngIf="active"
+  class="fixed inset-0 z-50 flex items-center justify-center w-full h-screen overflow-hidden text-white bg-gray-700 opacity-75"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="w-8 h-8 animate-spin"
+    fill="none"
+    viewBox="0 0 12 12"
+    stroke="currentColor"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-width="2"
+      fill-rule="evenodd"
+      d="M 5.996 1 C 9.843 1 12.246 5.163 10.323 8.494 C 8.4 11.825 3.593 11.825 1.669 8.494 C 1.147 7.589 0.921 6.543 1.024 5.503"
+    ></path>
+  </svg>
+
+  <div class="px-4 py-2 text-lg font-light text-center">{{ text }}</div>
+</div>

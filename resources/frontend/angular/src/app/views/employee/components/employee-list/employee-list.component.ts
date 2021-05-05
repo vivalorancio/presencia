@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
-import { getTextColour } from 'src/app/shared/colour-picker/colours';
 import {
-  Employee,
-  EmployeeCollection,
-} from 'src/app/shared/models/employee.model';
+  getTextColour,
+  getTextColourFromName,
+} from 'src/app/shared/colour-picker/colours';
+import { EmployeeCollection } from 'src/app/shared/models/employee.model';
 
 import * as employeesActions from '../../actions';
 
@@ -30,34 +30,9 @@ export class EmployeeListComponent implements OnInit {
       this.store.dispatch(employeesActions.loadEmployees({ page: '1' }));
   }
 
-  getTextColour = getTextColour;
+  getTextColourFromName = getTextColourFromName;
 
-  deleteEmployee(id: number) {
-    /// Confirmation DIALOG!!!!!
-
-    this.store.dispatch(employeesActions.deleteEmployee({ id }));
-  }
-
-  firstpage() {
-    this.store.dispatch(employeesActions.loadEmployees({ page: '1' }));
-  }
-  previouspage() {
-    this.store.dispatch(
-      employeesActions.loadEmployees({
-        page: `${this.employees.meta?.current_page - 1}`,
-      })
-    );
-  }
-  nextpage() {
-    this.store.dispatch(
-      employeesActions.loadEmployees({
-        page: `${this.employees.meta?.current_page + 1}`,
-      })
-    );
-  }
-  lastpage() {
-    this.store.dispatch(
-      employeesActions.loadEmployees({ page: this.employees.meta?.last_page })
-    );
+  loadpage(page: string) {
+    this.store.dispatch(employeesActions.loadEmployees({ page }));
   }
 }

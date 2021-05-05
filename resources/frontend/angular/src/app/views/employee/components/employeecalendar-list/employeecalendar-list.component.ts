@@ -7,13 +7,16 @@ import {
   CalendarCollection,
 } from 'src/app/shared/models/calendar.model';
 import {
+  Employee,
   EmployeeCalendar,
   EmployeeCalendarCollection,
+  EmployeeCollection,
 } from 'src/app/shared/models/employee.model';
 
 import * as employeesActions from '../../actions';
 import * as calendarsActions from '../../../calendar/actions';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ColourDropdownItem } from 'src/app/shared/colour-dropdown/colour-dropdown';
 
 @Component({
   selector: 'app-employeecalendar-list',
@@ -23,14 +26,21 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class EmployeecalendarListComponent implements OnInit {
   employeecalendarForm!: FormGroup;
 
-  employee_id!: number;
-
   employeecalendars!: EmployeeCalendarCollection;
   pending: boolean = false;
+  submiterror: any;
 
   calendars!: CalendarCollection;
   pending_calendars: boolean = false;
   availablecalendars!: Calendar[];
+
+  employees!: EmployeeCollection;
+  pending_employees: boolean = false;
+  employee: Employee = {} as Employee;
+  employee_id!: number;
+
+  selectedCalendarId: number = -1;
+  submitted: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,6 +52,7 @@ export class EmployeecalendarListComponent implements OnInit {
     this.store.select('employeecalendars').subscribe((employeecalendars) => {
       this.employeecalendars = employeecalendars.employeecalendars;
       this.pending = employeecalendars.pending;
+      this.submiterror = employeecalendars.error;
     });
 
     this.store.select('calendars').subscribe((calendars) => {
@@ -49,11 +60,22 @@ export class EmployeecalendarListComponent implements OnInit {
       this.pending_calendars = calendars.pending;
     });
 
+    this.store.select('employees').subscribe((employees) => {
+      this.employees = employees.employees;
+      this.pending_employees = employees.pending;
+    });
+
     if (this.calendars.meta === null)
       this.store.dispatch(calendarsActions.loadCalendars({ page: '1' }));
 
     this.route.params.subscribe((params) => {
       this.employee_id = +params.employee_id;
+      const the_employee: any = (this.employees?.data.find(
+        (employee: any) => employee.id === this.employee_id
+      ) || {}) as Employee;
+      if (the_employee !== {}) {
+        this.employee = the_employee;
+      }
 
       this.store.dispatch(
         employeesActions.loadEmployeeCalendars({
@@ -62,6 +84,8 @@ export class EmployeecalendarListComponent implements OnInit {
         })
       );
     });
+
+    this.submitted = false;
 
     this.employeecalendarForm = this.formBuilder.group({
       calendar_id: [],
@@ -85,19 +109,32 @@ export class EmployeecalendarListComponent implements OnInit {
     });
   }
 
+  getColourItemsArray(items: Calendar[]): ColourDropdownItem[] {
+    return items.map((item: Calendar) => {
+      return {
+        id: item.id,
+        code: '' + item.year,
+        description: item.name,
+        colour: 'bg-gray-300',
+      };
+    });
+  }
+
   addCalendar() {
+    this.submitted = true;
+    console.log(this.selectedCalendarId);
+    console.log(this.employeecalendarForm.value);
     let employeecalendar: EmployeeCalendar = {
-      year: this.getCalendar(
-        this.employeecalendarForm.get('calendar_id')?.value
-      ).year,
-      ...this.employeecalendarForm.value,
-    };
+      year: this.getCalendar(this.selectedCalendarId).year,
+      calendar_id: this.selectedCalendarId,
+    } as EmployeeCalendar;
     this.store.dispatch(
       employeesActions.addEmployeeCalendar({
         employee_id: this.employee_id,
         employeecalendar,
       })
     );
+    this.selectedCalendarId = -1;
   }
 
   deleteCalendar(employeecalendar_id: number) {
@@ -107,6 +144,20 @@ export class EmployeecalendarListComponent implements OnInit {
         employeecalendar_id,
       })
     );
+  }
+
+  getSubmitErrorDescription(): string {
+    let error: string = '';
+    if (this.submitted && this.submiterror?.error) {
+      Object.entries(this.submiterror.error.errors).forEach((item: any) => {
+        item[1].forEach((err: string) => (error += err + ' '));
+      });
+    }
+    return error;
+  }
+
+  acceptError() {
+    this.submitted = false;
   }
 
   firstpage() {
@@ -138,6 +189,15 @@ export class EmployeecalendarListComponent implements OnInit {
       employeesActions.loadEmployeeCalendars({
         employee_id: this.employee_id,
         page: this.employeecalendars.meta?.last_page,
+      })
+    );
+  }
+
+  loadpage(page: string) {
+    this.store.dispatch(
+      employeesActions.loadEmployeeCalendars({
+        employee_id: this.employee_id,
+        page,
       })
     );
   }

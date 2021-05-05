@@ -61,16 +61,21 @@ export class IncidencesgroupEditComponent implements OnInit {
   }
 
   onSubmit() {
+    let incidencesgroupToSave = {
+      ...this.incidencesgroupForm.value,
+    };
+    incidencesgroupToSave.code = incidencesgroupToSave.code.toUpperCase();
+
     if (this.incidencesgroup.id == null) {
       this.store.dispatch(
         incidencesActions.addIncidencesGroup({
-          incidencesgroup: this.incidencesgroupForm.value,
+          incidencesgroup: incidencesgroupToSave,
         })
       );
     } else {
-      let incidencesgroupToSave = {
+      incidencesgroupToSave = {
         id: this.incidencesgroup.id,
-        ...this.incidencesgroupForm.value,
+        ...incidencesgroupToSave,
       };
       this.store.dispatch(
         incidencesActions.updateIncidencesGroup({
