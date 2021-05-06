@@ -24,6 +24,10 @@ export class CalendarEditComponent implements OnInit {
   calendars!: CalendarCollection;
   calendar: Calendar = {} as Calendar;
   pending: boolean = false;
+  submiterror: any;
+
+  submitted: boolean = false;
+  showDeleteConfirmation = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -35,6 +39,7 @@ export class CalendarEditComponent implements OnInit {
     this.store.select('calendars').subscribe((calendars) => {
       this.calendars = calendars.calendars;
       this.pending = calendars.pending;
+      this.submiterror = calendars.error;
     });
 
     this.route.params.subscribe((params) => {
@@ -46,6 +51,8 @@ export class CalendarEditComponent implements OnInit {
         this.calendar = the_calendar;
       }
     });
+
+    this.submitted = false;
 
     this.calendarForm = this.formBuilder.group({
       year: [
@@ -64,7 +71,21 @@ export class CalendarEditComponent implements OnInit {
     });
   }
 
+  askDelete() {
+    this.showDeleteConfirmation = true;
+    return;
+  }
+
+  actionDelete(proceed: boolean) {
+    this.showDeleteConfirmation = false;
+    if (proceed)
+      this.store.dispatch(
+        calendarsActions.deleteCalendar({ id: this.calendar.id })
+      );
+  }
+
   onSubmit() {
+    this.submitted = true;
     if (this.calendar.id == null) {
       this.store.dispatch(
         calendarsActions.addCalendar({ calendar: this.calendarForm.value })
@@ -93,5 +114,19 @@ export class CalendarEditComponent implements OnInit {
     } else if (fc.hasError('submiterror')) {
       return fc.getError('submiterror');
     }
+  }
+
+  getSubmitErrorDescription(): string {
+    let error: string = '';
+    if (this.submitted && this.submiterror?.error) {
+      Object.entries(this.submiterror.error.errors).forEach((item: any) => {
+        item[1].forEach((err: string) => (error += err + ' '));
+      });
+    }
+    return error;
+  }
+
+  acceptError() {
+    this.submitted = false;
   }
 }

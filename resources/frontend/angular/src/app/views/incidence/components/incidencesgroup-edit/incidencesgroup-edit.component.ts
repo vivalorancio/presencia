@@ -25,6 +25,10 @@ export class IncidencesgroupEditComponent implements OnInit {
   incidencesgroups!: IncidencesGroupCollection;
   incidencesgroup: IncidencesGroup = {} as IncidencesGroup;
   pending: boolean = false;
+  submiterror: any;
+
+  submitted: boolean = false;
+  showDeleteConfirmation = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,6 +40,7 @@ export class IncidencesgroupEditComponent implements OnInit {
     this.store.select('incidencesgroups').subscribe((incidencesgroups) => {
       this.incidencesgroups = incidencesgroups.incidencesgroups;
       this.pending = incidencesgroups.pending;
+      this.submiterror = incidencesgroups.error;
     });
 
     this.route.params.subscribe((params) => {
@@ -47,6 +52,8 @@ export class IncidencesgroupEditComponent implements OnInit {
         this.incidencesgroup = the_incidencesgroup;
       }
     });
+
+    this.submitted = false;
 
     this.incidencesgroupForm = this.formBuilder.group({
       code: [
@@ -60,7 +67,20 @@ export class IncidencesgroupEditComponent implements OnInit {
     });
   }
 
+  askDelete() {
+    this.showDeleteConfirmation = true;
+    return;
+  }
+
+  actionDelete(proceed: boolean) {
+    this.showDeleteConfirmation = false;
+    if (proceed)
+      this.store.dispatch(
+        incidencesActions.deleteIncidencesGroup({ id: this.incidencesgroup.id })
+      );
+  }
   onSubmit() {
+    this.submitted = true;
     let incidencesgroupToSave = {
       ...this.incidencesgroupForm.value,
     };
@@ -98,5 +118,19 @@ export class IncidencesgroupEditComponent implements OnInit {
     } else if (fc.hasError('submiterror')) {
       return fc.getError('submiterror');
     }
+  }
+
+  getSubmitErrorDescription(): string {
+    let error: string = '';
+    if (this.submitted && this.submiterror?.error) {
+      Object.entries(this.submiterror.error.errors).forEach((item: any) => {
+        item[1].forEach((err: string) => (error += err + ' '));
+      });
+    }
+    return error;
+  }
+
+  acceptError() {
+    this.submitted = false;
   }
 }

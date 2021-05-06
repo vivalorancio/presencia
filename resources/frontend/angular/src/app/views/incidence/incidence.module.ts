@@ -10,6 +10,9 @@ import { IncidencesgroupListComponent } from './components/incidencesgroup-list/
 import { IncidencesgroupEditComponent } from './components/incidencesgroup-edit/incidencesgroup-edit.component';
 import { IncidencesgroupincidenceListComponent } from './components/incidencesgroupincidence-list/incidencesgroupincidence-list.component';
 import { ColourDropdownModule } from 'src/app/shared/colour-dropdown/colour-dropdown.module';
+import { SpinnerOverlayModule } from 'src/app/shared/spinner-overlay/spinner-overlay.module';
+import { DialogsModule } from 'src/app/shared/dialogs/dialogs.module';
+import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,9 @@ import { ColourDropdownModule } from 'src/app/shared/colour-dropdown/colour-drop
     ReactiveFormsModule,
     ColourDropdownModule,
     ColourPickerModule,
+    SpinnerOverlayModule,
+    DialogsModule,
+    PaginationModule,
   ],
 })
 export class IncidenceModule {}

@@ -3,7 +3,7 @@
   [text]="'Loading ...'"
 ></app-spinner-overlay>
 
-<div class="max-w-screen-lg mx-auto">
+<div class="max-w-screen-md mx-auto">
   <div class="mx-6 my-6 border-t-4 shadow border-secondary-500 sm:rounded-md">
     <div class="px-4 py-5 bg-white rounded-t-md sm:p-6">
       <h2 class="pb-6 text-2xl font-semibold leading-6 text-gray-700">
@@ -36,24 +36,18 @@
         </div>
       </div>
 
-      <app-pagination
-        [active]="!pending"
-        [meta]="employeecalendars.meta"
-        (page)="loadpage($event)"
-      ></app-pagination>
-
-      <table class="min-w-full divide-y divide-gray-200">
+      <table class="min-w-full my-2 border-b divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>
             <th
               scope="col"
-              class="px-4 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase"
+              class="w-12 px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
             >
               Year
             </th>
             <th
               scope="col"
-              class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
             >
               Name
             </th>
@@ -63,22 +57,27 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let employeecalendar of employeecalendars.data">
-            <td class="px-4 py-2 whitespace-nowrap">
-              <div class="text-sm font-medium text-center text-gray-900">
+          <tr
+            *ngFor="let employeecalendar of employeecalendars.data"
+            class="hover:bg-gray-100"
+          >
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div
+                class="w-12 px-2 py-1 text-xs font-medium text-center text-gray-900 bg-gray-300 rounded-md group"
+              >
                 {{ getCalendar(employeecalendar.calendar_id).year }}
               </div>
             </td>
-            <td class="px-4 py-2 whitespace-nowrap">
+            <td class="px-3 py-2 whitespace-nowrap">
               <div class="text-sm font-medium text-gray-900">
                 {{ getCalendar(employeecalendar.calendar_id).name }}
               </div>
             </td>
-            <td class="space-x-2">
+            <td>
               <button
-                class="relative px-2 py-1 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                class="relative w-full px-2 py-1 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-secondary-500 hover:bg-secondary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500"
                 type="button"
-                (click)="deleteCalendar(employeecalendar.id)"
+                (click)="removeCalendar(employeecalendar.id)"
                 [disabled]="pending"
               >
                 Remove
@@ -87,6 +86,13 @@
           </tr>
         </tbody>
       </table>
+
+      <app-pagination
+        *ngIf="employeecalendars.meta"
+        [active]="!pending"
+        [meta]="employeecalendars.meta"
+        (page)="loadpage($event)"
+      ></app-pagination>
     </div>
     <div
       class="items-center justify-between px-4 py-3 sm:flex sm:flex-row-reverse rounded-b-md bg-gray-50 sm:px-6"

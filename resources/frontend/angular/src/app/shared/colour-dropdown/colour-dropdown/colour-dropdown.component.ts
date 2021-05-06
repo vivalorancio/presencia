@@ -18,6 +18,7 @@ export class ColourDropdownComponent implements OnInit {
   };
 
   @Input() items: ColourDropdownItem[] = [];
+  @Input() direction = 'down';
 
   @Input() selectedId: number = -1;
   @Output() selectedIdChange = new EventEmitter<number>();

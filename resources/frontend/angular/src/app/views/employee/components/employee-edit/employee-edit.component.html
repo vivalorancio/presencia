@@ -1,3 +1,8 @@
+<app-spinner-overlay
+  [active]="pending"
+  [text]="'Loading ...'"
+></app-spinner-overlay>
+
 <div class="max-w-screen-lg mx-auto">
   <div class="mx-6 my-6 border-t-4 shadow border-secondary-500 sm:rounded-md">
     <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
@@ -565,11 +570,6 @@
     </form>
   </div>
 </div>
-
-<app-spinner-overlay
-  [active]="pending"
-  [text]="'Loading ...'"
-></app-spinner-overlay>
 
 <app-confirmation-dialog
   [show]="showDeleteConfirmation"

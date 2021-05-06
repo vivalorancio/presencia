@@ -16,6 +16,43 @@ import { Shift, ShiftCollection } from 'src/app/shared/models/shift.model';
 
 import * as shiftsActions from '../../../shift/actions';
 
+const timeValidator: any = (fg: FormGroup) => {
+  let invalid = false;
+  const start = fg.get('start_time')?.value;
+  const end = fg.get('end_time')?.value;
+  const expected = fg.get('expected_time')?.value;
+  const recess = fg.get('recess_time')?.value;
+
+  if (!start || !end) {
+    if (!start) {
+      fg.get('start_time')?.setErrors({ timenotvalid: true });
+    }
+    if (!end) {
+      fg.get('end_time')?.setErrors({ timenotvalid: true });
+    }
+  } else if (start === end) {
+    fg.get('start_time')?.setErrors({ timenotvalid: true });
+    fg.get('end_time')?.setErrors({ timenotvalid: true });
+  } else {
+    fg.get('start_time')?.updateValueAndValidity({ onlySelf: true });
+    fg.get('end_time')?.updateValueAndValidity({ onlySelf: true });
+  }
+
+  if (!expected || expected === '00:00') {
+    fg.get('expected_time')?.setErrors({ timenotvalid: true });
+  } else {
+    fg.get('expected_time')?.updateValueAndValidity({ onlySelf: true });
+  }
+
+  if (recess === '00:00') {
+    fg.get('recess_time')?.setErrors({ timenotvalid: true });
+  } else {
+    fg.get('recess_time')?.updateValueAndValidity({ onlySelf: true });
+  }
+
+  return null;
+};
+
 @Component({
   selector: 'app-shift-edit',
   templateUrl: './shift-edit.component.html',
@@ -26,8 +63,12 @@ export class ShiftEditComponent implements OnInit {
   shifts!: ShiftCollection;
   shift: Shift = {} as Shift;
   pending: boolean = false;
+  submiterror: any;
 
   colourItem: ColourCollectionItem = { name: 'bg-gray-50', colour: '#F9FAFB' };
+
+  submitted: boolean = false;
+  showDeleteConfirmation = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,6 +80,7 @@ export class ShiftEditComponent implements OnInit {
     this.store.select('shifts').subscribe((shifts) => {
       this.shifts = shifts.shifts;
       this.pending = shifts.pending;
+      this.submiterror = shifts.error;
     });
     this.colourItem = { name: 'bg-gray-50', colour: '#F9FAFB' };
     this.route.params.subscribe((params) => {
@@ -54,25 +96,45 @@ export class ShiftEditComponent implements OnInit {
         this.colourItem.colour = getFromName(this.colourItem.name).colour;
       }
     });
+    this.submitted = false;
 
-    this.shiftForm = this.formBuilder.group({
-      code: [
-        this.shift.code,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(3)],
-      ],
-      description: [
-        this.shift.description,
-        [Validators.required, Validators.maxLength(50)],
-      ],
-      start_time: [this.shift.start_time],
-      end_time: [this.shift.end_time],
-      expected_time: [this.shift.expected_time],
-      recess_time: [this.shift.recess_time],
-      is_holiday: [this.shift.is_holiday ? this.shift.is_holiday : false],
-    });
+    this.shiftForm = this.formBuilder.group(
+      {
+        code: [
+          this.shift.code,
+          [
+            Validators.required,
+            Validators.minLength(1),
+            Validators.maxLength(3),
+          ],
+        ],
+        description: [
+          this.shift.description,
+          [Validators.required, Validators.maxLength(50)],
+        ],
+        start_time: [this.shift.start_time || '00:00'],
+        end_time: [this.shift.end_time || '00:00'],
+        expected_time: [this.shift.expected_time || '00:00'],
+        recess_time: [this.shift.recess_time],
+        is_holiday: [this.shift.is_holiday ? this.shift.is_holiday : false],
+      },
+      { validator: timeValidator }
+    );
+  }
+
+  askDelete() {
+    this.showDeleteConfirmation = true;
+    return;
+  }
+
+  actionDelete(proceed: boolean) {
+    this.showDeleteConfirmation = false;
+    if (proceed)
+      this.store.dispatch(shiftsActions.deleteShift({ id: this.shift.id }));
   }
 
   onSubmit() {
+    this.submitted = true;
     let shiftToSave = {
       ...this.shiftForm.value,
       colour: this.colourItem.name,
@@ -103,8 +165,24 @@ export class ShiftEditComponent implements OnInit {
       return 'Invalid characters';
     } else if (fc.hasError('min')) {
       return label + ' has to be at least 1';
+    } else if (fc.hasError('timenotvalid')) {
+      return 'Invalid time';
     } else if (fc.hasError('submiterror')) {
       return fc.getError('submiterror');
     }
+  }
+
+  getSubmitErrorDescription(): string {
+    let error: string = '';
+    if (this.submitted && this.submiterror?.error) {
+      Object.entries(this.submiterror.error.errors).forEach((item: any) => {
+        item[1].forEach((err: string) => (error += err + ' '));
+      });
+    }
+    return error;
+  }
+
+  acceptError() {
+    this.submitted = false;
   }
 }

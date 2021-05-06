@@ -41,8 +41,10 @@ export class CalendarMonthComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.today = dayOfYear(new Date());
-    //console.log(this.today);
+    let todaydate = new Date();
+    if (todaydate.getFullYear() === this.year.year) {
+      this.today = dayOfYear(todaydate);
+    }
   }
 
   selectDay(event: MouseEvent, day: Day) {

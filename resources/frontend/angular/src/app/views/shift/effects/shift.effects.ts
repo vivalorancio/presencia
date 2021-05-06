@@ -97,7 +97,7 @@ export class ShiftsEffects {
       mergeMap((action) =>
         this.shiftService.deleteShift(action.id).pipe(
           map((message) => shiftsActions.deleteShiftSuccess({ message })),
-          //tap(() => this.router.navigate(['/management/shifts'])),
+          tap(() => this.router.navigate(['/management/shifts'])),
           catchError((error) => of(shiftsActions.updateShiftFailure({ error })))
         )
       )

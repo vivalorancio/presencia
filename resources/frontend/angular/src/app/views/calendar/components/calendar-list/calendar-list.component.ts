@@ -26,30 +26,7 @@ export class CalendarListComponent implements OnInit {
       this.store.dispatch(calendarsActions.loadCalendars({ page: '1' }));
   }
 
-  deleteCalendar(id: number) {
-    this.store.dispatch(calendarsActions.deleteCalendar({ id }));
-  }
-
-  firstpage() {
-    this.store.dispatch(calendarsActions.loadCalendars({ page: '1' }));
-  }
-  previouspage() {
-    this.store.dispatch(
-      calendarsActions.loadCalendars({
-        page: `${this.calendars.meta?.current_page - 1}`,
-      })
-    );
-  }
-  nextpage() {
-    this.store.dispatch(
-      calendarsActions.loadCalendars({
-        page: `${this.calendars.meta?.current_page + 1}`,
-      })
-    );
-  }
-  lastpage() {
-    this.store.dispatch(
-      calendarsActions.loadCalendars({ page: this.calendars.meta?.last_page })
-    );
+  loadpage(page: string) {
+    this.store.dispatch(calendarsActions.loadCalendars({ page }));
   }
 }

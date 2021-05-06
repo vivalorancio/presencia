@@ -122,12 +122,12 @@ export class EmployeecalendarListComponent implements OnInit {
 
   addCalendar() {
     this.submitted = true;
-    console.log(this.selectedCalendarId);
-    console.log(this.employeecalendarForm.value);
+
     let employeecalendar: EmployeeCalendar = {
       year: this.getCalendar(this.selectedCalendarId).year,
       calendar_id: this.selectedCalendarId,
     } as EmployeeCalendar;
+
     this.store.dispatch(
       employeesActions.addEmployeeCalendar({
         employee_id: this.employee_id,
@@ -137,7 +137,7 @@ export class EmployeecalendarListComponent implements OnInit {
     this.selectedCalendarId = -1;
   }
 
-  deleteCalendar(employeecalendar_id: number) {
+  removeCalendar(employeecalendar_id: number) {
     this.store.dispatch(
       employeesActions.deleteEmployeeCalendar({
         employee_id: this.employee_id,
@@ -158,39 +158,6 @@ export class EmployeecalendarListComponent implements OnInit {
 
   acceptError() {
     this.submitted = false;
-  }
-
-  firstpage() {
-    this.store.dispatch(
-      employeesActions.loadEmployeeCalendars({
-        employee_id: this.employee_id,
-        page: '1',
-      })
-    );
-  }
-  previouspage() {
-    this.store.dispatch(
-      employeesActions.loadEmployeeCalendars({
-        employee_id: this.employee_id,
-        page: `${this.employeecalendars.meta?.current_page - 1}`,
-      })
-    );
-  }
-  nextpage() {
-    this.store.dispatch(
-      employeesActions.loadEmployeeCalendars({
-        employee_id: this.employee_id,
-        page: `${this.employeecalendars.meta?.current_page + 1}`,
-      })
-    );
-  }
-  lastpage() {
-    this.store.dispatch(
-      employeesActions.loadEmployeeCalendars({
-        employee_id: this.employee_id,
-        page: this.employeecalendars.meta?.last_page,
-      })
-    );
   }
 
   loadpage(page: string) {

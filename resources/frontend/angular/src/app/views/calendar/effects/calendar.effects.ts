@@ -107,7 +107,7 @@ export class CalendarsEffects {
       mergeMap((action) =>
         this.calendarService.deleteCalendar(action.id).pipe(
           map((message) => calendarsActions.deleteCalendarSuccess({ message })),
-          //tap(() => this.router.navigate(['/management/calendars'])),
+          tap(() => this.router.navigate(['/management/calendars'])),
           catchError((error) =>
             of(calendarsActions.updateCalendarFailure({ error }))
           )

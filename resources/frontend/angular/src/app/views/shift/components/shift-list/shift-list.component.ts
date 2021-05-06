@@ -29,30 +29,7 @@ export class ShiftListComponent implements OnInit {
 
   getTextColourFromName = getTextColourFromName;
 
-  deleteShift(id: number) {
-    this.store.dispatch(shiftsActions.deleteShift({ id }));
-  }
-
-  firstpage() {
-    this.store.dispatch(shiftsActions.loadShifts({ page: '1' }));
-  }
-  previouspage() {
-    this.store.dispatch(
-      shiftsActions.loadShifts({
-        page: `${this.shifts.meta?.current_page - 1}`,
-      })
-    );
-  }
-  nextpage() {
-    this.store.dispatch(
-      shiftsActions.loadShifts({
-        page: `${this.shifts.meta?.current_page + 1}`,
-      })
-    );
-  }
-  lastpage() {
-    this.store.dispatch(
-      shiftsActions.loadShifts({ page: this.shifts.meta?.last_page })
-    );
+  loadpage(page: string) {
+    this.store.dispatch(shiftsActions.loadShifts({ page }));
   }
 }

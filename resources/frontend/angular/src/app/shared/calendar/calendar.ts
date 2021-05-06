@@ -15,3 +15,23 @@ export function dayNo(y: number, m: number, d: number) {
     m * 31 - (m > 1 ? ((1054267675 >> (m * 3 - 6)) & 7) - y : 0) + d - 1
   );
 }
+
+export function dateAAAAMMDD(d: Date) {
+  return (
+    d.getFullYear() +
+    '-' +
+    `00${d.getMonth() + 1}`.slice(-2) +
+    '-' +
+    `00${d.getDate()}`.slice(-2)
+  );
+}
+
+export function timeHHMMSS(d: Date) {
+  return (
+    `00${d.getHours()}`.slice(-2) +
+    ':' +
+    `00${d.getMinutes()}`.slice(-2) +
+    ':' +
+    `00${d.getSeconds()}`.slice(-2)
+  );
+}

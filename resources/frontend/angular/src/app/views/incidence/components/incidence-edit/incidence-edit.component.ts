@@ -29,8 +29,12 @@ export class IncidenceEditComponent implements OnInit {
   incidences!: IncidenceCollection;
   incidence: Incidence = {} as Incidence;
   pending: boolean = false;
+  submiterror: any;
 
   colourItem: ColourCollectionItem = { name: 'bg-gray-50', colour: '#F9FAFB' };
+
+  submitted: boolean = false;
+  showDeleteConfirmation = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,6 +46,7 @@ export class IncidenceEditComponent implements OnInit {
     this.store.select('incidences').subscribe((incidences) => {
       this.incidences = incidences.incidences;
       this.pending = incidences.pending;
+      this.submiterror = incidences.error;
     });
     this.colourItem = { name: 'bg-gray-50', colour: '#F9FAFB' };
     this.route.params.subscribe((params) => {
@@ -57,6 +62,7 @@ export class IncidenceEditComponent implements OnInit {
         this.colourItem.colour = getFromName(this.colourItem.name).colour;
       }
     });
+    this.submitted = false;
 
     this.incidenceForm = this.formBuilder.group({
       code: [
@@ -76,7 +82,21 @@ export class IncidenceEditComponent implements OnInit {
     });
   }
 
+  askDelete() {
+    this.showDeleteConfirmation = true;
+    return;
+  }
+
+  actionDelete(proceed: boolean) {
+    this.showDeleteConfirmation = false;
+    if (proceed)
+      this.store.dispatch(
+        incidencesActions.deleteIncidence({ id: this.incidence.id })
+      );
+  }
+
   onSubmit() {
+    this.submitted = true;
     let incidenceToSave = {
       ...this.incidenceForm.value,
       colour: this.colourItem.name,
@@ -113,5 +133,19 @@ export class IncidenceEditComponent implements OnInit {
     } else if (fc.hasError('submiterror')) {
       return fc.getError('submiterror');
     }
+  }
+
+  getSubmitErrorDescription(): string {
+    let error: string = '';
+    if (this.submitted && this.submiterror?.error) {
+      Object.entries(this.submiterror.error.errors).forEach((item: any) => {
+        item[1].forEach((err: string) => (error += err + ' '));
+      });
+    }
+    return error;
+  }
+
+  acceptError() {
+    this.submitted = false;
   }
 }

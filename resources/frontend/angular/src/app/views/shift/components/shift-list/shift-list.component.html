@@ -1,197 +1,174 @@
-<h3 class="my-4 text-3xl font-bold">Shifts</h3>
+<app-spinner-overlay
+  [active]="pending"
+  [text]="'Loading ...'"
+></app-spinner-overlay>
 
-<div class="my-4">
-  <button
-    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="firstpage()"
-    [disabled]="pending || shifts.meta?.current_page == 1"
-  >
-    &laquo;
-  </button>
-  <button
-    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="previouspage()"
-    [disabled]="pending || shifts.meta?.current_page == 1"
-  >
-    &lt;
-  </button>
-  <button
-    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="nextpage()"
-    [disabled]="pending || shifts.meta?.current_page == shifts.meta?.last_page"
-  >
-    &gt;
-  </button>
-  <button
-    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="lastpage()"
-    [disabled]="pending || shifts.meta?.current_page == shifts.meta?.last_page"
-  >
-    &raquo;
-  </button>
-  &nbsp;
-  <button
-    class="relative px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-    type="button"
-    [routerLink]="['shift']"
-    [disabled]="pending"
-  >
-    New Shift
-  </button>
-</div>
-
-<table class="min-w-full divide-y divide-gray-200">
-  <thead class="bg-gray-50">
-    <tr>
-      <th
-        scope="col"
-        class="px-4 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase"
-      >
-        Code
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-      >
-        Description
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-      >
-        Start Time
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-      >
-        End Time
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-      >
-        Expected Time
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-      >
-        Recess Time
-      </th>
-      <th
-        scope="col"
-        class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
-      >
-        Holiday?
-      </th>
-
-      <th scope="col" class="relative px-6 py-3">
-        <span class="sr-only">Actions</span>
-      </th>
-    </tr>
-  </thead>
-  <tbody class="bg-white divide-y divide-gray-200">
-    <tr *ngFor="let shift of shifts.data">
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div
-          class="text-center text-xs font-medium w-12 {{ shift.colour }} {{
-            getTextColourFromName(shift.colour)
-          }} rounded-md py-1 px-2"
-        >
-          {{ shift.code }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ shift.description }}
-        </div>
-      </td>
-
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ shift.start_time }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ shift.end_time }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ shift.expected_time }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ shift.recess_time }}
-        </div>
-      </td>
-      <td class="px-4 py-2 whitespace-nowrap">
-        <div class="text-sm font-medium text-gray-900">
-          {{ shift.is_holiday }}
-        </div>
-      </td>
-      <td class="space-x-2">
+<div class="max-w-screen-xl mx-auto">
+  <div class="mx-6 my-6 border-t-4 shadow border-secondary-500 sm:rounded-md">
+    <div class="px-4 py-5 bg-white rounded-md sm:p-6">
+      <h3 class="pb-6 text-2xl font-semibold leading-6 text-gray-700">
+        Shifts
+      </h3>
+      <div class="justify-between sm:flex sm:flex-row-reverse">
         <button
-          class="relative px-2 py-1 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
           type="button"
-          [routerLink]="['shift', shift.id]"
+          [routerLink]="['shift']"
           [disabled]="pending"
         >
-          Edit
+          New Shift
         </button>
-        <button
-          class="relative px-2 py-1 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-          type="button"
-          (click)="deleteShift(shift.id)"
-          [disabled]="pending"
-        >
-          Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        <app-pagination
+          *ngIf="shifts.meta"
+          [active]="!pending"
+          [meta]="shifts.meta"
+          (page)="loadpage($event)"
+        ></app-pagination>
+      </div>
 
-<div class="my-4">
-  <button
-    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="firstpage()"
-    [disabled]="pending || shifts.meta?.current_page == 1"
-  >
-    &laquo;
-  </button>
-  <button
-    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="previouspage()"
-    [disabled]="pending || shifts.meta?.current_page == 1"
-  >
-    &lt;
-  </button>
-  <button
-    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="nextpage()"
-    [disabled]="pending || shifts.meta?.current_page == shifts.meta?.last_page"
-  >
-    &gt;
-  </button>
-  <button
-    class="relative px-2 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-    type="button"
-    (click)="lastpage()"
-    [disabled]="pending || shifts.meta?.current_page == shifts.meta?.last_page"
-  >
-    &raquo;
-  </button>
+      <table class="min-w-full my-2 border-b divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Code
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Description
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Start Time
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              End Time
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Expected Time
+            </th>
+            <th
+              scope="col"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Recess Time
+            </th>
+            <th
+              scope="col"
+              class="w-5 px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+            >
+              Holiday
+            </th>
+
+            <th scope="col" class="relative px-6 py-3">
+              <span class="sr-only">Actions</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let shift of shifts.data" class="hover:bg-gray-100">
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div
+                class="text-center text-xs font-medium w-12 {{
+                  shift.colour
+                }} {{
+                  getTextColourFromName(shift.colour)
+                }} rounded-md py-1 px-2"
+              >
+                {{ shift.code }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-normal lg:whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ shift.description }}
+              </div>
+            </td>
+
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ shift.start_time }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ shift.end_time }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ shift.expected_time }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ shift.recess_time }}
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="w-5 mx-auto text-sm font-medium">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-5 h-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    *ngIf="shift.is_holiday"
+                    class="text-green-500"
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                  <path
+                    *ngIf="!shift.is_holiday"
+                    class="text-red-500"
+                    fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+            </td>
+            <td>
+              <button
+                class="relative w-full px-2 py-1 text-sm font-medium bg-white border border-gray-300 rounded-md shadow-sm text-primary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                type="button"
+                [routerLink]="['shift', shift.id]"
+                [disabled]="pending"
+              >
+                Open
+              </button>
+              <!-- <button
+                class="relative px-2 py-1 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md disabled:opacity-50 group hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                type="button"
+                (click)="deleteShift(shift.id)"
+                [disabled]="pending"
+              >
+                Delete
+              </button> -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <app-pagination
+        *ngIf="shifts.meta"
+        [active]="!pending"
+        [meta]="shifts.meta"
+        (page)="loadpage($event)"
+      ></app-pagination>
+    </div>
+  </div>
 </div>
-
-<div class="pending" *ngIf="pending">SPINNER</div>

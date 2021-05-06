@@ -28,32 +28,7 @@ export class IncidencesgroupListComponent implements OnInit {
       );
   }
 
-  deleteIncidencesGroup(id: number) {
-    this.store.dispatch(incidencesActions.deleteIncidencesGroup({ id }));
-  }
-
-  firstpage() {
-    this.store.dispatch(incidencesActions.loadIncidencesGroups({ page: '1' }));
-  }
-  previouspage() {
-    this.store.dispatch(
-      incidencesActions.loadIncidencesGroups({
-        page: `${this.incidencesgroups.meta?.current_page - 1}`,
-      })
-    );
-  }
-  nextpage() {
-    this.store.dispatch(
-      incidencesActions.loadIncidencesGroups({
-        page: `${this.incidencesgroups.meta?.current_page + 1}`,
-      })
-    );
-  }
-  lastpage() {
-    this.store.dispatch(
-      incidencesActions.loadIncidencesGroups({
-        page: this.incidencesgroups.meta?.last_page,
-      })
-    );
+  loadpage(page: string) {
+    this.store.dispatch(incidencesActions.loadIncidencesGroups({ page }));
   }
 }

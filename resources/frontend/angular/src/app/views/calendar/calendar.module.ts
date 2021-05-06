@@ -8,6 +8,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CalendarshiftsEditComponent } from './components/calendarshifts-edit/calendarshifts-edit.component';
 import { ColourDropdownModule } from 'src/app/shared/colour-dropdown/colour-dropdown.module';
 import { CalendarYearModule } from 'src/app/shared/calendar/calendar-year.module';
+import { SpinnerOverlayModule } from 'src/app/shared/spinner-overlay/spinner-overlay.module';
+import { DialogsModule } from 'src/app/shared/dialogs/dialogs.module';
+import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,9 @@ import { CalendarYearModule } from 'src/app/shared/calendar/calendar-year.module
     ReactiveFormsModule,
     ColourDropdownModule,
     CalendarYearModule,
+    SpinnerOverlayModule,
+    DialogsModule,
+    PaginationModule,
   ],
 })
 export class CalendarModule {}

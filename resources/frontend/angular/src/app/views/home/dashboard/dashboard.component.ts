@@ -6,6 +6,7 @@ import { Employee } from 'src/app/shared/models/employee.model';
 import { Shift } from 'src/app/shared/models/shift.model';
 import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
 import { Incidence } from 'src/app/shared/models/incidence.model';
+import { dateAAAAMMDD, timeHHMMSS } from 'src/app/shared/calendar/calendar';
 
 @Component({
   selector: 'app-dashboard',
@@ -44,18 +45,20 @@ export class DashboardComponent implements OnInit {
 
   book() {
     const datetime = new Date(Date.now());
-    let date =
-      datetime.getFullYear() +
-      '-' +
-      `00${datetime.getMonth() + 1}`.slice(-2) +
-      '-' +
-      `00${datetime.getDate()}`.slice(-2);
-    let time =
-      `00${datetime.getHours()}`.slice(-2) +
-      ':' +
-      `00${datetime.getMinutes()}`.slice(-2) +
-      ':' +
-      `00${datetime.getSeconds()}`.slice(-2);
+    let date = dateAAAAMMDD(datetime);
+    // let date =
+    //   datetime.getFullYear() +
+    //   '-' +
+    //   `00${datetime.getMonth() + 1}`.slice(-2) +
+    //   '-' +
+    //   `00${datetime.getDate()}`.slice(-2);
+    let time = timeHHMMSS(datetime);
+    // let time =
+    //   `00${datetime.getHours()}`.slice(-2) +
+    //   ':' +
+    //   `00${datetime.getMinutes()}`.slice(-2) +
+    //   ':' +
+    //   `00${datetime.getSeconds()}`.slice(-2);
 
     let incidence_id =
       this.selectedIncidenceId != -1 ? this.selectedIncidenceId : null;

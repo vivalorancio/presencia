@@ -7,6 +7,8 @@ import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
 import {
   Incidence,
   IncidenceCollection,
+  IncidencesGroup,
+  IncidencesGroupCollection,
   IncidencesGroupIncidence,
   IncidencesGroupIncidenceCollection,
 } from 'src/app/shared/models/incidence.model';
@@ -21,16 +23,21 @@ import * as incidencesActions from '../../actions';
 export class IncidencesgroupincidenceListComponent implements OnInit {
   incidencesgroupincidenceForm!: FormGroup;
 
-  incidencesgroup_id!: number;
-
   incidencesgroupincidences!: IncidencesGroupIncidenceCollection;
   pending: boolean = false;
+  submiterror: any;
 
   incidences!: IncidenceCollection;
   pending_incidences: boolean = false;
   availableincidences!: Incidence[];
+  incidencesgroup_id!: number;
+
+  incidencesgroups!: IncidencesGroupCollection;
+  pending_incidencesgroups: boolean = false;
+  incidencesgroup: IncidencesGroup = {} as IncidencesGroup;
 
   selectedIncidenceId: number = -1;
+  submitted: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,8 +64,19 @@ export class IncidencesgroupincidenceListComponent implements OnInit {
     if (this.incidences.meta === null)
       this.store.dispatch(incidencesActions.loadIncidences({ page: '1' }));
 
+    this.store.select('incidencesgroups').subscribe((incidencesgroups) => {
+      this.incidencesgroups = incidencesgroups.incidencesgroups;
+      this.pending_incidencesgroups = incidencesgroups.pending;
+    });
+
     this.route.params.subscribe((params) => {
       this.incidencesgroup_id = +params.incidencesgroup_id;
+      const the_incidencesgroup: any = (this.incidencesgroups?.data.find(
+        (incidencesgroup: any) => incidencesgroup.id === this.incidencesgroup_id
+      ) || {}) as IncidencesGroup;
+      if (the_incidencesgroup !== {}) {
+        this.incidencesgroup = the_incidencesgroup;
+      }
 
       this.store.dispatch(
         incidencesActions.loadIncidencesGroupIncidences({
@@ -67,6 +85,8 @@ export class IncidencesgroupincidenceListComponent implements OnInit {
         })
       );
     });
+
+    this.submitted = false;
 
     this.incidencesgroupincidenceForm = this.formBuilder.group({
       incidence_id: [],
@@ -96,18 +116,23 @@ export class IncidencesgroupincidenceListComponent implements OnInit {
   addIncidence() {
     if (this.selectedIncidenceId === -1) return;
 
+    this.submitted = true;
+
     let incidencesgroupincidence = {
       incidence_id: this.selectedIncidenceId,
     } as IncidencesGroupIncidence;
+
     this.store.dispatch(
       incidencesActions.addIncidencesGroupIncidence({
         incidencesgroup_id: this.incidencesgroup_id,
         incidencesgroupincidence,
       })
     );
+
+    this.selectedIncidenceId = -1;
   }
 
-  deleteIncidence(incidencesgroupincidence_id: number) {
+  removeIncidence(incidencesgroupincidence_id: number) {
     this.store.dispatch(
       incidencesActions.deleteIncidencesGroupIncidence({
         incidencesgroup_id: this.incidencesgroup_id,
@@ -115,36 +140,25 @@ export class IncidencesgroupincidenceListComponent implements OnInit {
       })
     );
   }
+  getSubmitErrorDescription(): string {
+    let error: string = '';
+    if (this.submitted && this.submiterror?.error) {
+      Object.entries(this.submiterror.error.errors).forEach((item: any) => {
+        item[1].forEach((err: string) => (error += err + ' '));
+      });
+    }
+    return error;
+  }
 
-  firstpage() {
-    this.store.dispatch(
-      incidencesActions.loadIncidencesGroupIncidences({
-        incidencesgroup_id: this.incidencesgroup_id,
-        page: '1',
-      })
-    );
+  acceptError() {
+    this.submitted = false;
   }
-  previouspage() {
+
+  loadpage(page: string) {
     this.store.dispatch(
       incidencesActions.loadIncidencesGroupIncidences({
         incidencesgroup_id: this.incidencesgroup_id,
-        page: `${this.incidencesgroupincidences.meta?.current_page - 1}`,
-      })
-    );
-  }
-  nextpage() {
-    this.store.dispatch(
-      incidencesActions.loadIncidencesGroupIncidences({
-        incidencesgroup_id: this.incidencesgroup_id,
-        page: `${this.incidencesgroupincidences.meta?.current_page + 1}`,
-      })
-    );
-  }
-  lastpage() {
-    this.store.dispatch(
-      incidencesActions.loadIncidencesGroupIncidences({
-        incidencesgroup_id: this.incidencesgroup_id,
-        page: this.incidencesgroupincidences.meta?.last_page,
+        page,
       })
     );
   }

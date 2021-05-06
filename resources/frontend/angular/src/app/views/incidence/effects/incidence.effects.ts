@@ -111,7 +111,7 @@ export class IncidencesEffects {
           map((message) =>
             incidencesActions.deleteIncidenceSuccess({ message })
           ),
-          //tap(() => this.router.navigate(['/management/incidences'])),
+          tap(() => this.router.navigate(['/management/incidences'])),
           catchError((error) =>
             of(incidencesActions.deleteIncidenceFailure({ error }))
           )
@@ -220,7 +220,7 @@ export class IncidencesEffects {
           map((message) =>
             incidencesActions.deleteIncidencesGroupSuccess({ message })
           ),
-          //tap(() => this.router.navigate(['/management/incidences'])),
+          tap(() => this.router.navigate(['/management/incidencesgroups'])),
           catchError((error) =>
             of(incidencesActions.deleteIncidencesGroupFailure({ error }))
           )

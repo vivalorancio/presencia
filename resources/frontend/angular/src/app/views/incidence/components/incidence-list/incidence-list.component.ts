@@ -32,32 +32,7 @@ export class IncidenceListComponent implements OnInit {
 
   getTextColourFromName = getTextColourFromName;
 
-  deleteIncidence(id: number) {
-    this.store.dispatch(incidencesActions.deleteIncidence({ id }));
-  }
-
-  firstpage() {
-    this.store.dispatch(incidencesActions.loadIncidences({ page: '1' }));
-  }
-  previouspage() {
-    this.store.dispatch(
-      incidencesActions.loadIncidences({
-        page: `${this.incidences.meta?.current_page - 1}`,
-      })
-    );
-  }
-  nextpage() {
-    this.store.dispatch(
-      incidencesActions.loadIncidences({
-        page: `${this.incidences.meta?.current_page + 1}`,
-      })
-    );
-  }
-  lastpage() {
-    this.store.dispatch(
-      incidencesActions.loadIncidences({
-        page: this.incidences.meta?.last_page,
-      })
-    );
+  loadpage(page: string) {
+    this.store.dispatch(incidencesActions.loadIncidences({ page }));
   }
 }

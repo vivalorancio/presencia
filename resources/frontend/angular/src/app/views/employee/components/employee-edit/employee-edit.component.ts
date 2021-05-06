@@ -20,6 +20,7 @@ import * as incidencesActions from '../../../incidence/actions';
 import { ShiftCollection } from 'src/app/shared/models/shift.model';
 import { IncidencesGroupCollection } from 'src/app/shared/models/incidence.model';
 import { ColourDropdownItem } from 'src/app/shared/colour-dropdown/colour-dropdown';
+import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
 
 const rangeValidator: any = (fg: FormGroup) => {
   let invalid = false;
@@ -151,7 +152,11 @@ export class EmployeeEditComponent implements OnInit {
           ],
         ],
         email: [this.employee.email, [Validators.email]],
-        start_date: [this.employee.start_date /* DD/MM/YY */],
+        start_date: [
+          this.employee.start_date ||
+            dateAAAAMMDD(new Date(Date.now())) /* DD/MM/YY */,
+          [Validators.required],
+        ],
         end_date: [
           this.employee.end_date /* DD/MM/YY !!!!!!AFTER START DATE!!!!! */,
         ],

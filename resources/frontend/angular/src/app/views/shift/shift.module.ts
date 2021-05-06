@@ -6,6 +6,9 @@ import { ShiftListComponent } from './components/shift-list/shift-list.component
 import { ShiftEditComponent } from './components/shift-edit/shift-edit.component';
 import { ColourPickerModule } from 'src/app/shared/colour-picker/colour-picker.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DialogsModule } from 'src/app/shared/dialogs/dialogs.module';
+import { SpinnerOverlayModule } from 'src/app/shared/spinner-overlay/spinner-overlay.module';
+import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
 
 @NgModule({
   declarations: [ShiftListComponent, ShiftEditComponent],
@@ -14,6 +17,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     ShiftRoutingModule,
     ReactiveFormsModule,
     ColourPickerModule,
+    SpinnerOverlayModule,
+    DialogsModule,
+    PaginationModule,
   ],
 })
 export class ShiftModule {}
