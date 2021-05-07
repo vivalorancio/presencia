@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { ClockModule } from 'src/app/shared/clock/clock.module';
 import { ColourDropdownModule } from 'src/app/shared/colour-dropdown/colour-dropdown.module';
 import { ClickOutsideModule } from 'ng-click-outside';
+import { NotificationsModule } from 'src/app/shared/notifications/notifications.module';
 
 @NgModule({
   declarations: [ManagementComponent, DashboardComponent, HomeComponent],
@@ -17,6 +18,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
     ClockModule,
     ColourDropdownModule,
     ClickOutsideModule,
+    NotificationsModule,
   ],
   exports: [ClickOutsideModule],
 })

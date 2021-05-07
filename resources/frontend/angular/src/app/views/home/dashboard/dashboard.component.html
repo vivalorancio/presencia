@@ -1,56 +1,105 @@
-<div class="flex items-center justify-center">
-  <div class="w-full max-w-md m-4 space-y-8">
-    <h2
-      class="mt-6 text-3xl font-bold text-center text-gray-900"
-      *ngIf="employeedisplayname"
-    >
-      Hello, {{ employeedisplayname }}.
-    </h2>
-    <div class="text-3xl font-bold text-center text-gray-900">
-      <app-clock></app-clock>
-    </div>
-    <div class="mt-2">
-      <app-colour-dropdown
-        [items]="incidences"
-        [(selectedId)]="selectedIncidenceId"
-      ></app-colour-dropdown>
-    </div>
-    <button
-      class="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white uppercase border border-transparent rounded-md group bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-      (click)="book()"
-    >
-      <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-5 h-5 text-primary-400 group-hover:text-primary-300"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-            clip-rule="evenodd"
-          />
-        </svg>
-      </span>
-      Book
-    </button>
+<!--
+1. Book
+2. Info
+  1. Calendar view
+3. Requests -
+   1. Booking
+   2. Absence
+   3. Holidays
+   4. Manage Requests
+4. Bookings Report
+-->
+
+<div class="grid max-w-screen-lg grid-cols-6 m-6 mx-auto gap-x-3 gap-y-2">
+  <div class="col-span-3 border-t-4 shadow border-secondary-500 sm:rounded-md">
     <div
-      class="{{
-        bookingerror ? 'text-red-600' : 'text-green-600'
-      }} font-semibold"
+      class="flex flex-col items-center px-4 py-5 space-y-4 bg-white rounded-md sm:p-6"
     >
-      {{ bookingmessage }}
+      <div
+        class="px-8 py-4 mt-5 mb-3 font-mono text-5xl font-medium bg-gray-100 border border-gray-300 rounded-md text-primary-700"
+      >
+        <app-clock (datetimeChange)="updateDatetime($event)"></app-clock>
+      </div>
+      <div class="flex items-center w-full space-x-3">
+        <label class="block pt-2 text-sm font-medium text-gray-700">
+          Incidence
+        </label>
+        <app-colour-dropdown
+          class="w-full"
+          [items]="incidences"
+          [(selectedId)]="selectedIncidenceId"
+        ></app-colour-dropdown>
+      </div>
+      <button
+        class="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white uppercase border border-transparent rounded-md group bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        (click)="book()"
+      >
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 text-primary-400 group-hover:text-primary-300"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </span>
+        Book
+      </button>
+      <div class="h-12">
+        <div
+          *ngIf="pending"
+          class="flex items-center justify-center w-full px-5 py-2 font-normal text-white bg-yellow-500 rounded-md"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 animate-spin"
+            fill="none"
+            viewBox="0 0 12 12"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-width="2"
+              fill-rule="evenodd"
+              d="M 5.996 1 C 9.843 1 12.246 5.163 10.323 8.494 C 8.4 11.825 3.593 11.825 1.669 8.494 C 1.147 7.589 0.921 6.543 1.024 5.503"
+            ></path>
+          </svg>
+          <div class="px-4">Processing...</div>
+        </div>
+        <app-booking-notification></app-booking-notification>
+      </div>
     </div>
   </div>
-  <div *ngIf="shift">
-    <div
-      class="{{ shift.colour }} {{
-        getTextColourFromName(shift.colour)
-      }} p-1 rounded-md"
-    >
-      {{ shift.code }}
+  <div class="col-span-3 border-t-4 shadow border-secondary-500 sm:rounded-md">
+    <div class="flex flex-col h-full px-4 py-5 bg-white rounded-md sm:p-6">
+      <div *ngIf="shift" class="flex flex-col space-y-4">
+        <h2
+          class="mt-3 text-2xl font-semibold text-gray-700"
+          *ngIf="employeedisplayname"
+        >
+          Hello, {{ employeedisplayname }}.
+        </h2>
+        <h3 class="text-lg font-medium-text-gray-700">Your today shift is:</h3>
+        <div class="flex space-x-2">
+          <div
+            class="max-w-max {{ shift.colour }} {{
+              getTextColourFromName(shift.colour)
+            }} px-2 py-1 rounded-md"
+          >
+            {{ shift.code }}
+          </div>
+          <p class="text-base">{{ shift.description }}</p>
+        </div>
+        <p>
+          From <span class="font-medium">{{ shift.start_time }} </span> to
+          <span class="font-medium">{{ shift.end_time }}</span>
+        </p>
+      </div>
     </div>
-    <div>{{ shift.start_time }} - {{ shift.end_time }}</div>
   </div>
 </div>

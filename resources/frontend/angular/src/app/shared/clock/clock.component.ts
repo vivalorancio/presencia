@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-clock',
-  templateUrl: './clock.component.html',
-  styleUrls: ['./clock.component.css'],
+  // templateUrl: './clock.component.html',
+  template: '{{ hours }}:{{ minutes }}:{{ seconds }}',
+  //styleUrls: ['./clock.component.css'],
 })
 export class ClockComponent implements OnInit {
   hours = '' as string;
   minutes = '' as string;
   seconds = '' as string;
+  datetime!: Date;
   private timerId: any;
+
+  @Output() datetimeChange = new EventEmitter<Date>();
 
   constructor() {}
 
@@ -23,10 +27,12 @@ export class ClockComponent implements OnInit {
   }
 
   private setCurrentTime() {
-    const time = new Date(Date.now());
-    this.hours = `00${time.getHours()}`.slice(-2);
-    this.minutes = `00${time.getMinutes()}`.slice(-2);
-    this.seconds = `00${time.getSeconds()}`.slice(-2);
+    this.datetime = new Date(Date.now());
+    this.hours = `00${this.datetime.getHours()}`.slice(-2);
+    this.minutes = `00${this.datetime.getMinutes()}`.slice(-2);
+    this.seconds = `00${this.datetime.getSeconds()}`.slice(-2);
+
+    this.datetimeChange.emit(this.datetime);
   }
 
   private updateTime(): any {
