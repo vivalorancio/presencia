@@ -213,6 +213,7 @@ export class EmployeeEditComponent implements OnInit {
           ? null
           : this.selectedIncidencesGroupId,
     };
+    console.log(employeeToSave);
     if (this.employee.id == null) {
       this.store.dispatch(
         employeesActions.addEmployee({ employee: employeeToSave })

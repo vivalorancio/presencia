@@ -10,8 +10,12 @@
 4. Bookings Report
 -->
 
-<div class="grid max-w-screen-lg grid-cols-6 m-6 mx-auto gap-x-3 gap-y-2">
-  <div class="col-span-3 border-t-4 shadow border-secondary-500 sm:rounded-md">
+<div
+  class="grid max-w-screen-lg grid-cols-6 mx-3 my-6 lg:mx-auto gap-x-3 gap-y-2"
+>
+  <div
+    class="col-span-6 border-t-4 rounded-md shadow md:col-span-3 border-secondary-500"
+  >
     <div
       class="flex flex-col items-center px-4 py-5 space-y-4 bg-white rounded-md sm:p-6"
     >
@@ -75,7 +79,9 @@
       </div>
     </div>
   </div>
-  <div class="col-span-3 border-t-4 shadow border-secondary-500 sm:rounded-md">
+  <div
+    class="col-span-6 border-t-4 rounded-md shadow md:col-span-3 border-secondary-500"
+  >
     <div class="flex flex-col h-full px-4 py-5 bg-white rounded-md sm:p-6">
       <div *ngIf="shift" class="flex flex-col space-y-4">
         <h2
@@ -84,8 +90,8 @@
         >
           Hello, {{ employeedisplayname }}.
         </h2>
-        <h3 class="text-lg font-medium-text-gray-700">Your today shift is:</h3>
-        <div class="flex space-x-2">
+        <h3 class="text-lg font-medium-text-gray-700">Today, your shift is:</h3>
+        <div class="flex items-baseline space-x-2">
           <div
             class="max-w-max {{ shift.colour }} {{
               getTextColourFromName(shift.colour)
@@ -93,7 +99,7 @@
           >
             {{ shift.code }}
           </div>
-          <p class="text-base">{{ shift.description }}</p>
+          <p class="text-lg">{{ shift.description }}</p>
         </div>
         <p>
           From <span class="font-medium">{{ shift.start_time }} </span> to

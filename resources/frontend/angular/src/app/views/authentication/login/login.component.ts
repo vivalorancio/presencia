@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
   form!: FormGroup;
 
   loginerror!: any;
+  submitted: boolean = false;
+  pending: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,16 +27,19 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select('authentication', 'error').subscribe((error) => {
-      this.loginerror = error;
+    this.store.select('authentication').subscribe((authentication) => {
+      this.loginerror = authentication.error;
+      this.pending = authentication.pending;
     });
     this.form = this.formBuilder.group({
       username: '',
       password: '',
     });
+    this.submitted = false;
   }
 
   submit(): void {
+    this.submitted = true;
     this.store.dispatch(authenticationActions.login({ ...this.form.value }));
   }
 }

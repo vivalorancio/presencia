@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import {
@@ -18,7 +19,7 @@ export class EmployeeListComponent implements OnInit {
   employees!: EmployeeCollection;
   pending: boolean = false;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   ngOnInit(): void {
     this.store.select('employees').subscribe((employees) => {
@@ -34,5 +35,10 @@ export class EmployeeListComponent implements OnInit {
 
   loadpage(page: string) {
     this.store.dispatch(employeesActions.loadEmployees({ page }));
+  }
+
+  open(id: number) {
+    console.log(id);
+    this.router.navigate([`/management/employees/employee/${id}`]);
   }
 }

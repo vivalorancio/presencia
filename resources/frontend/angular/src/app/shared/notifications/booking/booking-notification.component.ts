@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BookingNotification } from './booking-notification';
 import { BookingNotificationService } from './booking-notification.service';
 

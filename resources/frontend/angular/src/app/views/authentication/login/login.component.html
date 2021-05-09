@@ -44,9 +44,6 @@
           />
         </div>
       </div>
-      <div class="h-10 py-2 font-medium text-center text-red-500">
-        {{ loginerror?.error?.message }}
-      </div>
 
       <div>
         <button
@@ -70,6 +67,47 @@
           </span>
           Sign in
         </button>
+      </div>
+      <div class="h-12 py-4">
+        <div
+          *ngIf="pending"
+          class="flex items-center justify-center w-full px-5 py-2 font-normal text-white bg-yellow-500 rounded-md"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 animate-spin"
+            fill="none"
+            viewBox="0 0 12 12"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-width="2"
+              fill-rule="evenodd"
+              d="M 5.996 1 C 9.843 1 12.246 5.163 10.323 8.494 C 8.4 11.825 3.593 11.825 1.669 8.494 C 1.147 7.589 0.921 6.543 1.024 5.503"
+            ></path>
+          </svg>
+          <div class="px-4">Signing in ...</div>
+        </div>
+
+        <div
+          *ngIf="submitted && loginerror?.error?.message"
+          class="flex items-center justify-center w-full px-5 py-2 font-normal text-white bg-red-500 rounded-md"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          <div class="px-4">{{ loginerror?.error?.message }}</div>
+        </div>
       </div>
     </form>
   </div>

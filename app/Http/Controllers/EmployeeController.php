@@ -58,9 +58,8 @@ class EmployeeController extends Controller
                 'employee_id' => $employee->id
             ]);
             $user->username = $request->username;
-            $user->password = Hash::make($request->password);
-            // $user->password = $request->password == null ?: Hash::make($request->password);
-            //$user->employee_id=$employee->id;
+            //$user->password = Hash::make($request->password);
+            $user->password = $request->password == null ? $user->password : Hash::make($request->password);
             $user->is_admin = $request->is_admin ?: false;
             $user->is_blocked = $request->is_blocked ?: false;
             $user->save();
@@ -74,6 +73,12 @@ class EmployeeController extends Controller
 
     public function destroy(AuthorizeAdminRequest $request, Employee $employee)
     {
+        $user = User::firstWhere(
+            'employee_id',
+            $employee->id
+        );
+        if ($user)
+            $user->delete();
         $employee->delete();
         return ["message" => "deleted"];
     }

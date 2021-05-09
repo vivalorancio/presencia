@@ -4,7 +4,7 @@
 ></app-spinner-overlay>
 
 <div class="mx-auto max-w-screen-2xl">
-  <div class="mx-6 my-6 border-t-4 shadow border-secondary-500 sm:rounded-md">
+  <div class="mx-6 my-6 border-t-4 shadow border-secondary-500 rounded-md">
     <div class="px-4 py-5 bg-white rounded-md sm:p-6">
       <h3 class="pb-6 text-2xl font-semibold leading-6 text-gray-700">
         Employees
@@ -97,7 +97,11 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr *ngFor="let employee of employees.data" class="hover:bg-gray-100">
+          <tr
+            *ngFor="let employee of employees.data"
+            class="hover:bg-gray-100"
+            (dblclick)="open(employee.id)"
+          >
             <td class="px-1 py-2 whitespace-normal lg:whitespace-nowrap">
               <div class="text-sm font-medium text-gray-900">
                 {{ employee.last_name }}, {{ employee.first_name }}
