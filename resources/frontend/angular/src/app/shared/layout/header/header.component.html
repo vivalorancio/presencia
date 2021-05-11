@@ -1,15 +1,15 @@
 <div class="w-full bg-primary-500">
   <div
-    class="flex flex-col max-w-screen-xl px-3 mx-auto lg:items-center lg:justify-between lg:flex-row lg:px-6 xl:px-8"
+    class="flex flex-col max-w-screen-xl px-3 mx-auto  lg:items-center lg:justify-between lg:flex-row lg:px-6 xl:px-8"
   >
     <div class="flex flex-row items-center justify-between p-4">
       <a
         routerLink="/"
-        class="text-lg font-semibold tracking-widest text-gray-100 uppercase rounded-md lg:mr-10 focus:outline-none focus:shadow-outline"
+        class="text-lg font-semibold tracking-widest text-gray-100 uppercase rounded-md  lg:mr-10 focus:outline-none focus:shadow-outline"
         >Presencia</a
       >
       <button
-        class="text-gray-100 rounded-md lg:hidden focus:outline-none focus:shadow-outline"
+        class="text-gray-100 rounded-md  lg:hidden focus:outline-none focus:shadow-outline"
         (click)="togglemain()"
       >
         <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
@@ -33,7 +33,7 @@
         hidden: !openmain,
         flex: openmain
       }"
-      class="flex-col flex-grow hidden pb-4 lg:pb-0 lg:flex lg:justify-between lg:flex-row"
+      class="flex-col flex-grow hidden pb-4  lg:pb-0 lg:flex lg:justify-between lg:flex-row"
     >
       <div
         *ngIf="mainmodule === 'dashboard'"
@@ -43,7 +43,7 @@
           <ng-container *ngIf="menuitem.items === undefined">
             <a
               routerLink="{{ menuitem.link }}"
-              class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+              class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md  lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
               >{{ menuitem.label }}</a
             >
           </ng-container>
@@ -52,7 +52,7 @@
               <button
                 (click)="togglemenu(menuitem)"
                 (clickOutside)="closemenu(menuitem)"
-                class="flex flex-row items-center w-full px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+                class="flex flex-row items-center w-full px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md  lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
               >
                 <span>{{ menuitem.label }}</span>
                 <svg
@@ -62,7 +62,7 @@
                     'rotate-180': menuitem.open,
                     'rotate-0': !menuitem.open
                   }"
-                  class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform lg:-mt-1"
+                  class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform  lg:-mt-1"
                 >
                   <path
                     fill-rule="evenodd"
@@ -84,11 +84,11 @@
                   'ease-in': !menuitem.open,
                   'duration-75': !menuitem.open
                 }"
-                class="absolute right-0 z-50 w-full mt-2 transition origin-top-right transform rounded-md shadow-lg lg:w-48"
+                class="absolute right-0 z-50 w-full mt-2 transition origin-top-right transform rounded-md shadow-lg  lg:w-48"
               >
                 <div class="px-2 py-2 bg-white rounded-md shadow">
                   <a
-                    class="block px-3 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md lg:mt-0 hover:text-gray-100 focus:text-gray-100 hover:bg-primary-400 focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+                    class="block px-3 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md  lg:mt-0 hover:text-gray-100 focus:text-gray-100 hover:bg-primary-400 focus:bg-primary-400 focus:outline-none focus:shadow-outline"
                     routerLink="{{ submenuitem.link }}"
                     *ngFor="let submenuitem of menuitem.items"
                     >{{ submenuitem.label }}</a
@@ -106,8 +106,8 @@
         <ng-container *ngFor="let menuitem of managementMenu">
           <ng-container *ngIf="menuitem.items === undefined">
             <a
-              routerLink="{{ menuitem.link }}"
-              class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+              (click)="navigateManagement(menuitem.link)"
+              class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md cursor-pointer  lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
               >{{ menuitem.label }}</a
             >
           </ng-container>
@@ -116,7 +116,7 @@
               <button
                 (click)="togglemenu(menuitem)"
                 (clickOutside)="closemenu(menuitem)"
-                class="flex flex-row items-center w-full px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+                class="flex flex-row items-center w-full px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md  lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
               >
                 <span>{{ menuitem.label }}</span>
                 <svg
@@ -126,7 +126,7 @@
                     'rotate-180': menuitem.open,
                     'rotate-0': !menuitem.open
                   }"
-                  class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform lg:-mt-1"
+                  class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform  lg:-mt-1"
                 >
                   <path
                     fill-rule="evenodd"
@@ -148,12 +148,12 @@
                   'ease-in': !menuitem.open,
                   'duration-75': !menuitem.open
                 }"
-                class="absolute right-0 z-50 w-full mt-2 transition origin-top-right transform rounded-md shadow-lg lg:w-48"
+                class="absolute right-0 z-50 w-full mt-2 transition origin-top-right transform rounded-md shadow-lg  lg:w-48"
               >
                 <div class="px-2 py-2 bg-white rounded-md shadow">
                   <a
-                    class="block px-3 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md lg:mt-0 hover:text-gray-100 focus:text-gray-100 hover:bg-primary-400 focus:bg-primary-400 focus:outline-none focus:shadow-outline"
-                    routerLink="{{ submenuitem.link }}"
+                    class="block px-3 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md cursor-pointer  lg:mt-0 hover:text-gray-100 focus:text-gray-100 hover:bg-primary-400 focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+                    (click)="navigateManagement(submenuitem.link)"
                     *ngFor="let submenuitem of menuitem.items"
                     >{{ submenuitem.label }}</a
                   >
@@ -170,19 +170,19 @@
             user && user.employee_id != null && mainmodule === 'management'
           "
           routerLink="/dashboard"
-          class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md hover:bg-primary-400 hover:text-white lg:mt-0 focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+          class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md  hover:bg-primary-400 hover:text-white lg:mt-0 focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
           >Dashboard</a
         ><a
           *ngIf="user?.is_admin && mainmodule === 'dashboard'"
           routerLink="/management"
-          class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md hover:bg-primary-400 hover:text-white lg:mt-0 focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+          class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md  hover:bg-primary-400 hover:text-white lg:mt-0 focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
           >Management</a
         >
         <div class="relative">
           <button
             *ngIf="user"
             (click)="logout()"
-            class="w-full px-3 py-2 mt-2 text-sm font-semibold text-left text-gray-100 rounded-md bg-secondary-500 hover:bg-secondary-700 hover:text-white lg:mt-0 focus:text-white focus:bg-secondary-600 focus:outline-none focus:shadow-outline"
+            class="w-full px-3 py-2 mt-2 text-sm font-semibold text-left text-gray-100 rounded-md  bg-secondary-500 hover:bg-secondary-700 hover:text-white lg:mt-0 focus:text-white focus:bg-secondary-600 focus:outline-none focus:shadow-outline"
           >
             Logout
           </button>

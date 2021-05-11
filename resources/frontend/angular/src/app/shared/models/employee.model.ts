@@ -28,6 +28,13 @@ export interface EmployeeCollection {
   meta: any;
 }
 
+export interface EmployeeSearch {
+  name: string;
+  code: string;
+  national_id: string;
+  email: string;
+  validity: string;
+}
 export interface EmployeeCalendar {
   id: number;
   year: number;

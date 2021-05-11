@@ -15,9 +15,9 @@ class CreateCalendarShiftsTable extends Migration
     {
         Schema::create('calendar_shifts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('calendar_id')->onDelete('cascade');
+            $table->foreignId('calendar_id')->constrained('calendars')->onDelete('cascade');
             $table->integer('day');
-            $table->foreignId('shift_id');
+            $table->foreignId('shift_id')->constrained('shifts')->onDelete('cascade');
             $table->timestamps();
 
             $table->unique(['calendar_id', 'day', 'shift_id'], 'unique_calendar_id_day_shift_id');

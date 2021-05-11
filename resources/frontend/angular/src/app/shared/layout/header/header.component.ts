@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 
@@ -8,6 +8,7 @@ import {
   dashboardMenu,
   managementMenu,
   MenuItem,
+  initManagementStore,
 } from 'src/app/views/home/menu';
 //import * as menus from 'src/app/views/home/menu';
 
@@ -24,7 +25,11 @@ export class HeaderComponent implements OnInit {
   managementMenu = managementMenu;
   dashboardMenu = dashboardMenu;
 
-  constructor(private route: ActivatedRoute, private store: Store<AppState>) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store<AppState>
+  ) {}
 
   ngOnInit(): void {
     this.store.select('authentication', 'user').subscribe((user) => {
@@ -51,5 +56,9 @@ export class HeaderComponent implements OnInit {
   }
   closemenu(menuitem: MenuItem): void {
     menuitem.open = false;
+  }
+
+  navigateManagement(link: string): void {
+    initManagementStore(this.store, link);
   }
 }

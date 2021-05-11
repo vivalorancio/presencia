@@ -1,27 +1,34 @@
 import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 import { Shift, ShiftCollection } from 'src/app/shared/models/shift.model';
 import * as shiftsActions from '../actions';
 
 export interface ShiftsState {
   error: string | null;
-  page: string;
+  display: DisplayResourceCollection;
   pending: boolean;
   shifts: ShiftCollection;
 }
 
 export const initialState: ShiftsState = {
   error: null,
-  page: '',
+  display: {
+    page: '1',
+    per_page: '25',
+    sort_field: 'code',
+    sort_direction: 'asc',
+  },
   pending: false,
   shifts: { data: [], links: null, meta: null },
 };
 
 export const _shiftsReducer = createReducer(
   initialState,
-  on(shiftsActions.loadShifts, (state, { page }) => ({
+  on(shiftsActions.initShifts, (state) => ({ ...initialState })),
+  on(shiftsActions.loadShifts, (state, { display }) => ({
     ...state,
-    page,
+    display,
     pending: true,
   })),
   on(shiftsActions.loadShiftsSuccess, (state, { shifts }) => ({

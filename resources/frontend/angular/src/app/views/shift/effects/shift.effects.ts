@@ -25,12 +25,23 @@ export class ShiftsEffects {
     private store: Store<AppState>
   ) {}
 
+  initShifts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(shiftsActions.initShifts),
+      withLatestFrom(this.store.select('shifts')),
+      map(([action, shifts]) =>
+        shiftsActions.loadShifts({ display: shifts.display })
+      ),
+      tap(() => this.router.navigate(['/management/shifts']))
+    )
+  );
+
   loadShifts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(shiftsActions.loadShifts),
       // tap((action) => console.log(action)),
       mergeMap((action) =>
-        this.shiftService.getShifts(action.page).pipe(
+        this.shiftService.getShifts(action.display).pipe(
           map((shifts) => shiftsActions.loadShiftsSuccess({ shifts })),
           catchError((error) => of(shiftsActions.loadShiftsFailure({ error })))
         )
@@ -58,8 +69,10 @@ export class ShiftsEffects {
     this.actions$.pipe(
       ofType(shiftsActions.addShiftSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('shifts', 'page')),
-      map(([action, page]) => shiftsActions.loadShifts({ page: page }))
+      withLatestFrom(this.store.select('shifts')),
+      map(([action, shifts]) =>
+        shiftsActions.loadShifts({ display: shifts.display })
+      )
     )
   );
 
@@ -83,8 +96,10 @@ export class ShiftsEffects {
     this.actions$.pipe(
       ofType(shiftsActions.updateShiftSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('shifts', 'page')),
-      map(([action, page]) => shiftsActions.loadShifts({ page: page }))
+      withLatestFrom(this.store.select('shifts')),
+      map(([action, shifts]) =>
+        shiftsActions.loadShifts({ display: shifts.display })
+      )
     )
   );
 
@@ -108,8 +123,10 @@ export class ShiftsEffects {
     this.actions$.pipe(
       ofType(shiftsActions.deleteShiftSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('shifts', 'page')),
-      map(([action, page]) => shiftsActions.loadShifts({ page: page }))
+      withLatestFrom(this.store.select('shifts')),
+      map(([action, shifts]) =>
+        shiftsActions.loadShifts({ display: shifts.display })
+      )
     )
   );
 

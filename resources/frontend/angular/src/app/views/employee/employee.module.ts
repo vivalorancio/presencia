@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { EmployeeEditComponent } from './components/employee-edit/employee-edit.component';
@@ -19,6 +19,7 @@ import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
   imports: [
     CommonModule,
     EmployeeRoutingModule,
+    FormsModule,
     ReactiveFormsModule,
     ColourDropdownModule,
     SpinnerOverlayModule,

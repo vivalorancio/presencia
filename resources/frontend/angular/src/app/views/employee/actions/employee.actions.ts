@@ -6,12 +6,21 @@ import {
   EmployeeCalendarResource,
   EmployeeCollection,
   EmployeeResource,
+  EmployeeSearch,
 } from 'src/app/shared/models/employee.model';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
+// ------------ Init Employees ----------
+export const initEmployees = createAction(
+  '[Employee Management] Init Employees'
+);
 // ------------ Load Employees ----------
 export const loadEmployees = createAction(
   '[Employee Management] Load Employees',
-  props<{ page: string }>()
+  props<{
+    display: DisplayResourceCollection;
+    search: EmployeeSearch;
+  }>()
 );
 export const loadEmployeesSuccess = createAction(
   '[Employee Management] Load Employees Success',

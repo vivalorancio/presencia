@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('employees', EmployeeController::class);
     Route::post('employees/search', [EmployeeController::class, 'search']);
     Route::get('employees/{employee}/shift', [EmployeeController::class, 'shift']);
+    Route::get('employees/{employee}/calendar', [EmployeeController::class, 'calendar']);
     Route::get('employees/{employee}/incidences', [EmployeeController::class, 'incidences']);
 
     Route::apiResource('employees/{employee}/bookings', BookingController::class);

@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class ShiftController extends Controller
 {
+    private $orderBy = 'code';
+    private $orderDirection = 'asc';
+    private $perPage = '25';
+
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +23,19 @@ class ShiftController extends Controller
      */
     public function index(AuthorizeAdminRequest $request)
     {
-        $shifts = Shift::paginate(25);
+        $request_perPage = request('per_page', $this->perPage);
+
+        $request_orderBy = request('sort_field', $this->orderBy);
+        if (!in_array($request_orderBy, ['code', 'description', 'start_time', 'end_time', 'expected_time', 'recess_time', 'is_holiday'])) {
+            $request_orderBy = $this->orderBy;
+        }
+
+        $request_orderDirection = request('sort_direction', $this->orderDirection);
+        if (!in_array($request_orderDirection, ['asc', 'desc'])) {
+            $request_orderDirection = $this->orderDirection;
+        }
+
+        $shifts = Shift::orderBy($request_orderBy, $request_orderDirection)->paginate($request_perPage);
         return ShiftResource::collection($shifts);
     }
 

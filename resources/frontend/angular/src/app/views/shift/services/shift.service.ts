@@ -6,6 +6,7 @@ import {
   ShiftCollection,
   ShiftResource,
 } from 'src/app/shared/models/shift.model';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +14,13 @@ import {
 export class ShiftService {
   constructor(private http: HttpClient) {}
 
-  getShifts(page: string): Observable<ShiftCollection> {
-    return this.http.get<ShiftCollection>(`/api/shifts/?page=${page}`, {
-      withCredentials: true,
-    });
+  getShifts(display: DisplayResourceCollection): Observable<ShiftCollection> {
+    return this.http.get<ShiftCollection>(
+      `/api/shifts/?page=${display.page}&per_page=${display.per_page}&sort_field=${display.sort_field}&sort_direction=${display.sort_direction}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   getShift(shift_id: number): Observable<ShiftResource> {

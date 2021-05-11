@@ -1,3 +1,9 @@
+import { Store } from '@ngrx/store';
+
+import * as employeesActions from '../../views/employee/actions';
+import * as shiftsActions from '../../views/shift/actions';
+import * as calendarsActions from '../../views/calendar/actions';
+
 export interface MenuItem {
   label: string;
   link: string;
@@ -35,3 +41,34 @@ export const managementMenu: MenuItem[] = [
   { label: 'Holidays', link: 'holidays' } as MenuItem,
   { label: 'Bookings', link: 'bookings' } as MenuItem,
 ];
+
+export function initManagementStore(store: Store, link: string): void {
+  switch (link) {
+    case 'employees':
+      store.dispatch(employeesActions.initEmployees());
+      break;
+    case 'shifts':
+      store.dispatch(shiftsActions.initShifts());
+      break;
+    case 'calendars':
+      break;
+    case 'incidences':
+      break;
+    case 'incidencesgroups':
+      break;
+    case 'departments':
+      break;
+    case 'areas':
+      break;
+    case 'sections':
+      break;
+    case 'supervisiongroups':
+      break;
+    case 'holidays':
+      break;
+    case 'bookings':
+      break;
+    default:
+      break;
+  }
+}

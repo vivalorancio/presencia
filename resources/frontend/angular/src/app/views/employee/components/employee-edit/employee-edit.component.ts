@@ -76,12 +76,33 @@ export class EmployeeEditComponent implements OnInit {
       this.pending = employees.pending;
       this.submiterror = employees.error;
     });
+    //if (this.shifts.meta === null)
+    this.store.dispatch(
+      shiftsActions.loadShifts({
+        display: {
+          page: '1',
+          per_page: '10000',
+          sort_field: 'code',
+          sort_direction: 'asc',
+        },
+      })
+    );
+
     this.store.select('shifts').subscribe((shifts) => {
       this.shifts = shifts.shifts;
       this.pending_shifts = shifts.pending;
     });
-    if (this.shifts.meta === null)
-      this.store.dispatch(shiftsActions.loadShifts({ page: '1' }));
+    //if (this.shifts.meta === null)
+    this.store.dispatch(
+      shiftsActions.loadShifts({
+        display: {
+          page: '1',
+          per_page: '10000',
+          sort_field: 'code',
+          sort_direction: 'asc',
+        },
+      })
+    );
 
     this.store.select('incidencesgroups').subscribe((incidencesgroups) => {
       this.incidences_groups = incidencesgroups.incidencesgroups;

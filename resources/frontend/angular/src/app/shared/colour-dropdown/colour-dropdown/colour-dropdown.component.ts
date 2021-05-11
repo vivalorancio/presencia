@@ -10,7 +10,7 @@ import { ColourDropdownItem } from '../colour-dropdown';
 export class ColourDropdownComponent implements OnInit {
   is_hidden: boolean = true;
 
-  none: ColourDropdownItem = {
+  default: ColourDropdownItem = {
     id: -1,
     colour: 'bg-white',
     code: '',
@@ -19,6 +19,7 @@ export class ColourDropdownComponent implements OnInit {
 
   @Input() items: ColourDropdownItem[] = [];
   @Input() direction = 'down';
+  @Input() defaultdescription!: string;
 
   @Input() selectedId: number = -1;
   @Output() selectedIdChange = new EventEmitter<number>();
@@ -35,7 +36,11 @@ export class ColourDropdownComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.defaultdescription) {
+      this.default.description = this.defaultdescription;
+    }
+  }
 
   getTextColourFromName = getTextColourFromName;
 
@@ -58,6 +63,8 @@ export class ColourDropdownComponent implements OnInit {
   }
 
   selected(): ColourDropdownItem {
-    return this.items.find((item) => item.id === this.selectedId) || this.none;
+    return (
+      this.items.find((item) => item.id === this.selectedId) || this.default
+    );
   }
 }

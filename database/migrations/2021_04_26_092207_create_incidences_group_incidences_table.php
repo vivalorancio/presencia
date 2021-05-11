@@ -15,8 +15,8 @@ class CreateIncidencesGroupIncidencesTable extends Migration
     {
         Schema::create('incidences_group_incidences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('incidences_group_id')->onDelete('cascade');
-            $table->foreignId('incidence_id')->onDelete('cascade');
+            $table->foreignId('incidences_group_id')->constrained('incidences_groups')->onDelete('cascade');
+            $table->foreignId('incidence_id')->constrained('incidences')->onDelete('cascade');
             $table->timestamps();
 
             $table->unique(['incidences_group_id', 'incidence_id'], 'unique_incidences_group_id_incidence_id');

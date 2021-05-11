@@ -55,12 +55,22 @@ export class CalendarshiftsEditComponent implements OnInit {
       this.pending_calendars = calendars.pending;
     });
 
+    // if (this.shifts.meta === null)
+    this.store.dispatch(
+      shiftsActions.loadShifts({
+        display: {
+          page: '1',
+          per_page: '10000',
+          sort_field: 'code',
+          sort_direction: 'asc',
+        },
+      })
+    );
+
     this.store.select('shifts').subscribe((shifts) => {
       this.shifts = shifts.shifts;
       this.pending_shifts = shifts.pending;
     });
-    if (this.shifts.meta === null)
-      this.store.dispatch(shiftsActions.loadShifts({ page: '1' }));
 
     this.route.params.subscribe((params) => {
       const id = +params.id;

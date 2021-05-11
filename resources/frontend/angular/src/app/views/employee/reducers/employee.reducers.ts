@@ -1,26 +1,39 @@
 import { createReducer, on } from '@ngrx/store';
-import { EmployeeCollection } from 'src/app/shared/models/employee.model';
+import {
+  EmployeeCollection,
+  EmployeeSearch,
+} from 'src/app/shared/models/employee.model';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 import * as employeesActions from '../actions';
 
 export interface EmployeesState {
   error: string | null;
-  page: string;
+  display: DisplayResourceCollection;
+  search: EmployeeSearch;
   pending: boolean;
   employees: EmployeeCollection;
 }
 
 export const initialState: EmployeesState = {
   error: null,
-  page: '',
+  display: {
+    page: '1',
+    per_page: '25',
+    sort_field: 'last_name',
+    sort_direction: 'asc',
+  },
+  search: {} as EmployeeSearch,
   pending: false,
   employees: { data: [], links: null, meta: null },
 };
 
 export const _employeesReducer = createReducer(
   initialState,
-  on(employeesActions.loadEmployees, (state, { page }) => ({
+  on(employeesActions.initEmployees, (state) => ({ ...initialState })),
+  on(employeesActions.loadEmployees, (state, { display, search }) => ({
     ...state,
-    page,
+    display,
+    search,
     pending: true,
   })),
   on(employeesActions.loadEmployeesSuccess, (state, { employees }) => ({

@@ -83,13 +83,18 @@
     class="col-span-6 border-t-4 rounded-md shadow md:col-span-3 border-secondary-500"
   >
     <div class="flex flex-col h-full px-4 py-5 bg-white rounded-md sm:p-6">
-      <div *ngIf="shift" class="flex flex-col space-y-4">
-        <h2
-          class="mt-3 text-2xl font-semibold text-gray-700"
-          *ngIf="employeedisplayname"
-        >
-          Hello, {{ employeedisplayname }}.
-        </h2>
+      <h2
+        class="my-3 text-2xl font-semibold text-gray-700"
+        *ngIf="employeedisplayname"
+      >
+        Hello, {{ employeedisplayname }}.
+      </h2>
+      <div *ngIf="shift.id === undefined" class="flex flex-col space-y-4">
+        <h3 class="text-lg font-medium text-red-500">
+          You don't currently have a shift
+        </h3>
+      </div>
+      <div *ngIf="shift.id !== undefined" class="flex flex-col space-y-4">
         <h3 class="text-lg font-medium-text-gray-700">Today, your shift is:</h3>
         <div class="flex items-baseline space-x-2">
           <div

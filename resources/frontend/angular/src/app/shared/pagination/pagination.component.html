@@ -7,7 +7,7 @@
       <button
         (click)="firstpage()"
         [disabled]="!active || meta?.current_page == 1"
-        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-300"
+        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300  rounded-l-md hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-300"
       >
         <span class="sr-only">First</span>
         <!-- Heroicon name: solid/chevron-double-left -->
@@ -27,7 +27,7 @@
       <button
         (click)="previouspage()"
         [disabled]="!active || meta?.current_page == 1"
-        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-300"
+        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300  hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-300"
       >
         <span class="sr-only">Previous</span>
         <!-- Heroicon name: solid/chevron-left -->
@@ -48,7 +48,7 @@
       <button
         (click)="nextpage()"
         [disabled]="!active || meta?.current_page == meta?.last_page"
-        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-300"
+        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300  hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-300"
       >
         <span class="sr-only">Next</span>
         <!-- Heroicon name: solid/chevron-right -->
@@ -69,7 +69,7 @@
       <button
         (click)="lastpage()"
         [disabled]="!active || meta?.current_page == meta?.last_page"
-        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-300"
+        class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300  rounded-r-md hover:bg-gray-50 disabled:bg-gray-200 disabled:text-gray-300"
       >
         <span class="sr-only">Last</span>
         <!-- Heroicon name: solid/chevron-double-right -->
@@ -100,7 +100,8 @@
       to
       <span class="font-medium">{{ meta.to || "0" }}</span>
       of
-      <span class="font-medium">{{ meta.total }}</span>
+      <span class="font-medium">{{ meta.total }}</span
+      >.
     </p>
   </div>
 </div>

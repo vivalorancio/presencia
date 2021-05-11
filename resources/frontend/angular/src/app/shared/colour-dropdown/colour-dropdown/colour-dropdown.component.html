@@ -62,25 +62,25 @@
       class="relative py-2 pl-3 text-gray-900 cursor-default select-none pr-9"
       id="listbox-option-0"
       role="option"
-      (click)="!is_hidden && selectItem(none)"
+      (click)="!is_hidden && selectItem(default)"
     >
       <div class="flex items-center">
         <span
-          class="{{ none.colour }} {{
-            getTextColourFromName(none.colour || 'bg-white')
+          class="{{ default.colour }} {{
+            getTextColourFromName(default.colour || 'bg-white')
           }} w-12 rounded-md text-center font-semibold"
-          >{{ none.code }}</span
+          >{{ default.code }}</span
         >
         <span
           class="{{
-            isSelected(none) ? 'font-semibold' : 'font-normal'
+            isSelected(default) ? 'font-semibold' : 'font-normal'
           }} ml-3 block truncate italic"
         >
-          {{ none.description }}
+          {{ default.description }}
         </span>
       </div>
       <span
-        *ngIf="isSelected(none)"
+        *ngIf="isSelected(default)"
         class="absolute inset-y-0 right-0 flex items-center pr-4 text-primary-600"
       >
         <svg

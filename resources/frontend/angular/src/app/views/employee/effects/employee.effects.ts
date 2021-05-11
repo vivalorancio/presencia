@@ -25,11 +25,25 @@ export class EmployeesEffects {
     private store: Store<AppState>
   ) {}
 
+  initEmployees$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.initEmployees),
+      withLatestFrom(this.store.select('employees')),
+      map(([action, employees]) =>
+        employeesActions.loadEmployees({
+          display: employees.display,
+          search: employees.search,
+        })
+      ),
+      tap(() => this.router.navigate(['/management/employees']))
+    )
+  );
+
   loadEmployees$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.loadEmployees),
       mergeMap((action) =>
-        this.employeeService.getEmployees(action.page).pipe(
+        this.employeeService.getEmployees(action.display, action.search).pipe(
           map((employees) =>
             employeesActions.loadEmployeesSuccess({ employees })
           ),
@@ -61,8 +75,13 @@ export class EmployeesEffects {
   addEmployeeSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.addEmployeeSuccess),
-      withLatestFrom(this.store.select('employees', 'page')),
-      map(([action, page]) => employeesActions.loadEmployees({ page: page }))
+      withLatestFrom(this.store.select('employees')),
+      map(([action, employees]) =>
+        employeesActions.loadEmployees({
+          display: employees.display,
+          search: employees.search,
+        })
+      )
     )
   );
 
@@ -88,8 +107,13 @@ export class EmployeesEffects {
   updateEmployeeSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.updateEmployeeSuccess),
-      withLatestFrom(this.store.select('employees', 'page')),
-      map(([action, page]) => employeesActions.loadEmployees({ page: page }))
+      withLatestFrom(this.store.select('employees')),
+      map(([action, employees]) =>
+        employeesActions.loadEmployees({
+          display: employees.display,
+          search: employees.search,
+        })
+      )
     )
   );
 
@@ -113,8 +137,13 @@ export class EmployeesEffects {
   deleteEmployeeSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.deleteEmployeeSuccess),
-      withLatestFrom(this.store.select('employees', 'page')),
-      map(([action, page]) => employeesActions.loadEmployees({ page: page }))
+      withLatestFrom(this.store.select('employees')),
+      map(([action, employees]) =>
+        employeesActions.loadEmployees({
+          display: employees.display,
+          search: employees.search,
+        })
+      )
     )
   );
 

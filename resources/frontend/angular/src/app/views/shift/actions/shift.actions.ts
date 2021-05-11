@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 import {
   Shift,
   ShiftCollection,
@@ -6,9 +7,11 @@ import {
 } from 'src/app/shared/models/shift.model';
 
 // ------------ Load Shifts ----------
+export const initShifts = createAction('[Shift Management] Init Shifts');
+// ------------ Load Shifts ----------
 export const loadShifts = createAction(
   '[Shift Management] Load Shifts',
-  props<{ page: string }>()
+  props<{ display: DisplayResourceCollection }>()
 );
 export const loadShiftsSuccess = createAction(
   '[Shift Management] Load Shifts Success',

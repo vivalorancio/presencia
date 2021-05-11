@@ -50,4 +50,26 @@ class Employee extends Model
     {
         return $this->hasMany(EmployeeCalendar::class);
     }
+
+    // public function currentcalendar()
+    // {
+    //     $calendar = $this->calendars()->where('year', date("Y"))->firstOrFail();
+    //     return  $calendar->calendar();
+    //     if ($calendar == null) {
+    //         return;
+    //     }
+    // }
+
+    // public function currentshift()
+    // {
+    //     $currrentcalendar = $this->currentcalendar;
+    //     if ($currrentcalendar == null) {
+    //         return null;
+    //     }
+    //     $currentshift = $currrentcalendar->shifts()->where('day', date("z"))->first()->shift();
+    //     if ($currentshift == null) {
+    //         $currentshift = $this->shift();
+    //     }
+    //     return $currentshift;
+    // }
 }
