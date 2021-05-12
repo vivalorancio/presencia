@@ -3,13 +3,19 @@ import {
   Calendar,
   CalendarCollection,
   CalendarResource,
+  CalendarSearch,
   CalendarShiftCollection,
 } from 'src/app/shared/models/calendar.model';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
+// ------------ Init Calendars ----------
+export const initCalendars = createAction(
+  '[Calendar Management] Init Calendars'
+);
 // ------------ Load Calendars ----------
 export const loadCalendars = createAction(
   '[Calendar Management] Load Calendars',
-  props<{ page: string }>()
+  props<{ display: DisplayResourceCollection; search: CalendarSearch }>()
 );
 export const loadCalendarsSuccess = createAction(
   '[Calendar Management] Load Calendars Success',

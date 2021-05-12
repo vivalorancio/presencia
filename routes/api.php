@@ -13,6 +13,9 @@ use App\Http\Controllers\EmployeeCalendarController;
 use App\Http\Controllers\IncidenceController;
 use App\Http\Controllers\IncidencesGroupController;
 use App\Http\Controllers\IncidencesGroupIncidenceController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\SectionController;
+use App\Http\Controllers\AreaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,29 +35,42 @@ use App\Http\Controllers\IncidencesGroupIncidenceController;
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    //Auth
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::apiResource('users', UserController::class);
 
+    //Employees
     Route::apiResource('employees', EmployeeController::class);
-    Route::post('employees/search', [EmployeeController::class, 'search']);
     Route::get('employees/{employee}/shift', [EmployeeController::class, 'shift']);
     Route::get('employees/{employee}/calendar', [EmployeeController::class, 'calendar']);
     Route::get('employees/{employee}/incidences', [EmployeeController::class, 'incidences']);
+    Route::apiResource('employees/{employee}/calendars', EmployeeCalendarController::class);
 
     Route::apiResource('employees/{employee}/bookings', BookingController::class);
 
+    //Shifts
     Route::apiResource('shifts', ShiftController::class);
 
+    //Calendars
     Route::apiResource('calendars', CalendarController::class);
     Route::apiResource('calendars/{calendar}/shifts', CalendarShiftsController::class);
 
-    Route::apiResource('employees/{employee}/calendars', EmployeeCalendarController::class);
-
+    //Incidences
     Route::apiResource('incidences', IncidenceController::class);
+
+    //Incidences Groups
     Route::apiResource('incidences_groups', IncidencesGroupController::class);
     Route::apiResource('incidences_groups/{incidences_group}/incidences', IncidencesGroupIncidenceController::class);
+
+    //Departments
+    Route::apiResource('departments', DepartmentController::class);
+    //Areas
+    Route::apiResource('areas', AreaController::class);
+    //Sections
+    Route::apiResource('sections', SectionController::class);
+    //Supervision Groups
 });
 
 

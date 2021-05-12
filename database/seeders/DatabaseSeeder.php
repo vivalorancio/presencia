@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\Employee::factory(50)->create();
 
         // Usuari administrador sense empleat.
         DB::table('users')->insert([
@@ -50,6 +50,5 @@ class DatabaseSeeder extends Seeder
             'is_blocked' => true
 
         ]);
-        \App\Models\Employee::factory(50)->create();
     }
 }

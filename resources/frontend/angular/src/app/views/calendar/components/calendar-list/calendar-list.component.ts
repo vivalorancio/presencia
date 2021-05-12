@@ -1,7 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AppState } from 'src/app/app.reducers';
-import { CalendarCollection } from 'src/app/shared/models/calendar.model';
+import {
+  CalendarCollection,
+  CalendarSearch,
+} from 'src/app/shared/models/calendar.model';
+import {
+  DisplayResourceCollection,
+  ListHeader,
+} from 'src/app/shared/models/resource.model';
 
 import * as calendarsActions from '../../actions';
 
@@ -14,19 +24,123 @@ export class CalendarListComponent implements OnInit {
   calendars!: CalendarCollection;
   pending: boolean = false;
 
-  constructor(private store: Store<AppState>) {}
+  display!: DisplayResourceCollection;
+  search!: CalendarSearch;
+
+  private searchSubject: Subject<CalendarSearch> = new Subject();
+
+  headers: ListHeader[] = [
+    { text: 'Year', sort_by: 'year', hides: false, search_by: 'year' },
+    { text: 'Name', sort_by: 'name', hides: false, search_by: 'name' },
+  ];
+
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   ngOnInit(): void {
+    this.display = {
+      page: '1',
+      per_page: '25',
+      sort_field: 'year',
+      sort_direction: 'asc',
+    };
+    this.search = {
+      year: '',
+      name: '',
+    };
     this.store.select('calendars').subscribe((calendars) => {
       this.calendars = calendars.calendars;
       this.pending = calendars.pending;
+      this.display = calendars.display;
     });
 
-    if (this.calendars.meta === null)
-      this.store.dispatch(calendarsActions.loadCalendars({ page: '1' }));
+    if (this.calendars.meta === null) this.dispatchLoad();
+  }
+
+  open(id: number) {
+    console.log(id);
+    this.router.navigate([`/management/calendars/calendar/${id}`]);
+  }
+
+  dispatchLoad(): void {
+    this.store.dispatch(
+      calendarsActions.loadCalendars({
+        display: this.display,
+        search: this.search,
+      })
+    );
   }
 
   loadpage(page: string) {
-    this.store.dispatch(calendarsActions.loadCalendars({ page }));
+    this.display = { ...this.display, page: page };
+    this.dispatchLoad();
+  }
+
+  orderBy(sort_field: string) {
+    let asc = false;
+    if (this.display.sort_field === sort_field) {
+      this.toggleDirection();
+    } else {
+      asc = true;
+    }
+
+    this.display = {
+      ...this.display,
+      sort_field: sort_field,
+      sort_direction: asc ? 'asc' : this.display.sort_direction,
+      page: '1',
+    };
+
+    this.dispatchLoad();
+  }
+
+  toggleDirection() {
+    if (this.display.sort_direction === 'asc') {
+      this.display = { ...this.display, sort_direction: 'desc' };
+    } else {
+      this.display = { ...this.display, sort_direction: 'asc' };
+    }
+  }
+
+  onPerpageSelected(event: any) {
+    const per_page = event.target.value;
+    this.display = { ...this.display, per_page: per_page, page: '1' };
+    this.dispatchLoad();
+  }
+
+  initSearch() {
+    if (this.searchSubject.observers.length === 0) {
+      this.searchSubject
+        .pipe(debounceTime(1000), distinctUntilChanged())
+        .subscribe(() => {
+          this.dispatchLoad();
+        });
+    }
+  }
+
+  doSearch(from: string, event: any) {
+    this.initSearch();
+
+    if (this.search[from as keyof CalendarSearch] === event.target.value)
+      return;
+
+    this.search = {
+      ...this.search,
+      [from as keyof CalendarSearch]: event.target.value,
+    };
+
+    this.display = { ...this.display, page: '1' };
+
+    this.searchSubject.next(this.search);
+  }
+
+  clearSearch() {
+    this.search = {
+      year: '',
+      name: '',
+    };
+
+    this.display = { ...this.display, page: '1' };
+
+    this.searchSubject.next(this.search);
   }
 }

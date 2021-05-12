@@ -3,18 +3,25 @@ import {
   Incidence,
   IncidenceCollection,
   IncidenceResource,
+  IncidenceSearch,
   IncidencesGroup,
   IncidencesGroupCollection,
   IncidencesGroupIncidence,
   IncidencesGroupIncidenceCollection,
   IncidencesGroupIncidenceResource,
   IncidencesGroupResource,
+  IncidencesGroupSearch,
 } from 'src/app/shared/models/incidence.model';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
+// ------------ Init Incidences ----------
+export const initIncidences = createAction(
+  '[Incidence Management] Init Incidences'
+);
 // ------------ Load Incidences ----------
 export const loadIncidences = createAction(
   '[Incidence Management] Load Incidences',
-  props<{ page: string }>()
+  props<{ display: DisplayResourceCollection; search: IncidenceSearch }>()
 );
 export const loadIncidencesSuccess = createAction(
   '[Incidence Management] Load Incidences Success',
@@ -63,10 +70,14 @@ export const deleteIncidenceFailure = createAction(
   '[Incidence Management] Delete Incidence Failure',
   props<{ error: any }>()
 );
+// ------------ Init IncidencesGroups ----------
+export const initIncidencesGroups = createAction(
+  '[Incidence Management] Init IncidencesGroups'
+);
 // ------------ Load IncidencesGroups ----------
 export const loadIncidencesGroups = createAction(
   '[Incidence Management] Load IncidencesGroups',
-  props<{ page: string }>()
+  props<{ display: DisplayResourceCollection; search: IncidencesGroupSearch }>()
 );
 export const loadIncidencesGroupsSuccess = createAction(
   '[Incidence Management] Load IncidencesGroups Success',

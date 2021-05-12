@@ -28,6 +28,9 @@ class EmployeeResource extends JsonResource
             // 'incidences' => $this->incidences_group->incidences,
             'supervision_group_id' => $this->supervision_group_id,
             'default_shift' => $this->shift,
+            'department' => $this->department,
+            'area' => $this->area,
+            'section' => $this->section,
             'user' => $this->user,
         ];
     }

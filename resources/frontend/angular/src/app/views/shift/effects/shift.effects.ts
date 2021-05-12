@@ -30,7 +30,10 @@ export class ShiftsEffects {
       ofType(shiftsActions.initShifts),
       withLatestFrom(this.store.select('shifts')),
       map(([action, shifts]) =>
-        shiftsActions.loadShifts({ display: shifts.display })
+        shiftsActions.loadShifts({
+          display: shifts.display,
+          search: shifts.search,
+        })
       ),
       tap(() => this.router.navigate(['/management/shifts']))
     )
@@ -41,7 +44,7 @@ export class ShiftsEffects {
       ofType(shiftsActions.loadShifts),
       // tap((action) => console.log(action)),
       mergeMap((action) =>
-        this.shiftService.getShifts(action.display).pipe(
+        this.shiftService.getShifts(action.display, action.search).pipe(
           map((shifts) => shiftsActions.loadShiftsSuccess({ shifts })),
           catchError((error) => of(shiftsActions.loadShiftsFailure({ error })))
         )
@@ -71,7 +74,10 @@ export class ShiftsEffects {
       // tap((action) => console.log(action)),
       withLatestFrom(this.store.select('shifts')),
       map(([action, shifts]) =>
-        shiftsActions.loadShifts({ display: shifts.display })
+        shiftsActions.loadShifts({
+          display: shifts.display,
+          search: shifts.search,
+        })
       )
     )
   );
@@ -98,7 +104,10 @@ export class ShiftsEffects {
       // tap((action) => console.log(action)),
       withLatestFrom(this.store.select('shifts')),
       map(([action, shifts]) =>
-        shiftsActions.loadShifts({ display: shifts.display })
+        shiftsActions.loadShifts({
+          display: shifts.display,
+          search: shifts.search,
+        })
       )
     )
   );
@@ -125,7 +134,10 @@ export class ShiftsEffects {
       // tap((action) => console.log(action)),
       withLatestFrom(this.store.select('shifts')),
       map(([action, shifts]) =>
-        shiftsActions.loadShifts({ display: shifts.display })
+        shiftsActions.loadShifts({
+          display: shifts.display,
+          search: shifts.search,
+        })
       )
     )
   );

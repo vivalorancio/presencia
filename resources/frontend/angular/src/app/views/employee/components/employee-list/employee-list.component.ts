@@ -35,18 +35,28 @@ export class EmployeeListComponent implements OnInit {
   display!: DisplayResourceCollection;
   search!: EmployeeSearch;
 
-  headers: ListHeader[] = [
-    { text: 'Name', sort_by: 'last_name', hides: false },
-    { text: 'Code', sort_by: 'code', hides: false },
-    { text: 'ID Number', sort_by: 'national_id', hides: false },
-    { text: 'email', sort_by: 'email', hides: true },
-    { text: 'Validity', sort_by: 'start_date', hides: true },
-    { text: 'Def. Shift', sort_by: '', hides: false },
-    { text: 'Inci. Gr.', sort_by: '', hides: false },
-    { text: 'Super. Gr.', sort_by: '', hides: false },
-  ];
-
   private searchSubject: Subject<EmployeeSearch> = new Subject();
+
+  headers: ListHeader[] = [
+    { text: 'Name', sort_by: 'last_name', hides: false, search_by: 'name' },
+    { text: 'Code', sort_by: 'code', hides: false, search_by: 'code' },
+    {
+      text: 'ID Number',
+      sort_by: 'national_id',
+      hides: false,
+      search_by: 'national_id',
+    },
+    { text: 'email', sort_by: 'email', hides: true, search_by: 'email' },
+    {
+      text: 'Validity',
+      sort_by: 'start_date',
+      hides: false,
+      search_by: 'validity',
+    },
+    { text: 'Def. Shift', sort_by: '', hides: false, search_by: '' },
+    { text: 'Inci. Gr.', sort_by: '', hides: false, search_by: '' },
+    { text: 'Super. Gr.', sort_by: '', hides: false, search_by: '' },
+  ];
 
   constructor(private store: Store<AppState>, private router: Router) {}
 
@@ -133,8 +143,7 @@ export class EmployeeListComponent implements OnInit {
     if (this.searchSubject.observers.length === 0) {
       this.searchSubject
         .pipe(debounceTime(1000), distinctUntilChanged())
-        .subscribe((filterQuery) => {
-          console.log(filterQuery);
+        .subscribe(() => {
           this.dispatchLoad();
         });
     }

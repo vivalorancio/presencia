@@ -12,15 +12,29 @@ import {
   Employee,
   EmployeeCollection,
 } from 'src/app/shared/models/employee.model';
-import { User } from 'src/app/shared/models/user.model';
 
 import * as employeesActions from '../../actions';
 import * as shiftsActions from '../../../shift/actions';
 import * as incidencesActions from '../../../incidence/actions';
-import { ShiftCollection } from 'src/app/shared/models/shift.model';
-import { IncidencesGroupCollection } from 'src/app/shared/models/incidence.model';
+import * as organizationActions from '../../../organization/actions';
+import {
+  ShiftCollection,
+  ShiftSearch,
+} from 'src/app/shared/models/shift.model';
+import {
+  IncidencesGroupCollection,
+  IncidencesGroupSearch,
+} from 'src/app/shared/models/incidence.model';
 import { ColourDropdownItem } from 'src/app/shared/colour-dropdown/colour-dropdown';
 import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
+import {
+  AreaCollection,
+  AreaSearch,
+  DepartmentCollection,
+  DepartmentSearch,
+  SectionCollection,
+  SectionSearch,
+} from 'src/app/shared/models/organization.model';
 
 const rangeValidator: any = (fg: FormGroup) => {
   let invalid = false;
@@ -52,6 +66,18 @@ export class EmployeeEditComponent implements OnInit {
   employee: Employee = {} as Employee;
   submiterror: any;
 
+  departments!: DepartmentCollection;
+  pending_departments: boolean = false;
+  selectedDepartmentId: number = -1;
+
+  areas!: AreaCollection;
+  pending_areas: boolean = false;
+  selectedAreaId: number = -1;
+
+  sections!: SectionCollection;
+  pending_sections: boolean = false;
+  selectedSectionId: number = -1;
+
   shifts!: ShiftCollection;
   pending_shifts: boolean = false;
   selectedShiftId: number = -1;
@@ -76,6 +102,60 @@ export class EmployeeEditComponent implements OnInit {
       this.pending = employees.pending;
       this.submiterror = employees.error;
     });
+    //if (this.departments.meta === null)
+    this.store.dispatch(
+      organizationActions.loadDepartments({
+        display: {
+          page: '1',
+          per_page: '10000',
+          sort_field: 'code',
+          sort_direction: 'asc',
+        },
+        search: {} as DepartmentSearch,
+      })
+    );
+
+    this.store.select('departments').subscribe((departments) => {
+      this.departments = departments.departments;
+      this.pending_departments = departments.pending;
+    });
+
+    //if (this.areas.meta === null)
+    this.store.dispatch(
+      organizationActions.loadAreas({
+        display: {
+          page: '1',
+          per_page: '10000',
+          sort_field: 'code',
+          sort_direction: 'asc',
+        },
+        search: {} as AreaSearch,
+      })
+    );
+
+    this.store.select('areas').subscribe((areas) => {
+      this.areas = areas.areas;
+      this.pending_areas = areas.pending;
+    });
+
+    //if (this.sections.meta === null)
+    this.store.dispatch(
+      organizationActions.loadSections({
+        display: {
+          page: '1',
+          per_page: '10000',
+          sort_field: 'code',
+          sort_direction: 'asc',
+        },
+        search: {} as SectionSearch,
+      })
+    );
+
+    this.store.select('sections').subscribe((sections) => {
+      this.sections = sections.sections;
+      this.pending_sections = sections.pending;
+    });
+
     //if (this.shifts.meta === null)
     this.store.dispatch(
       shiftsActions.loadShifts({
@@ -85,6 +165,7 @@ export class EmployeeEditComponent implements OnInit {
           sort_field: 'code',
           sort_direction: 'asc',
         },
+        search: {} as ShiftSearch,
       })
     );
 
@@ -92,15 +173,17 @@ export class EmployeeEditComponent implements OnInit {
       this.shifts = shifts.shifts;
       this.pending_shifts = shifts.pending;
     });
-    //if (this.shifts.meta === null)
+
+    //if (this.incidences_groups.meta === null)
     this.store.dispatch(
-      shiftsActions.loadShifts({
+      incidencesActions.loadIncidencesGroups({
         display: {
           page: '1',
           per_page: '10000',
           sort_field: 'code',
           sort_direction: 'asc',
         },
+        search: {} as IncidencesGroupSearch,
       })
     );
 
@@ -108,11 +191,6 @@ export class EmployeeEditComponent implements OnInit {
       this.incidences_groups = incidencesgroups.incidencesgroups;
       this.pending_incidences_groups = incidencesgroups.pending;
     });
-
-    if (this.incidences_groups.meta === null)
-      this.store.dispatch(
-        incidencesActions.loadIncidencesGroups({ page: '1' })
-      );
 
     this.route.params.subscribe((params) => {
       const id = +params.id;
@@ -124,6 +202,9 @@ export class EmployeeEditComponent implements OnInit {
       }
     });
 
+    this.selectedDepartmentId = this.employee.department?.id || -1;
+    this.selectedAreaId = this.employee.area?.id || -1;
+    this.selectedSectionId = this.employee.section?.id || -1;
     this.selectedShiftId = this.employee.default_shift?.id || -1;
     this.selectedIncidencesGroupId = this.employee.incidences_group?.id || -1;
     this.submitted = false;
@@ -174,15 +255,10 @@ export class EmployeeEditComponent implements OnInit {
         ],
         email: [this.employee.email, [Validators.email]],
         start_date: [
-          this.employee.start_date ||
-            dateAAAAMMDD(new Date(Date.now())) /* DD/MM/YY */,
+          this.employee.start_date || dateAAAAMMDD(new Date(Date.now())),
           [Validators.required],
         ],
-        end_date: [
-          this.employee.end_date /* DD/MM/YY !!!!!!AFTER START DATE!!!!! */,
-        ],
-        // shift_id: [this.employee.default_shift?.id],
-        // incidences_group_id: [this.employee.incidences_group?.id],
+        end_date: [this.employee.end_date],
         supervision_group_id: [this.employee.supervision_group_id],
         username: [this.employee.user?.username /*[Validators.***]*/],
         password: [
@@ -228,6 +304,10 @@ export class EmployeeEditComponent implements OnInit {
     this.submitted = true;
     let employeeToSave = {
       ...this.employeeForm.value,
+      department_id:
+        this.selectedDepartmentId === -1 ? null : this.selectedDepartmentId,
+      area_id: this.selectedAreaId === -1 ? null : this.selectedAreaId,
+      section_id: this.selectedSectionId === -1 ? null : this.selectedSectionId,
       shift_id: this.selectedShiftId === -1 ? null : this.selectedShiftId,
       incidences_group_id:
         this.selectedIncidencesGroupId === -1

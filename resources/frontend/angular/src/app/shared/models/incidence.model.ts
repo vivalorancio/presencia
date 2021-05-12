@@ -17,6 +17,11 @@ export interface IncidenceCollection {
   meta: any;
 }
 
+export interface IncidenceSearch {
+  code: string;
+  description: string;
+}
+
 export interface IncidencesGroup {
   id: number;
   code: string;
@@ -31,6 +36,11 @@ export interface IncidencesGroupCollection {
   data: IncidencesGroup[];
   links: any;
   meta: any;
+}
+
+export interface IncidencesGroupSearch {
+  code: string;
+  description: string;
 }
 
 export interface IncidencesGroupIncidence {

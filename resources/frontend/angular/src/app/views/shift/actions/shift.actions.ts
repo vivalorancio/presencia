@@ -4,6 +4,7 @@ import {
   Shift,
   ShiftCollection,
   ShiftResource,
+  ShiftSearch,
 } from 'src/app/shared/models/shift.model';
 
 // ------------ Load Shifts ----------
@@ -11,7 +12,7 @@ export const initShifts = createAction('[Shift Management] Init Shifts');
 // ------------ Load Shifts ----------
 export const loadShifts = createAction(
   '[Shift Management] Load Shifts',
-  props<{ display: DisplayResourceCollection }>()
+  props<{ display: DisplayResourceCollection; search: ShiftSearch }>()
 );
 export const loadShiftsSuccess = createAction(
   '[Shift Management] Load Shifts Success',

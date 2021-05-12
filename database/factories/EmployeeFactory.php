@@ -31,7 +31,10 @@ class EmployeeFactory extends Factory
             'end_date' => null,
             'incidences_group_id' => null,
             'supervision_group_id' => null,
-            'shift_id' => null
+            'shift_id' => null,
+            'department_id' => null,
+            'area_id' => null,
+            'section_id' => null,
         ];
     }
 }

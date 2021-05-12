@@ -19,7 +19,10 @@ class Employee extends Model
         'end_date',
         'incidences_group_id',
         'supervision_group_id',
-        'shift_id'
+        'shift_id',
+        'department_id',
+        'area_id',
+        'section_id',
     ];
 
     protected $hidden = [];
@@ -44,6 +47,21 @@ class Employee extends Model
     public function incidences_group()
     {
         return $this->belongsTo(IncidencesGroup::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function area()
+    {
+        return $this->belongsTo(Area::class);
+    }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
     }
 
     public function calendars()

@@ -116,7 +116,9 @@ export class ShiftEditComponent implements OnInit {
         end_time: [this.shift.end_time || '00:00'],
         expected_time: [this.shift.expected_time || '00:00'],
         recess_time: [this.shift.recess_time],
-        is_holiday: [this.shift.is_holiday ? this.shift.is_holiday : false],
+        is_holiday: [
+          this.shift.is_holiday !== undefined ? this.shift.is_holiday : false,
+        ],
       },
       { validator: timeValidator }
     );

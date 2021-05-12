@@ -25,6 +25,9 @@ class CreateEmployeesTable extends Migration
             $table->foreignId('incidences_group_id')->nullable();
             $table->foreignId('supervision_group_id')->nullable();
             $table->foreignId('shift_id')->nullable();
+            $table->foreignId('department_id')->nullable();
+            $table->foreignId('area_id')->nullable();
+            $table->foreignId('section_id')->nullable();
             $table->timestamps();
         });
     }

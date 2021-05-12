@@ -5,6 +5,7 @@ import { AppState } from 'src/app/app.reducers';
 import {
   Calendar,
   CalendarCollection,
+  CalendarSearch,
 } from 'src/app/shared/models/calendar.model';
 import {
   Employee,
@@ -65,8 +66,18 @@ export class EmployeecalendarListComponent implements OnInit {
       this.pending_employees = employees.pending;
     });
 
-    if (this.calendars.meta === null)
-      this.store.dispatch(calendarsActions.loadCalendars({ page: '1' }));
+    //if (this.calendars.meta === null)
+    this.store.dispatch(
+      calendarsActions.loadCalendars({
+        display: {
+          page: '1',
+          per_page: '10000',
+          sort_field: 'year',
+          sort_direction: 'asc',
+        },
+        search: {} as CalendarSearch,
+      })
+    );
 
     this.route.params.subscribe((params) => {
       this.employee_id = +params.employee_id;

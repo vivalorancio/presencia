@@ -25,12 +25,26 @@ export class IncidencesEffects {
     private store: Store<AppState>
   ) {}
 
+  initIncidences$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(incidencesActions.initIncidences),
+      withLatestFrom(this.store.select('incidences')),
+      map(([action, incidences]) =>
+        incidencesActions.loadIncidences({
+          display: incidences.display,
+          search: incidences.search,
+        })
+      ),
+      tap(() => this.router.navigate(['/management/incidences']))
+    )
+  );
+
   loadIncidences$ = createEffect(() =>
     this.actions$.pipe(
       ofType(incidencesActions.loadIncidences),
       // tap((action) => console.log(action)),
       mergeMap((action) =>
-        this.incidenceService.getIncidences(action.page).pipe(
+        this.incidenceService.getIncidences(action.display, action.search).pipe(
           map((incidences) =>
             incidencesActions.loadIncidencesSuccess({ incidences })
           ),
@@ -66,8 +80,13 @@ export class IncidencesEffects {
     this.actions$.pipe(
       ofType(incidencesActions.addIncidenceSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('incidences', 'page')),
-      map(([action, page]) => incidencesActions.loadIncidences({ page: page }))
+      withLatestFrom(this.store.select('incidences')),
+      map(([action, incidences]) =>
+        incidencesActions.loadIncidences({
+          display: incidences.display,
+          search: incidences.search,
+        })
+      )
     )
   );
 
@@ -95,8 +114,13 @@ export class IncidencesEffects {
     this.actions$.pipe(
       ofType(incidencesActions.updateIncidenceSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('incidences', 'page')),
-      map(([action, page]) => incidencesActions.loadIncidences({ page: page }))
+      withLatestFrom(this.store.select('incidences')),
+      map(([action, incidences]) =>
+        incidencesActions.loadIncidences({
+          display: incidences.display,
+          search: incidences.search,
+        })
+      )
     )
   );
 
@@ -124,8 +148,27 @@ export class IncidencesEffects {
     this.actions$.pipe(
       ofType(incidencesActions.deleteIncidenceSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('incidences', 'page')),
-      map(([action, page]) => incidencesActions.loadIncidences({ page: page }))
+      withLatestFrom(this.store.select('incidences')),
+      map(([action, incidences]) =>
+        incidencesActions.loadIncidences({
+          display: incidences.display,
+          search: incidences.search,
+        })
+      )
+    )
+  );
+
+  initIncidencesGroups$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(incidencesActions.initIncidencesGroups),
+      withLatestFrom(this.store.select('incidencesgroups')),
+      map(([action, incidencesgroups]) =>
+        incidencesActions.loadIncidencesGroups({
+          display: incidencesgroups.display,
+          search: incidencesgroups.search,
+        })
+      ),
+      tap(() => this.router.navigate(['/management/incidencesgroups']))
     )
   );
 
@@ -135,14 +178,18 @@ export class IncidencesEffects {
       ofType(incidencesActions.loadIncidencesGroups),
       // tap((action) => console.log(action)),
       mergeMap((action) =>
-        this.incidenceService.getIncidencesGroups(action.page).pipe(
-          map((incidencesgroups) =>
-            incidencesActions.loadIncidencesGroupsSuccess({ incidencesgroups })
-          ),
-          catchError((error) =>
-            of(incidencesActions.loadIncidencesGroupsFailure({ error }))
+        this.incidenceService
+          .getIncidencesGroups(action.display, action.search)
+          .pipe(
+            map((incidencesgroups) =>
+              incidencesActions.loadIncidencesGroupsSuccess({
+                incidencesgroups,
+              })
+            ),
+            catchError((error) =>
+              of(incidencesActions.loadIncidencesGroupsFailure({ error }))
+            )
           )
-        )
       )
     )
   );
@@ -171,9 +218,12 @@ export class IncidencesEffects {
     this.actions$.pipe(
       ofType(incidencesActions.addIncidencesGroupSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('incidencesgroups', 'page')),
-      map(([action, page]) =>
-        incidencesActions.loadIncidencesGroups({ page: page })
+      withLatestFrom(this.store.select('incidencesgroups')),
+      map(([action, incidencesgroups]) =>
+        incidencesActions.loadIncidencesGroups({
+          display: incidencesgroups.display,
+          search: incidencesgroups.search,
+        })
       )
     )
   );
@@ -202,9 +252,12 @@ export class IncidencesEffects {
     this.actions$.pipe(
       ofType(incidencesActions.updateIncidencesGroupSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('incidencesgroups', 'page')),
-      map(([action, page]) =>
-        incidencesActions.loadIncidencesGroups({ page: page })
+      withLatestFrom(this.store.select('incidencesgroups')),
+      map(([action, incidencesgroups]) =>
+        incidencesActions.loadIncidencesGroups({
+          display: incidencesgroups.display,
+          search: incidencesgroups.search,
+        })
       )
     )
   );
@@ -233,9 +286,12 @@ export class IncidencesEffects {
     this.actions$.pipe(
       ofType(incidencesActions.deleteIncidencesGroupSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('incidencesgroups', 'page')),
-      map(([action, page]) =>
-        incidencesActions.loadIncidencesGroups({ page: page })
+      withLatestFrom(this.store.select('incidencesgroups')),
+      map(([action, incidencesgroups]) =>
+        incidencesActions.loadIncidencesGroups({
+          display: incidencesgroups.display,
+          search: incidencesgroups.search,
+        })
       )
     )
   );
@@ -282,7 +338,7 @@ export class IncidencesEffects {
                 incidencesgroupincidence,
               })
             ),
-            //tap(() => this.router.navigate(['/management/employees'])),
+            //tap(() => this.router.navigate(['/management/incidences'])),
             catchError((error) =>
               of(
                 incidencesActions.addIncidencesGroupIncidenceFailure({ error })
@@ -321,7 +377,7 @@ export class IncidencesEffects {
                 message,
               })
             ),
-            //tap(() => this.router.navigate(['/management/employees'])),
+            //tap(() => this.router.navigate(['/management/incidences'])),
             catchError((error) =>
               of(
                 incidencesActions.deleteIncidencesGroupIncidenceFailure({

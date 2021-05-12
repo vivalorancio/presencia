@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
   Calendar,
   CalendarCollection,
   CalendarResource,
+  CalendarSearch,
   CalendarShiftCollection,
   CalendarShiftResource,
 } from 'src/app/shared/models/calendar.model';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +19,27 @@ export class CalendarService {
 
   //Calendars
 
-  getCalendars(page: string): Observable<CalendarCollection> {
-    return this.http.get<CalendarCollection>(`/api/calendars/?page=${page}`, {
+  getCalendars(
+    display: DisplayResourceCollection,
+    search: CalendarSearch
+  ): Observable<CalendarCollection> {
+    let params = new HttpParams();
+
+    params = params.append('page', display.page);
+    params = params.append('per_page', display.per_page);
+    params = params.append('sort_field', display.sort_field);
+    params = params.append('sort_direction', display.sort_direction);
+
+    params = search.year ? params.append('search_year', search.year) : params;
+    params = search.name ? params.append('search_name', search.name) : params;
+
+    return this.http.get<CalendarCollection>('/api/calendars/', {
       withCredentials: true,
+      params: params,
     });
+    // return this.http.get<CalendarCollection>(`/api/calendars/?page=${page}`, {
+    //   withCredentials: true,
+    // });
   }
 
   getCalendar(calendar_id: number): Observable<CalendarResource> {

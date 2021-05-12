@@ -7,7 +7,11 @@ import {
   CalendarCollection,
   CalendarShiftCollection,
 } from 'src/app/shared/models/calendar.model';
-import { Shift, ShiftCollection } from 'src/app/shared/models/shift.model';
+import {
+  Shift,
+  ShiftCollection,
+  ShiftSearch,
+} from 'src/app/shared/models/shift.model';
 import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
 
 import * as shiftsActions from '../../../shift/actions';
@@ -64,6 +68,7 @@ export class CalendarshiftsEditComponent implements OnInit {
           sort_field: 'code',
           sort_direction: 'asc',
         },
+        search: {} as ShiftSearch,
       })
     );
 

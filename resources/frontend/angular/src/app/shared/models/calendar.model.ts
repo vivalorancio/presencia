@@ -14,6 +14,11 @@ export interface CalendarCollection {
   meta: any;
 }
 
+export interface CalendarSearch {
+  name: string;
+  year: string;
+}
+
 export interface CalendarShift {
   id: number;
   calendar_id: number;

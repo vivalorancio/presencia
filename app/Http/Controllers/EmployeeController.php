@@ -127,12 +127,6 @@ class EmployeeController extends Controller
         return ["message" => "deleted"];
     }
 
-    public function search(AuthorizeAdminRequest $request)
-    {
-        //WIP
-        return ["a" => "OK"];
-    }
-
     public function shift(EmployeeSelfRequest $request, Employee $employee)
     {
         //     $employeeshift = $employee->shift;

@@ -74,10 +74,14 @@ export class IncidenceEditComponent implements OnInit {
         [Validators.required, Validators.maxLength(50)],
       ],
       is_counted: [
-        this.incidence.is_counted ? this.incidence.is_counted : true,
+        this.incidence.is_counted !== undefined
+          ? this.incidence.is_counted
+          : true,
       ],
       is_absence: [
-        this.incidence.is_absence ? this.incidence.is_absence : true,
+        this.incidence.is_absence !== undefined
+          ? this.incidence.is_absence
+          : true,
       ],
     });
   }

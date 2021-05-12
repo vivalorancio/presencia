@@ -1,4 +1,5 @@
 import { IncidencesGroup } from './incidence.model';
+import { Area, Department, Section } from './organization.model';
 import { Shift } from './shift.model';
 import { User } from './user.model';
 export interface Employee {
@@ -14,6 +15,9 @@ export interface Employee {
   incidences_group: IncidencesGroup;
   supervision_group_id: number;
   default_shift: Shift;
+  department: Department;
+  area: Area;
+  section: Section;
   is_manager: boolean;
   user: User;
 }

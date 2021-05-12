@@ -1,10 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AppState } from 'src/app/app.reducers';
 import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
-import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
-import { Shift, ShiftCollection } from 'src/app/shared/models/shift.model';
+import {
+  DisplayResourceCollection,
+  ListHeader,
+} from 'src/app/shared/models/resource.model';
+import {
+  Shift,
+  ShiftCollection,
+  ShiftSearch,
+} from 'src/app/shared/models/shift.model';
 
 import * as shiftsActions from '../../actions';
 
@@ -17,8 +26,26 @@ export class ShiftListComponent implements OnInit {
   shifts!: ShiftCollection;
   pending: boolean = false;
   display!: DisplayResourceCollection;
+  search!: ShiftSearch;
 
-  constructor(private router: Router, private store: Store<AppState>) {}
+  private searchSubject: Subject<ShiftSearch> = new Subject();
+
+  headers: ListHeader[] = [
+    { text: 'Code', sort_by: 'code', hides: false, search_by: 'code' },
+    {
+      text: 'Description',
+      sort_by: 'description',
+      hides: false,
+      search_by: 'description',
+    },
+    { text: 'Start Time', sort_by: '', hides: false, search_by: '' },
+    { text: 'End Time', sort_by: '', hides: false, search_by: '' },
+    { text: 'Expected Time', sort_by: '', hides: false, search_by: '' },
+    { text: 'Recess Time', sort_by: '', hides: false, search_by: '' },
+    { text: 'Holiday', sort_by: 'is_holiday', hides: false, search_by: '' },
+  ];
+
+  constructor(private store: Store<AppState>, private router: Router) {}
 
   ngOnInit(): void {
     this.display = {
@@ -27,6 +54,10 @@ export class ShiftListComponent implements OnInit {
       sort_field: 'code',
       sort_direction: 'asc',
     };
+    this.search = {
+      description: '',
+      code: '',
+    };
 
     this.store.select('shifts').subscribe((shifts) => {
       this.shifts = shifts.shifts;
@@ -34,8 +65,7 @@ export class ShiftListComponent implements OnInit {
       this.display = shifts.display;
     });
 
-    if (this.shifts.meta === null)
-      this.store.dispatch(shiftsActions.loadShifts({ display: this.display }));
+    if (this.shifts.meta === null) this.dispatchLoad();
   }
 
   getTextColourFromName = getTextColourFromName;
@@ -49,6 +79,7 @@ export class ShiftListComponent implements OnInit {
     this.store.dispatch(
       shiftsActions.loadShifts({
         display: this.display,
+        search: this.search,
       })
     );
   }
@@ -88,5 +119,40 @@ export class ShiftListComponent implements OnInit {
     const per_page = event.target.value;
     this.display = { ...this.display, per_page: per_page, page: '1' };
     this.dispatchLoad();
+  }
+
+  initSearch() {
+    if (this.searchSubject.observers.length === 0) {
+      this.searchSubject
+        .pipe(debounceTime(1000), distinctUntilChanged())
+        .subscribe(() => {
+          this.dispatchLoad();
+        });
+    }
+  }
+
+  doSearch(from: string, event: any) {
+    this.initSearch();
+
+    if (this.search[from as keyof ShiftSearch] === event.target.value) return;
+
+    this.search = {
+      ...this.search,
+      [from as keyof ShiftSearch]: event.target.value,
+    };
+
+    this.display = { ...this.display, page: '1' };
+
+    this.searchSubject.next(this.search);
+  }
+  clearSearch() {
+    this.search = {
+      code: '',
+      description: '',
+    };
+
+    this.display = { ...this.display, page: '1' };
+
+    this.searchSubject.next(this.search);
   }
 }

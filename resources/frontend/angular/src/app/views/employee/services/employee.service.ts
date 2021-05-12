@@ -45,7 +45,7 @@ export class EmployeeService {
 
     // return this._HttpClient.get(`${API_URL}/api/v1/data/logs`, { params: params })
 
-    return this.http.get<EmployeeCollection>(`/api/employees/`, {
+    return this.http.get<EmployeeCollection>('/api/employees/', {
       withCredentials: true,
       params: params,
     });

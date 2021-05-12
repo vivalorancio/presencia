@@ -18,9 +18,12 @@ class EmployeeUpdateRequest extends AuthorizeAdminRequest
             'email' => 'nullable|sometimes|email',
             'start_date' => 'nullable|sometimes|dateformat:Y-m-d',
             'end_date' => 'nullable|sometimes|dateformat:Y-m-d|after_or_equal:start_date',
-            'incidences_group_id' => 'nullable|sometimes|integer',
+            'incidences_group_id' => 'nullable|sometimes|integer|exists:incidences_groups,id',
             'supervision_group_id' => 'nullable|sometimes|integer',
-            'shift_id' => 'nullable|sometimes|integer',
+            'shift_id' => 'nullable|sometimes|integer|exists:shifts,id',
+            'department_id' => 'nullable|sometimes|integer|exists:departments,id',
+            'area_id' => 'nullable|sometimes|integer|exists:areas,id',
+            'section_id' => 'nullable|sometimes|integer|exists:sections,id',
             'username' => [
                 'nullable', 'sometimes', 'string',
                 Rule::unique('users')->whereNot('employee_id', $this->employee->id)

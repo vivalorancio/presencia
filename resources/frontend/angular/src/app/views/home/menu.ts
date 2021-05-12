@@ -3,6 +3,8 @@ import { Store } from '@ngrx/store';
 import * as employeesActions from '../../views/employee/actions';
 import * as shiftsActions from '../../views/shift/actions';
 import * as calendarsActions from '../../views/calendar/actions';
+import * as incidencesActions from '../../views/incidence/actions';
+import * as organizationActions from '../../views/organization/actions';
 
 export interface MenuItem {
   label: string;
@@ -51,16 +53,22 @@ export function initManagementStore(store: Store, link: string): void {
       store.dispatch(shiftsActions.initShifts());
       break;
     case 'calendars':
+      store.dispatch(calendarsActions.initCalendars());
       break;
     case 'incidences':
+      store.dispatch(incidencesActions.initIncidences());
       break;
     case 'incidencesgroups':
+      store.dispatch(incidencesActions.initIncidencesGroups());
       break;
     case 'departments':
+      store.dispatch(organizationActions.initDepartments());
       break;
     case 'areas':
+      store.dispatch(organizationActions.initAreas());
       break;
     case 'sections':
+      store.dispatch(organizationActions.initSections());
       break;
     case 'supervisiongroups':
       break;

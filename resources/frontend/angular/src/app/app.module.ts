@@ -26,6 +26,8 @@ import { CalendarModule } from './views/calendar/calendar.module';
 import { CalendarsEffects } from './views/calendar/effects';
 import { IncidenceModule } from './views/incidence/incidence.module';
 import { IncidencesEffects } from './views/incidence/effects';
+import { OrganizationModule } from './views/organization/organization.module';
+import { OrganizationEffects } from './views/organization/effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, MainComponent, FooterComponent],
@@ -41,6 +43,7 @@ import { IncidencesEffects } from './views/incidence/effects';
     ShiftModule,
     CalendarModule,
     IncidenceModule,
+    OrganizationModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -52,6 +55,7 @@ import { IncidencesEffects } from './views/incidence/effects';
       ShiftsEffects,
       CalendarsEffects,
       IncidencesEffects,
+      OrganizationEffects,
     ]),
   ],
   providers: [],

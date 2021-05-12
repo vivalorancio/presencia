@@ -35,7 +35,15 @@ class ShiftController extends Controller
             $request_orderDirection = $this->orderDirection;
         }
 
-        $shifts = Shift::orderBy($request_orderBy, $request_orderDirection)->paginate($request_perPage);
+        $search_code = request('search_code', '');
+        $search_description = request('search_description', '');
+
+        $shifts = Shift::when($search_code != '', function ($query) use ($search_code) {
+            $query->where('code', 'LIKE', '%' . $search_code . '%');
+        })->when($search_description != '', function ($query) use ($search_description) {
+            $query->where('description', 'LIKE', '%' . $search_description . '%');
+        })->orderBy($request_orderBy, $request_orderDirection)->paginate($request_perPage);
+
         return ShiftResource::collection($shifts);
     }
 

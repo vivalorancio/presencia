@@ -4,6 +4,7 @@ import * as authentication from './views/authentication/reducers';
 import * as employees from './views/employee/reducers';
 import * as shifts from './views/shift/reducers';
 import * as incidences from './views/incidence/reducers';
+import * as organization from './views/organization/reducers';
 import * as calendars from './views/calendar/reducers';
 
 export interface AppState {
@@ -16,6 +17,9 @@ export interface AppState {
   incidences: incidences.IncidencesState;
   incidencesgroups: incidences.IncidencesGroupsState;
   incidencesgroupincidences: incidences.IncidencesGroupIncidencesState;
+  departments: organization.DepartmentsState;
+  areas: organization.AreasState;
+  sections: organization.SectionsState;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
@@ -28,4 +32,7 @@ export const appReducers: ActionReducerMap<AppState> = {
   incidences: incidences.incidencesReducer,
   incidencesgroups: incidences.incidencesgroupsReducer,
   incidencesgroupincidences: incidences.incidencesgroupincidencesReducer,
+  departments: organization.departmentsReducer,
+  areas: organization.areasReducer,
+  sections: organization.sectionsReducer,
 };

@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 
 class CalendarController extends Controller
 {
+    private $orderBy = 'year';
+    private $orderDirection = 'asc';
+    private $perPage = '25';
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +22,29 @@ class CalendarController extends Controller
      */
     public function index(AuthorizeAdminRequest $request)
     {
-        $calendars = Calendar::paginate(25);
+        $request_perPage = request('per_page', $this->perPage);
+
+        $request_orderBy = request('sort_field', $this->orderBy);
+        if (!in_array($request_orderBy, ['year', 'name'])) {
+            $request_orderBy = $this->orderBy;
+        }
+
+        $request_orderDirection = request('sort_direction', $this->orderDirection);
+        if (!in_array($request_orderDirection, ['asc', 'desc'])) {
+            $request_orderDirection = $this->orderDirection;
+        }
+
+        $search_year = request('search_year', '');
+        $search_name = request('search_name', '');
+
+
+
+        $calendars = Calendar::when($search_year != '', function ($query) use ($search_year) {
+            $query->where('year', 'LIKE', '%' . $search_year . '%');
+        })->when($search_name != '', function ($query) use ($search_name) {
+            $query->where('name', 'LIKE', '%' . $search_name . '%');
+        })->orderBy($request_orderBy, $request_orderDirection)->paginate($request_perPage);
+
         return CalendarResource::collection($calendars);
     }
 

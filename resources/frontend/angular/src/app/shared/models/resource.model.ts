@@ -9,4 +9,5 @@ export interface ListHeader {
   text: string;
   sort_by: string;
   hides: boolean;
+  search_by: string;
 }

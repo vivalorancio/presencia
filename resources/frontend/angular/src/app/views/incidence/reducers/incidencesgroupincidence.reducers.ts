@@ -1,9 +1,5 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
-import {
-  IncidencesGroupIncidence,
-  IncidencesGroupIncidenceCollection,
-} from 'src/app/shared/models/incidence.model';
+import { IncidencesGroupIncidenceCollection } from 'src/app/shared/models/incidence.model';
 import * as incidencesActions from '../actions';
 
 export interface IncidencesGroupIncidencesState {
@@ -14,13 +10,14 @@ export interface IncidencesGroupIncidencesState {
   incidencesgroupincidences: IncidencesGroupIncidenceCollection;
 }
 
-export const initialIncidencesGroupIncidencesState: IncidencesGroupIncidencesState = {
-  error: null,
-  page: '',
-  pending: false,
-  incidencesgroup_id: -1,
-  incidencesgroupincidences: { data: [], links: null, meta: null },
-};
+export const initialIncidencesGroupIncidencesState: IncidencesGroupIncidencesState =
+  {
+    error: null,
+    page: '',
+    pending: false,
+    incidencesgroup_id: -1,
+    incidencesgroupincidences: { data: [], links: null, meta: null },
+  };
 
 export const _incidencesgroupincidencesReducer = createReducer(
   initialIncidencesGroupIncidencesState,

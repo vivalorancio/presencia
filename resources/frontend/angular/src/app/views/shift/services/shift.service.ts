@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
   Shift,
   ShiftCollection,
   ShiftResource,
+  ShiftSearch,
 } from 'src/app/shared/models/shift.model';
 import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
@@ -14,13 +15,32 @@ import { DisplayResourceCollection } from 'src/app/shared/models/resource.model'
 export class ShiftService {
   constructor(private http: HttpClient) {}
 
-  getShifts(display: DisplayResourceCollection): Observable<ShiftCollection> {
-    return this.http.get<ShiftCollection>(
-      `/api/shifts/?page=${display.page}&per_page=${display.per_page}&sort_field=${display.sort_field}&sort_direction=${display.sort_direction}`,
-      {
-        withCredentials: true,
-      }
-    );
+  getShifts(
+    display: DisplayResourceCollection,
+    search: ShiftSearch
+  ): Observable<ShiftCollection> {
+    let params = new HttpParams();
+
+    params = params.append('page', display.page);
+    params = params.append('per_page', display.per_page);
+    params = params.append('sort_field', display.sort_field);
+    params = params.append('sort_direction', display.sort_direction);
+
+    params = search.code ? params.append('search_code', search.code) : params;
+    params = search.description
+      ? params.append('search_description', search.description)
+      : params;
+
+    return this.http.get<ShiftCollection>('/api/shifts/', {
+      withCredentials: true,
+      params: params,
+    });
+    // return this.http.get<ShiftCollection>(
+    //   `/api/shifts/?page=${display.page}&per_page=${display.per_page}&sort_field=${display.sort_field}&sort_direction=${display.sort_direction}`,
+    //   {
+    //     withCredentials: true,
+    //   }
+    // );
   }
 
   getShift(shift_id: number): Observable<ShiftResource> {

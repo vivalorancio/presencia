@@ -19,3 +19,8 @@ export interface ShiftCollection {
   links: any;
   meta: any;
 }
+
+export interface ShiftSearch {
+  code: string;
+  description: string;
+}

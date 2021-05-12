@@ -1,30 +1,39 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
 import {
-  Incidence,
   IncidenceCollection,
+  IncidenceSearch,
 } from 'src/app/shared/models/incidence.model';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 import * as incidencesActions from '../actions';
 
 export interface IncidencesState {
   error: string | null;
-  page: string;
+  display: DisplayResourceCollection;
+  search: IncidenceSearch;
   pending: boolean;
   incidences: IncidenceCollection;
 }
 
 export const initialState: IncidencesState = {
   error: null,
-  page: '',
+  display: {
+    page: '1',
+    per_page: '25',
+    sort_field: 'code',
+    sort_direction: 'asc',
+  },
+  search: {} as IncidenceSearch,
   pending: false,
   incidences: { data: [], links: null, meta: null },
 };
 
 export const _incidencesReducer = createReducer(
   initialState,
-  on(incidencesActions.loadIncidences, (state, { page }) => ({
+  on(incidencesActions.initIncidences, (state) => ({ ...initialState })),
+  on(incidencesActions.loadIncidences, (state, { display, search }) => ({
     ...state,
-    page,
+    display,
+    search,
     pending: true,
   })),
   on(incidencesActions.loadIncidencesSuccess, (state, { incidences }) => ({

@@ -7,6 +7,7 @@ import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
 import {
   Incidence,
   IncidenceCollection,
+  IncidenceSearch,
   IncidencesGroup,
   IncidencesGroupCollection,
   IncidencesGroupIncidence,
@@ -56,13 +57,23 @@ export class IncidencesgroupincidenceListComponent implements OnInit {
         this.selectedIncidenceId = -1;
       });
 
+    //if (this.incidences.meta === null)
+    this.store.dispatch(
+      incidencesActions.loadIncidences({
+        display: {
+          page: '1',
+          per_page: '10000',
+          sort_field: 'code',
+          sort_direction: 'asc',
+        },
+        search: {} as IncidenceSearch,
+      })
+    );
+
     this.store.select('incidences').subscribe((incidences) => {
       this.incidences = incidences.incidences;
       this.pending_incidences = incidences.pending;
     });
-
-    if (this.incidences.meta === null)
-      this.store.dispatch(incidencesActions.loadIncidences({ page: '1' }));
 
     this.store.select('incidencesgroups').subscribe((incidencesgroups) => {
       this.incidencesgroups = incidencesgroups.incidencesgroups;

@@ -1,30 +1,39 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
 import {
-  Calendar,
   CalendarCollection,
+  CalendarSearch,
 } from 'src/app/shared/models/calendar.model';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 import * as calendarsActions from '../actions';
 
 export interface CalendarsState {
   error: string | null;
-  page: string;
+  display: DisplayResourceCollection;
+  search: CalendarSearch;
   pending: boolean;
   calendars: CalendarCollection;
 }
 
 export const initialCalendarsState: CalendarsState = {
   error: null,
-  page: '',
+  display: {
+    page: '1',
+    per_page: '25',
+    sort_field: 'year',
+    sort_direction: 'asc',
+  },
+  search: {} as CalendarSearch,
   pending: false,
   calendars: { data: [], links: null, meta: null },
 };
 
 export const _calendarsReducer = createReducer(
   initialCalendarsState,
-  on(calendarsActions.loadCalendars, (state, { page }) => ({
+  on(calendarsActions.initCalendars, (state) => ({ ...initialCalendarsState })),
+  on(calendarsActions.loadCalendars, (state, { display, search }) => ({
     ...state,
-    page,
+    display,
+    search,
     pending: true,
   })),
   on(calendarsActions.loadCalendarsSuccess, (state, { calendars }) => ({

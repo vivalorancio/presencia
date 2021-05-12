@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
   Incidence,
   IncidenceCollection,
   IncidenceResource,
+  IncidenceSearch,
   IncidencesGroup,
   IncidencesGroupCollection,
   IncidencesGroupIncidence,
   IncidencesGroupIncidenceCollection,
   IncidencesGroupIncidenceResource,
   IncidencesGroupResource,
+  IncidencesGroupSearch,
 } from 'src/app/shared/models/incidence.model';
+import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,10 +24,30 @@ export class IncidenceService {
 
   //Incidences
 
-  getIncidences(page: string): Observable<IncidenceCollection> {
-    return this.http.get<IncidenceCollection>(`/api/incidences/?page=${page}`, {
+  getIncidences(
+    display: DisplayResourceCollection,
+    search: IncidenceSearch
+  ): Observable<IncidenceCollection> {
+    let params = new HttpParams();
+
+    params = params.append('page', display.page);
+    params = params.append('per_page', display.per_page);
+    params = params.append('sort_field', display.sort_field);
+    params = params.append('sort_direction', display.sort_direction);
+
+    params = search.code ? params.append('search_code', search.code) : params;
+    params = search.description
+      ? params.append('search_description', search.description)
+      : params;
+
+    return this.http.get<IncidenceCollection>('/api/incidences/', {
       withCredentials: true,
+      params: params,
     });
+
+    // return this.http.get<IncidenceCollection>(`/api/incidences/?page=${page}`, {
+    //   withCredentials: true,
+    // });
   }
 
   getIncidence(incidence_id: number): Observable<IncidenceResource> {
@@ -51,13 +74,32 @@ export class IncidenceService {
 
   // Incidences Groups
 
-  getIncidencesGroups(page: string): Observable<IncidencesGroupCollection> {
-    return this.http.get<IncidencesGroupCollection>(
-      `/api/incidences_groups/?page=${page}`,
-      {
-        withCredentials: true,
-      }
-    );
+  getIncidencesGroups(
+    display: DisplayResourceCollection,
+    search: IncidencesGroupSearch
+  ): Observable<IncidencesGroupCollection> {
+    let params = new HttpParams();
+
+    params = params.append('page', display.page);
+    params = params.append('per_page', display.per_page);
+    params = params.append('sort_field', display.sort_field);
+    params = params.append('sort_direction', display.sort_direction);
+
+    params = search.code ? params.append('search_code', search.code) : params;
+    params = search.description
+      ? params.append('search_description', search.description)
+      : params;
+
+    return this.http.get<IncidencesGroupCollection>('/api/incidences_groups/', {
+      withCredentials: true,
+      params: params,
+    });
+    // return this.http.get<IncidencesGroupCollection>(
+    //   `/api/incidences_groups/?page=${page}`,
+    //   {
+    //     withCredentials: true,
+    //   }
+    // );
   }
 
   getIncidencesGroup(

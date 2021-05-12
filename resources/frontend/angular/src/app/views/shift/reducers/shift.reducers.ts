@@ -1,12 +1,15 @@
-import { state } from '@angular/animations';
 import { createReducer, on } from '@ngrx/store';
 import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
-import { Shift, ShiftCollection } from 'src/app/shared/models/shift.model';
+import {
+  ShiftCollection,
+  ShiftSearch,
+} from 'src/app/shared/models/shift.model';
 import * as shiftsActions from '../actions';
 
 export interface ShiftsState {
   error: string | null;
   display: DisplayResourceCollection;
+  search: ShiftSearch;
   pending: boolean;
   shifts: ShiftCollection;
 }
@@ -19,6 +22,7 @@ export const initialState: ShiftsState = {
     sort_field: 'code',
     sort_direction: 'asc',
   },
+  search: {} as ShiftSearch,
   pending: false,
   shifts: { data: [], links: null, meta: null },
 };
@@ -26,9 +30,10 @@ export const initialState: ShiftsState = {
 export const _shiftsReducer = createReducer(
   initialState,
   on(shiftsActions.initShifts, (state) => ({ ...initialState })),
-  on(shiftsActions.loadShifts, (state, { display }) => ({
+  on(shiftsActions.loadShifts, (state, { display, search }) => ({
     ...state,
     display,
+    search,
     pending: true,
   })),
   on(shiftsActions.loadShiftsSuccess, (state, { shifts }) => ({

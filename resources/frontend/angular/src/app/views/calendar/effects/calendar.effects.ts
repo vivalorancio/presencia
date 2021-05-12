@@ -25,12 +25,26 @@ export class CalendarsEffects {
     private store: Store<AppState>
   ) {}
 
+  initCalendars$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(calendarsActions.initCalendars),
+      withLatestFrom(this.store.select('calendars')),
+      map(([action, calendars]) =>
+        calendarsActions.loadCalendars({
+          display: calendars.display,
+          search: calendars.search,
+        })
+      ),
+      tap(() => this.router.navigate(['/management/calendars']))
+    )
+  );
+
   loadCalendars$ = createEffect(() =>
     this.actions$.pipe(
       ofType(calendarsActions.loadCalendars),
       // tap((action) => console.log(action)),
       mergeMap((action) =>
-        this.calendarService.getCalendars(action.page).pipe(
+        this.calendarService.getCalendars(action.display, action.search).pipe(
           map((calendars) =>
             calendarsActions.loadCalendarsSuccess({ calendars })
           ),
@@ -64,8 +78,13 @@ export class CalendarsEffects {
     this.actions$.pipe(
       ofType(calendarsActions.addCalendarSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('calendars', 'page')),
-      map(([action, page]) => calendarsActions.loadCalendars({ page: page }))
+      withLatestFrom(this.store.select('calendars')),
+      map(([action, calendars]) =>
+        calendarsActions.loadCalendars({
+          display: calendars.display,
+          search: calendars.search,
+        })
+      )
     )
   );
 
@@ -93,8 +112,13 @@ export class CalendarsEffects {
     this.actions$.pipe(
       ofType(calendarsActions.updateCalendarSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('calendars', 'page')),
-      map(([action, page]) => calendarsActions.loadCalendars({ page: page }))
+      withLatestFrom(this.store.select('calendars')),
+      map(([action, calendars]) =>
+        calendarsActions.loadCalendars({
+          display: calendars.display,
+          search: calendars.search,
+        })
+      )
     )
   );
 
@@ -120,8 +144,13 @@ export class CalendarsEffects {
     this.actions$.pipe(
       ofType(calendarsActions.deleteCalendarSuccess),
       // tap((action) => console.log(action)),
-      withLatestFrom(this.store.select('calendars', 'page')),
-      map(([action, page]) => calendarsActions.loadCalendars({ page: page }))
+      withLatestFrom(this.store.select('calendars')),
+      map(([action, calendars]) =>
+        calendarsActions.loadCalendars({
+          display: calendars.display,
+          search: calendars.search,
+        })
+      )
     )
   );
 
