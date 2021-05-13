@@ -38,6 +38,9 @@ export interface EmployeeSearch {
   national_id: string;
   email: string;
   validity: string;
+  department: string;
+  area: string;
+  section: string;
 }
 export interface EmployeeCalendar {
   id: number;

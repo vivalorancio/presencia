@@ -143,4 +143,8 @@ export class CalendarListComponent implements OnInit {
 
     this.searchSubject.next(this.search);
   }
+
+  toKey(sb: string): keyof CalendarSearch {
+    return sb as keyof CalendarSearch;
+  }
 }

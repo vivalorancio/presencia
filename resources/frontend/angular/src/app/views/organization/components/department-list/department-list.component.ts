@@ -147,4 +147,8 @@ export class DepartmentListComponent implements OnInit {
 
     this.searchSubject.next(this.search);
   }
+
+  toKey(sb: string): keyof DepartmentSearch {
+    return sb as keyof DepartmentSearch;
+  }
 }

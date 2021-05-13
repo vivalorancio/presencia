@@ -146,4 +146,8 @@ export class SectionListComponent implements OnInit {
 
     this.searchSubject.next(this.search);
   }
+
+  toKey(sb: string): keyof SectionSearch {
+    return sb as keyof SectionSearch;
+  }
 }

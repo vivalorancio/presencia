@@ -155,4 +155,8 @@ export class ShiftListComponent implements OnInit {
 
     this.searchSubject.next(this.search);
   }
+
+  toKey(sb: string): keyof ShiftSearch {
+    return sb as keyof ShiftSearch;
+  }
 }

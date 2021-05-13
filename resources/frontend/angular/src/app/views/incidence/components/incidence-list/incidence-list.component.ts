@@ -154,4 +154,8 @@ export class IncidenceListComponent implements OnInit {
 
     this.searchSubject.next(this.search);
   }
+
+  toKey(sb: string): keyof IncidenceSearch {
+    return sb as keyof IncidenceSearch;
+  }
 }

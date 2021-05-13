@@ -42,6 +42,13 @@ export class EmployeeService {
     params = search.validity
       ? params.append('search_validity', search.validity)
       : params;
+    params = search.department
+      ? params.append('search_department', search.department)
+      : params;
+    params = search.area ? params.append('search_area', search.area) : params;
+    params = search.section
+      ? params.append('search_section', search.section)
+      : params;
 
     // return this._HttpClient.get(`${API_URL}/api/v1/data/logs`, { params: params })
 

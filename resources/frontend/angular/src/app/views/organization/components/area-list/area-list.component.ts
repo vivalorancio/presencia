@@ -146,4 +146,8 @@ export class AreaListComponent implements OnInit {
 
     this.searchSubject.next(this.search);
   }
+
+  toKey(sb: string): keyof AreaSearch {
+    return sb as keyof AreaSearch;
+  }
 }

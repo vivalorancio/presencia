@@ -149,4 +149,8 @@ export class IncidencesgroupListComponent implements OnInit {
 
     this.searchSubject.next(this.search);
   }
+
+  toKey(sb: string): keyof IncidencesGroupSearch {
+    return sb as keyof IncidencesGroupSearch;
+  }
 }

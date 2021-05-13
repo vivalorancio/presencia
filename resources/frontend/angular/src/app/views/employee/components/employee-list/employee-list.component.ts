@@ -55,7 +55,24 @@ export class EmployeeListComponent implements OnInit {
     },
     { text: 'Def. Shift', sort_by: '', hides: false, search_by: '' },
     { text: 'Inci. Gr.', sort_by: '', hides: false, search_by: '' },
-    { text: 'Super. Gr.', sort_by: '', hides: false, search_by: '' },
+    {
+      text: 'Department',
+      sort_by: 'department',
+      hides: false,
+      search_by: 'department',
+    },
+    {
+      text: 'Area',
+      sort_by: 'area',
+      hides: false,
+      search_by: 'area',
+    },
+    {
+      text: 'Section',
+      sort_by: 'section',
+      hides: false,
+      search_by: 'section',
+    },
   ];
 
   constructor(private store: Store<AppState>, private router: Router) {}
@@ -73,6 +90,9 @@ export class EmployeeListComponent implements OnInit {
       national_id: '',
       email: '',
       validity: '',
+      department: '',
+      area: '',
+      section: '',
     };
 
     this.store.select('employees').subscribe((employees) => {
@@ -171,10 +191,17 @@ export class EmployeeListComponent implements OnInit {
       national_id: '',
       email: '',
       validity: '',
+      department: '',
+      area: '',
+      section: '',
     };
 
     this.display = { ...this.display, page: '1' };
 
     this.searchSubject.next(this.search);
+  }
+
+  toKey(sb: string): keyof EmployeeSearch {
+    return sb as keyof EmployeeSearch;
   }
 }
