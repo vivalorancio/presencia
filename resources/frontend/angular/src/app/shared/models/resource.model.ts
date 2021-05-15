@@ -5,6 +5,13 @@ export interface DisplayResourceCollection {
   sort_direction: string;
 }
 
+export interface DisplayBookingsCollection {
+  page: string;
+  per_page: string;
+  start_date: string;
+  end_date: string;
+}
+
 export interface ListHeader {
   text: string;
   sort_by: string;

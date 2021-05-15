@@ -23,7 +23,6 @@ export class DashboardComponent implements OnInit {
 
   incidences: Incidence[] = [];
   selectedIncidenceId: number = -1;
-
   datetime!: Date;
   pending: boolean = false;
 

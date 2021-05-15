@@ -42,8 +42,8 @@
         <ng-container *ngFor="let menuitem of dashboardMenu">
           <ng-container *ngIf="menuitem.items === undefined">
             <a
-              routerLink="{{ menuitem.link }}"
-              class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md  lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+              (click)="navigateDashboard(menuitem.link)"
+              class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md cursor-pointer  lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
               >{{ menuitem.label }}</a
             >
           </ng-container>
@@ -88,8 +88,8 @@
               >
                 <div class="px-2 py-2 bg-white rounded-md shadow">
                   <a
-                    class="block px-3 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md  lg:mt-0 hover:text-gray-100 focus:text-gray-100 hover:bg-primary-400 focus:bg-primary-400 focus:outline-none focus:shadow-outline"
-                    routerLink="{{ submenuitem.link }}"
+                    class="block px-3 py-2 mt-2 text-sm font-semibold bg-transparent rounded-md cursor-pointer  lg:mt-0 hover:text-gray-100 focus:text-gray-100 hover:bg-primary-400 focus:bg-primary-400 focus:outline-none focus:shadow-outline"
+                    (click)="navigateDashboard(submenuitem.link)"
                     *ngFor="let submenuitem of menuitem.items"
                     >{{ submenuitem.label }}</a
                   >

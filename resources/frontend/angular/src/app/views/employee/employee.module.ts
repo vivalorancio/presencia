@@ -9,12 +9,14 @@ import { ColourDropdownModule } from 'src/app/shared/colour-dropdown/colour-drop
 import { SpinnerOverlayModule } from 'src/app/shared/spinner-overlay/spinner-overlay.module';
 import { DialogsModule } from 'src/app/shared/dialogs/dialogs.module';
 import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
+import { BookingsListComponent } from './components/bookings-list/bookings-list.component';
 
 @NgModule({
   declarations: [
     EmployeeListComponent,
     EmployeeEditComponent,
     EmployeecalendarListComponent,
+    BookingsListComponent,
   ],
   imports: [
     CommonModule,

@@ -12,7 +12,11 @@ import {
 } from 'src/app/shared/models/employee.model';
 import { ShiftResource } from 'src/app/shared/models/shift.model';
 import { Incidence } from 'src/app/shared/models/incidence.model';
-import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
+import { DayBookingsCollection } from 'src/app/shared/models/booking.model';
+import {
+  DisplayBookingsCollection,
+  DisplayResourceCollection,
+} from 'src/app/shared/models/resource.model';
 
 @Injectable({
   providedIn: 'root',
@@ -144,6 +148,26 @@ export class EmployeeService {
       `/api/employees/${employee_id}/incidences`,
       {
         withCredentials: true,
+      }
+    );
+  }
+
+  getEmployeeBookings(
+    employee_id: number,
+    bookingsdisplay: DisplayBookingsCollection
+  ): Observable<DayBookingsCollection> {
+    let params = new HttpParams();
+
+    params = params.append('page', bookingsdisplay.page);
+    params = params.append('per_page', bookingsdisplay.per_page);
+    params = params.append('start_date', bookingsdisplay.start_date);
+    params = params.append('end_date', bookingsdisplay.end_date);
+
+    return this.http.get<DayBookingsCollection>(
+      `/api/employees/${employee_id}/bookings`,
+      {
+        withCredentials: true,
+        params: params,
       }
     );
   }

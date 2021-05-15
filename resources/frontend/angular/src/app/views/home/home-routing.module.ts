@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from 'src/app/shared/layout/main/main.component';
 import { AdminGuard } from '../authentication/guards/admin.guard';
 import { AuthenticationGuard } from '../authentication/guards/authentication.guard';
+import { BookingsListComponent } from '../employee/components/bookings-list/bookings-list.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { ManagementComponent } from './management/management.component';
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: '',
         component: DashboardComponent,
+      },
+      {
+        path: 'bookings',
+        component: BookingsListComponent,
       },
     ],
     canActivate: [AuthenticationGuard],

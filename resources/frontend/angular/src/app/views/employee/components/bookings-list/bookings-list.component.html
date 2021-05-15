@@ -1,0 +1,188 @@
+<app-spinner-overlay
+  [active]="pending"
+  [text]="'Loading ...'"
+></app-spinner-overlay>
+
+<div class="mx-auto max-w-screen-2xl">
+  <div class="mx-6 my-6 border-t-4 rounded-md shadow border-secondary-500">
+    <div class="px-4 py-5 bg-white rounded-md sm:p-6">
+      <h3 class="pb-6 text-2xl font-semibold leading-6 text-gray-700">
+        Bookings
+      </h3>
+      <div class="items-center justify-between sm:flex sm:flex-row-reverse">
+        <div class="flex space-x-4">
+          <app-pagination
+            *ngIf="bookings.meta"
+            [active]="!pending"
+            [meta]="bookings.meta"
+            (page)="loadpage($event)"
+          ></app-pagination>
+        </div>
+      </div>
+
+      <table class="min-w-full my-2 border-b divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              *ngFor="let header of headers"
+              scope="col"
+              [class]="{
+                hidden: header.hides,
+                'lg:table-cell': header.hides,
+                'cursor-pointer': header.sort_by
+              }"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase  text-primary-500"
+            >
+              <div class="flex items-center space-x-1">
+                <div>{{ header.text }}</div>
+              </div>
+            </th>
+            <th scope="col" class="relative px-6 py-3">
+              <span class="sr-only">Actions</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="font-mono bg-white divide-y divide-gray-200">
+          <tr
+            *ngFor="let booking of bookings.data"
+            class="align-top hover:bg-gray-100"
+          >
+            <td class="px-1 py-2 whitespace-normal lg:whitespace-nowrap">
+              <div class="flex items-center space-x-2">
+                <div class="text-sm font-medium text-gray-900">
+                  {{ booking.day | date: "dd/MM/yyyy" }}
+                </div>
+                <div
+                  class="font-sans text-xs text-center font-medium group w-12 {{
+                    booking.shift[0]?.colour
+                  }} {{
+                    getTextColourFromName(
+                      booking.shift[0]?.colour || 'bg-white'
+                    )
+                  }} rounded-md py-1 px-2"
+                >
+                  {{ booking.shift[0]?.code }}
+                  <span
+                    class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
+                    >{{ booking.shift[0]?.description }}</span
+                  >
+                </div>
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                <div
+                  class="flex flex-col"
+                  *ngFor="let abooking of booking.bookings; let i = index"
+                >
+                  <div class="flex items-center">
+                    <div class="w-4 py-1 mr-0.5">
+                      <svg
+                        *ngIf="abooking.is_manual"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-4 h-4 text-gray-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                        />
+                      </svg>
+                    </div>
+                    <div class="py-1 mr-0.5">
+                      {{ abooking.time }}
+                    </div>
+                    <div class="mr-1">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5 text-gray-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          *ngIf="i % 2 == 0"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                        />
+                        <path
+                          *ngIf="i % 2 != 0"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                        />
+                      </svg>
+                    </div>
+                    <div
+                      *ngIf="abooking.incidence"
+                      class="font-sans text-xs text-center font-medium group w-12 {{
+                        abooking.incidence?.colour
+                      }} {{
+                        getTextColourFromName(
+                          abooking.incidence?.colour || 'bg-white'
+                        )
+                      }} rounded-md py-1 px-1"
+                    >
+                      {{ abooking.incidence?.code }}
+                      <span
+                        class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
+                        >{{ abooking.incidence?.description }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ booking.eval.totalbookedtime }}
+              </div>
+            </td>
+            <td class="hidden px-1 py-2 lg:table-cell whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
+                {{ booking.eval.totalshifttime }}
+              </div>
+            </td>
+            <td class="hidden px-1 py-2 lg:table-cell whitespace-nowrap">
+              <div
+                [class]="{
+                  'text-gray-900': !booking.eval.negbalance,
+                  'text-red-500': booking.eval.negbalance
+                }"
+                class="text-sm font-medium"
+              >
+                {{ booking.eval.balance }}
+              </div>
+            </td>
+            <td
+              class="hidden px-1 py-2 font-sans lg:table-cell whitespace-nowrap"
+            >
+              <div class="text-sm font-medium text-red-500">
+                <div
+                  class="flex flex-col"
+                  *ngFor="let anomaly of booking.eval.anomalies"
+                >
+                  {{ anomaly }}
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <app-pagination
+        *ngIf="bookings.meta"
+        [active]="!pending"
+        [meta]="bookings.meta"
+        (page)="loadpage($event)"
+      ></app-pagination>
+    </div>
+  </div>
+</div>

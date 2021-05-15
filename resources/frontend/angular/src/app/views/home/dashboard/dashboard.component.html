@@ -14,13 +14,13 @@
   class="grid max-w-screen-lg grid-cols-6 mx-3 my-6 lg:mx-auto gap-x-3 gap-y-2"
 >
   <div
-    class="col-span-6 border-t-4 rounded-md shadow md:col-span-3 border-secondary-500"
+    class="col-span-6 border-t-4 rounded-md shadow  md:col-span-3 border-secondary-500"
   >
     <div
-      class="flex flex-col items-center px-4 py-5 space-y-4 bg-white rounded-md sm:p-6"
+      class="flex flex-col items-center px-4 py-5 space-y-4 bg-white rounded-md  sm:p-6"
     >
       <div
-        class="px-8 py-4 mt-5 mb-3 font-mono text-5xl font-medium bg-gray-100 border border-gray-300 rounded-md text-primary-700"
+        class="px-8 py-4 mt-5 mb-3 font-mono text-5xl font-medium bg-gray-100 border border-gray-300 rounded-md  text-primary-700"
       >
         <app-clock (datetimeChange)="updateDatetime($event)"></app-clock>
       </div>
@@ -35,7 +35,7 @@
         ></app-colour-dropdown>
       </div>
       <button
-        class="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white uppercase border border-transparent rounded-md group bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        class="relative flex justify-center w-full px-4 py-2 text-sm font-semibold text-white uppercase border border-transparent rounded-md  group bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
         (click)="book()"
       >
         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -57,7 +57,7 @@
       <div class="h-12">
         <div
           *ngIf="pending"
-          class="flex items-center justify-center w-full px-5 py-2 font-normal text-white bg-yellow-500 rounded-md"
+          class="flex items-center justify-center w-full px-5 py-2 font-normal text-white bg-yellow-500 rounded-md "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +80,7 @@
     </div>
   </div>
   <div
-    class="col-span-6 border-t-4 rounded-md shadow md:col-span-3 border-secondary-500"
+    class="col-span-6 border-t-4 rounded-md shadow  md:col-span-3 border-secondary-500"
   >
     <div class="flex flex-col h-full px-4 py-5 bg-white rounded-md sm:p-6">
       <h2
@@ -110,6 +110,16 @@
           From <span class="font-medium">{{ shift.start_time }} </span> to
           <span class="font-medium">{{ shift.end_time }}</span>
         </p>
+      </div>
+      <div>
+        <button
+          class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+          type="button"
+          [routerLink]="['bookings']"
+          [disabled]="pending"
+        >
+          Bookings
+        </button>
       </div>
     </div>
   </div>

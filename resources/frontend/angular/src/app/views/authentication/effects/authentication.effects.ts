@@ -1,4 +1,11 @@
-import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  mergeMap,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -8,6 +15,8 @@ import { User } from 'src/app/shared/models/user.model';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../../employee/services/employee.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducers';
 
 @Injectable()
 export class AuthenticationEffects {
@@ -15,7 +24,8 @@ export class AuthenticationEffects {
     private actions$: Actions,
     private authenticationService: AuthenticationService,
     private employeeService: EmployeeService,
-    private router: Router
+    private router: Router,
+    private store: Store<AppState>
   ) {}
 
   // reuquireLogin$ = createEffect(
@@ -196,6 +206,39 @@ export class AuthenticationEffects {
             of(authenticationActions.getEmployeeIncidencesFailure({ error }))
           )
         )
+      )
+    )
+  );
+
+  initEmployeeBookings$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authenticationActions.initEmployeeBookings),
+      withLatestFrom(this.store.select('authentication')),
+      map(([action, authentication]) =>
+        authenticationActions.getEmployeeBookings({
+          employee_id: action.employee_id,
+          bookingsdisplay: authentication.bookingsdisplay,
+        })
+      ),
+      tap(() => this.router.navigate(['/dashboard/bookings']))
+    )
+  );
+
+  loadEmployeeBookings$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authenticationActions.getEmployeeBookings),
+      tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.employeeService
+          .getEmployeeBookings(action.employee_id, action.bookingsdisplay)
+          .pipe(
+            map((bookings) =>
+              authenticationActions.getEmployeeBookingsSuccess({ bookings })
+            ),
+            catchError((error) =>
+              of(authenticationActions.getEmployeeBookingsFailure({ error }))
+            )
+          )
       )
     )
   );

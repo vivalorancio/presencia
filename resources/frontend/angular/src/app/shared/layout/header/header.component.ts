@@ -9,7 +9,9 @@ import {
   managementMenu,
   MenuItem,
   initManagementStore,
+  initDashboardStore,
 } from 'src/app/views/home/menu';
+import { Employee } from '../../models/employee.model';
 //import * as menus from 'src/app/views/home/menu';
 
 @Component({
@@ -19,6 +21,7 @@ import {
 })
 export class HeaderComponent implements OnInit {
   user: any;
+  employee!: Employee;
   mainmodule!: string;
   openmain: boolean = false;
 
@@ -32,8 +35,9 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select('authentication', 'user').subscribe((user) => {
-      this.user = user?.username ? user : null;
+    this.store.select('authentication').subscribe((authentication) => {
+      this.user = authentication.user?.username ? authentication.user : null;
+      this.employee = authentication.employee.data;
     });
     this.mainmodule = this.route.snapshot.url[0]?.path;
     console.log(this.route.snapshot);
@@ -56,6 +60,10 @@ export class HeaderComponent implements OnInit {
   }
   closemenu(menuitem: MenuItem): void {
     menuitem.open = false;
+  }
+
+  navigateDashboard(link: string): void {
+    initDashboardStore(this.store, link, this.employee?.id);
   }
 
   navigateManagement(link: string): void {

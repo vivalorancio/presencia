@@ -1,9 +1,11 @@
 import { createAction, props } from '@ngrx/store';
+import { DayBookingsCollection } from 'src/app/shared/models/booking.model';
 import {
   Employee,
   EmployeeResource,
 } from 'src/app/shared/models/employee.model';
 import { Incidence } from 'src/app/shared/models/incidence.model';
+import { DisplayBookingsCollection } from 'src/app/shared/models/resource.model';
 import { ShiftResource } from 'src/app/shared/models/shift.model';
 import { User } from 'src/app/shared/models/user.model';
 
@@ -73,7 +75,7 @@ export const getEmployeeShiftFailure = createAction(
   '[Authentication] Get EmployeeShift Failure',
   props<{ error: any }>()
 );
-// ------------ Employee Today Shift----------
+// ------------ Employee Incidences----------
 export const getEmployeeIncidences = createAction(
   '[Authentication] Get Employee Incidences',
   props<{ employee_id: number }>()
@@ -85,5 +87,23 @@ export const getEmployeeIncidencesSuccess = createAction(
 
 export const getEmployeeIncidencesFailure = createAction(
   '[Authentication] Get Employee Incidences Failure',
+  props<{ error: any }>()
+);
+// ------------ Employee Bookings----------
+export const initEmployeeBookings = createAction(
+  '[Authentication] Init Employee Bookings',
+  props<{ employee_id: number }>()
+);
+export const getEmployeeBookings = createAction(
+  '[Authentication] Get Employee Bookings',
+  props<{ employee_id: number; bookingsdisplay: DisplayBookingsCollection }>()
+);
+export const getEmployeeBookingsSuccess = createAction(
+  '[Authentication] Get Employee Bookings Success',
+  props<{ bookings: DayBookingsCollection }>()
+);
+
+export const getEmployeeBookingsFailure = createAction(
+  '[Authentication] Get Employee Bookings Failure',
   props<{ error: any }>()
 );

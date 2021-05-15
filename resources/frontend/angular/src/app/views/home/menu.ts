@@ -1,5 +1,7 @@
 import { Store } from '@ngrx/store';
 
+import * as authenticationActions from '../../views/authentication/actions';
+
 import * as employeesActions from '../../views/employee/actions';
 import * as shiftsActions from '../../views/shift/actions';
 import * as calendarsActions from '../../views/calendar/actions';
@@ -13,7 +15,9 @@ export interface MenuItem {
   open: boolean;
 }
 
-export const dashboardMenu: MenuItem[] = [];
+export const dashboardMenu: MenuItem[] = [
+  { label: 'Bookings', link: 'bookings' } as MenuItem,
+];
 
 export const managementMenu: MenuItem[] = [
   { label: 'Employees', link: 'employees' } as MenuItem,
@@ -43,6 +47,22 @@ export const managementMenu: MenuItem[] = [
   { label: 'Holidays', link: 'holidays' } as MenuItem,
   { label: 'Bookings', link: 'bookings' } as MenuItem,
 ];
+
+export function initDashboardStore(
+  store: Store,
+  link: string,
+  employee_id: number
+): void {
+  switch (link) {
+    case 'bookings':
+      store.dispatch(
+        authenticationActions.initEmployeeBookings({ employee_id })
+      );
+      break;
+    default:
+      break;
+  }
+}
 
 export function initManagementStore(store: Store, link: string): void {
   switch (link) {

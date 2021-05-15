@@ -1,9 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
+import { DayBookingsCollection } from 'src/app/shared/models/booking.model';
 import {
   Employee,
   EmployeeResource,
 } from 'src/app/shared/models/employee.model';
 import { Incidence } from 'src/app/shared/models/incidence.model';
+import { DisplayBookingsCollection } from 'src/app/shared/models/resource.model';
 import { ShiftResource } from 'src/app/shared/models/shift.model';
 import { User } from 'src/app/shared/models/user.model';
 import * as authenticationActions from '../actions';
@@ -16,6 +18,8 @@ export interface AuthenticationState {
   employee: EmployeeResource;
   shift: ShiftResource;
   incidences: Incidence[];
+  bookingsdisplay: DisplayBookingsCollection;
+  bookings: DayBookingsCollection;
 }
 
 export const initialState: AuthenticationState = {
@@ -26,6 +30,13 @@ export const initialState: AuthenticationState = {
   employee: {} as EmployeeResource,
   shift: {} as ShiftResource,
   incidences: [],
+  bookingsdisplay: {
+    page: '1',
+    per_page: '7',
+    start_date: '',
+    end_date: '',
+  },
+  bookings: { data: [], links: null, meta: null },
 };
 
 export const _authenticationReducer = createReducer(
@@ -112,7 +123,34 @@ export const _authenticationReducer = createReducer(
       error,
       incidences: [],
     })
-  )
+  ),
+  on(authenticationActions.initEmployeeBookings, (state) => ({
+    ...state,
+    bookingsdisplay: initialState.bookingsdisplay,
+    bookings: initialState.bookings,
+  })),
+  on(
+    authenticationActions.getEmployeeBookings,
+    (state, { employee_id, bookingsdisplay }) => ({
+      ...state,
+      bookingsdisplay,
+      pending: true,
+    })
+  ),
+  on(
+    authenticationActions.getEmployeeBookingsSuccess,
+    (state, { bookings }) => ({
+      ...state,
+      error: null,
+      pending: false,
+      bookings,
+    })
+  ),
+  on(authenticationActions.getEmployeeBookingsFailure, (state, { error }) => ({
+    ...state,
+    error,
+    bookings: initialState.bookings,
+  }))
 );
 
 export function authenticationReducer(state: any, action: any) {
