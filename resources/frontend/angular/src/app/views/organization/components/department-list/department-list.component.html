@@ -5,10 +5,27 @@
 
 <div class="max-w-screen-lg mx-auto">
   <div class="mx-6 my-6 border-t-4 rounded-md shadow border-secondary-500">
-    <div class="px-4 py-5 bg-white rounded-md sm:p-6">
-      <h3 class="pb-6 text-2xl font-semibold leading-6 text-gray-700">
-        Departments
-      </h3>
+    <div class="px-4 py-5 bg-white rounded-t-md sm:p-6">
+      <div class="flex justify-between">
+        <h2 class="pb-6 text-2xl font-semibold leading-6 text-gray-700">
+          Departments
+        </h2>
+        <div class="cursor-pointer" [routerLink]="['../']">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-6 h-6"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+
       <div class="justify-between sm:flex sm:flex-row-reverse">
         <button
           class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
@@ -159,6 +176,18 @@
         [meta]="departments.meta"
         (page)="loadpage($event)"
       ></app-pagination>
+    </div>
+    <div
+      class="items-center justify-between px-4 py-3  sm:flex sm:flex-row-reverse rounded-b-md bg-gray-50 sm:px-6"
+    >
+      <button
+        class="inline-flex justify-center w-full px-4 py-2 text-base font-medium bg-white border border-gray-300 rounded-md shadow-sm  text-secondary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+        type="button"
+        [routerLink]="['../']"
+        [disabled]="pending"
+      >
+        Close
+      </button>
     </div>
   </div>
 </div>

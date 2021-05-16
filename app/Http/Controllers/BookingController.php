@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AuthorizeAdminRequest;
 use App\Http\Requests\Booking\BookingStoreRequest;
 use App\Http\Requests\Booking\BookingShowRequest;
 use App\Http\Requests\Booking\BookingUpdateRequest;
@@ -13,18 +12,13 @@ use App\Http\Resources\DayBookingResource;
 use App\Models\Booking;
 use App\Models\Employee;
 use App\Models\Shift;
-use App\Models\CalendarShifts;
 use DateTime;
 use Symfony\Component\HttpFoundation\Response;
-
-use Illuminate\Http\Resources\Json\JsonResource;
-
 
 class BookingController extends Controller
 {
 
     private $request_order = 'date ASC, time ASC';
-    //    private $perPage = '7';
     private $range = 'week'; //'month' 'year'
 
     private function nextday($aday)
@@ -35,22 +29,79 @@ class BookingController extends Controller
     }
 
 
+    private function tointerval($date)
+    {
+        $ds = substr($date, 1, -9);
+        $hs = substr($date, -8, -6);
+        $ms = substr($date, -5, -3);
+        $ss = substr($date, -2);
+
+        $sign = $date[0];
+        $interval = "P";
+        if ($ds != "0" || $ds != "" || $ds != null || strlen($ds) > 0) {
+            $interval = $interval . $ds . "D";
+        }
+        $interval = $interval . "T" . $hs . "H" . $ms . "M" . $ss . "S";
+
+        return ['sign' => $sign, 'interval' => $interval];
+    }
+
+    private function addtoaccumulated($accumulated, $amount)
+    {
+        if ($amount == '')
+            return $accumulated;
+
+        $pbint = $this->tointerval($accumulated);
+        $dbint = $this->tointerval($amount);
+
+        $time0 = new DateTime('00:00');
+        $tadd = clone $time0;
+
+        if ($pbint['sign'] == "+") {
+            $tadd->add(new \DateInterval($pbint['interval']));
+        } else {
+            $tadd->sub(new \DateInterval($pbint['interval']));
+        }
+        if ($dbint['sign'] == "+") {
+            $tadd->add(new \DateInterval($dbint['interval']));
+        } else {
+            $tadd->sub(new \DateInterval($dbint['interval']));
+        }
+
+        $diff = $time0->diff($tadd);
+
+        if ($diff->d > 0)
+            $res = $diff->format("%R%dd%H:%I:%S");
+        else
+            $res = $diff->format("%R%H:%I:%S");
+
+        return $res;
+    }
+
+    private function formatperiodbalance($periodbalance)
+    {
+        $ds = intval(substr($periodbalance, 1, -9));
+        $hs = intval(substr($periodbalance, -8, -6));
+        $ths = (24 * $ds) + $hs;
+
+        return $periodbalance[0] . $ths . substr($periodbalance, -6);
+    }
+
+
     private function eval($day)
     {
         $time0 = new DateTime('00:00');
         $eval = ['count' => count($day['bookings'])];
         $eval['totalbookedtime'] = '00:00:00';
         $eval['anomalies'] = [];
+        $eval['balance'] = '';
 
         $expected_time = date("H:i:s", strtotime($day['shift']->expected_time));
         $recess_time = $day['shift']->recess_time == null ? "00:00:00" : date("H:i:s", strtotime($day['shift']->recess_time));
         $tadd = clone $time0;
         $tadd->add(date_diff($time0, new DateTime($expected_time)));
-        //$tadd->add(date_diff($time0, new DateTime($recess_time)));
         $totalshifttime = $time0->diff($tadd);
         $eval['totalshifttime'] = $totalshifttime->format("%H:%I:%S");
-
-
 
         $today = new DateTime();
         $aday = new DateTime($day['day']);
@@ -102,14 +153,9 @@ class BookingController extends Controller
             }
             $tadd->sub(date_diff($time0, new DateTime($recess_time)));
             $totalbookedtime = $time0->diff($tadd);
-            $eval['totalbookedtime'] = $totalbookedtime->format("%H:%I:%S");
+            $eval['totalbookedtime'] = $totalbookedtime->format("%R%H:%I:%S");
 
             $tadd = clone $time0;
-
-            // $a = new DateTime($eval['totalbookedtime']);
-            // $b = new DateTime($eval['totalshifttime']);
-            // $eval['balance'] = $b->diff($a)->format("%R%H:%I:%S");
-
 
             $start_time = date("Y-m-d H:i:s", strtotime($day['shift']->start_time));
             $end_time = date("Y-m-d H:i:s", strtotime($day['shift']->end_time));
@@ -132,12 +178,14 @@ class BookingController extends Controller
         }
 
         if ($eval['totalbookedtime'] != '') {
-            $a = new DateTime($eval['totalbookedtime']);
-            $b = new DateTime($eval['totalshifttime']);
-            $diff = $b->diff($a);
-            $eval['balance'] = $diff->format("%R%H:%I:%S");
+            // $a = new DateTime($eval['totalbookedtime']);
+            // $b = new DateTime($eval['totalshifttime']);
+            // $diff = $b->diff($a);
+            // $eval['balance'] = $diff->format("%R%H:%I:%S");
+            $eval['balance'] = $this->addtoaccumulated($eval['totalbookedtime'], $eval['totalshifttime']);
             $eval['negbalance'] = false;
-            if ($diff->invert)
+            // if ($diff->invert)
+            if ($eval['balance'][0] == '-')
                 $eval['negbalance'] = true;
         }
 
@@ -148,12 +196,11 @@ class BookingController extends Controller
 
     public function index(EmployeeSelfRequest $request, Employee $employee)
     {
-        // $request_perPage = request('per_page', $this->perPage);
-        // $request_page = request('page', '1');
         $request_range = request('range', $this->range);
         $request_date = request('date', '');
+
         $start_date = $request_date;
-        $end_date = ''; //request('end_date', '');
+        $end_date = '';
         $prev_date = '';
         $next_date = '';
 
@@ -207,61 +254,16 @@ class BookingController extends Controller
                 break;
         }
 
-
-        // return [$start_date, $end_date];
-
-
-        //paginar -> per_page i page
-        // $dataini = new DateTime($start_date);
-        // $datafi = new DateTime($end_date);
-        // $interval = $datafi->diff($dataini);
-        // $dies = $interval->format("%a") + 1;
-        // $pp = intval($request_perPage);
-        // $p = intval($request_page);
-        // $pagines = ceil($dies / $pp);
-
-        // $ps = [];
-        // for ($i = 0; $i < $pagines; $i++) {
-        //     $di = clone $dataini;
-        //     $df = clone $di;
-        //     $ini = 1 + ($pp * ($i));
-        //     $fi = $ini + $pp - 1 < $dies ? $ini + $pp - 1 : $dies;
-
-        //     $di->modify('+' . ($ini - 1) . ' day');
-        //     $df->modify('+' . ($fi - 1) . ' day');
-
-
-        //     $ps[$i] = [
-        //         'i' => $ini,
-        //         'di' => $di->format('Y-m-d'),
-        //         'f' => $fi,
-        //         'df' => $df->format('Y-m-d'),
-        //     ];
-        // }
-
-
-        // $meta = [
-        //     'total' => $dies,
-        //     'last_page' => $pagines,
-        //     'per_page' => $pp,
-        //     'current_page' => $p,
-        //     'from_d' => $ps[$p - 1]['i'],
-        //     'to_d' => $ps[$p - 1]['f'],
-        //     'from' => $ps[$p - 1]['di'],
-        //     'to' => $ps[$p - 1]['df'],
-        //     'pages' => $ps,
-        // ];
-
-        // $from = $meta['from'];
-        // $to = $meta['to'];
         $meta = [
             'date' => $request_date,
             'range' => $request_range,
             'start_date' => $start_date,
             'end_date' => $end_date,
             'prev_date' => $prev_date,
-            'next_date' => $next_date
+            'next_date' => $next_date,
+            'period_balance' => '00:00:00'
         ];
+
         $from = $start_date;
         $to = $end_date;
 
@@ -272,11 +274,8 @@ class BookingController extends Controller
         })->orderByRaw($this->request_order)->get(); //paginate($request_perPage);
         //return $bookings;
 
-
         $yearfrom = intval(date("Y", strtotime($from)));
         $yearto = intval(date("Y", strtotime($to)));
-
-
 
         $cals = [];
         $shift_ids = [];
@@ -297,25 +296,26 @@ class BookingController extends Controller
             ];
             array_push($cals, $cal);
         }
-
         $shifts = Shift::whereIn('id', $shift_ids)->get();
+
 
         $currentyear = null;
         $calshifts = null;
         $days = [];
-        $currentday = null;
-        $daybookings = [];
         $day = null;
+        $previous_bookingdate = null;
+        //$periodbalanceinterval=new DateInterval('0H0M0S')
 
         $currentday = $from;
-
-        $pbd = null;
         foreach ($bookings as $booking) {
 
             while ($booking->date > $currentday) {
                 $skip = false;
                 if ($day != null) {
                     $day['eval'] = $this->eval($day);
+
+                    $meta['period_balance'] = $this->addtoaccumulated($meta['period_balance'], $day['eval']['balance']);
+                    $day['eval']['acc_balance'] = $meta['period_balance'];
                     $day['pos'] = '1';
                     array_push($days, $day);
                     if ($day['day'] == $currentday)
@@ -359,9 +359,12 @@ class BookingController extends Controller
                 $currentday = $this->nextday($currentday);
             }
             if ($booking->date == $currentday) {
-                if ($pbd != $booking->date) {
+                if ($previous_bookingdate != $booking->date) {
                     if ($day != null) {
                         $day['eval'] = $this->eval($day);
+                        $meta['period_balance'] = $this->addtoaccumulated($meta['period_balance'], $day['eval']['balance']);
+                        $day['eval']['acc_balance'] = $meta['period_balance'];
+
                         $day['pos'] = '0';
                         array_push($days, $day);
                     }
@@ -393,13 +396,16 @@ class BookingController extends Controller
                             }
                         }
                     }
-                    $pbd = $booking->date;
+                    $previous_bookingdate = $booking->date;
                 }
                 array_push($day['bookings'], $booking);
             }
         }
         if ($day != null) {
             $day['eval'] = $this->eval($day);
+            $meta['period_balance'] = $this->addtoaccumulated($meta['period_balance'], $day['eval']['balance']);
+            $day['eval']['acc_balance'] = $meta['period_balance'];
+
             $day['pos'] = '2';
             array_push($days, $day);
             $currentday = $day['day'];
@@ -439,6 +445,8 @@ class BookingController extends Controller
                 }
             }
             $day['eval'] = $this->eval($day);
+            $meta['period_balance'] = $this->addtoaccumulated($meta['period_balance'], $day['eval']['balance']);
+            $day['eval']['acc_balance'] = $meta['period_balance'];
             $day['pos'] = '0';
             array_push($days, $day);
             // $data = new DateTime($currentday);
@@ -446,6 +454,9 @@ class BookingController extends Controller
             // $currentday = $data->format('Y-m-d');
             $currentday = $this->nextday($currentday);
         }
+
+        $meta['period_balance'] = $this->formatperiodbalance($meta['period_balance']);
+
 
         return ['data' => DayBookingResource::collection($days), 'meta' => $meta];
 

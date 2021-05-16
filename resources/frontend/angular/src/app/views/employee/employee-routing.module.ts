@@ -6,6 +6,7 @@ import { AuthenticationGuard } from '../authentication/guards/authentication.gua
 import { EmployeeEditComponent } from './components/employee-edit/employee-edit.component';
 import { EmployeecalendarListComponent } from './components/employeecalendar-list/employeecalendar-list.component';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
+import { BookingsListComponent } from './components/bookings-list/bookings-list.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: 'employees/employee/:employee_id/calendars',
         component: EmployeecalendarListComponent,
+      },
+      {
+        path: 'employees/employee/:employee_id/bookings',
+        component: BookingsListComponent,
       },
     ],
     canActivate: [AuthenticationGuard, AdminGuard],

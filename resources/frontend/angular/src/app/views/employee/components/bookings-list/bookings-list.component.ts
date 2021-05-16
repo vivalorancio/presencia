@@ -1,15 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
 import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
+import { DayBookingsCollection } from 'src/app/shared/models/booking.model';
 import {
-  DayBookings,
-  DayBookingsCollection,
-  DayBookingsResource,
-} from 'src/app/shared/models/booking.model';
-import { Employee } from 'src/app/shared/models/employee.model';
+  Employee,
+  EmployeeCollection,
+} from 'src/app/shared/models/employee.model';
 import {
   DisplayBookingsCollection,
   ListHeader,
@@ -23,10 +22,16 @@ import * as authenticationActions from '../../../authentication/actions';
   styleUrls: ['./bookings-list.component.css'],
 })
 export class BookingsListComponent implements OnInit {
+  mainmodule!: string;
+
   employee!: Employee;
   bookings!: DayBookingsCollection;
   bookingsdisplay!: DisplayBookingsCollection;
   pending: boolean = false;
+
+  employees!: EmployeeCollection;
+  employee_id!: number;
+  pending_employees: boolean = false;
 
   headers: ListHeader[] = [
     { text: 'Day', sort_by: '', hides: false, search_by: '' },
@@ -37,26 +42,60 @@ export class BookingsListComponent implements OnInit {
     { text: 'Anomalies', sort_by: '', hides: false, search_by: '' },
   ];
 
-  constructor(private store: Store<AppState>, private http: HttpClient) {}
+  constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.bookingsdisplay = {
       range: 'week',
       date: dateAAAAMMDD(new Date(Date.now())),
-      // page: '1',
-      // per_page: '7',
-      // start_date: '',
-      // end_date: '',
     };
-    this.store.select('authentication').subscribe((authentication) => {
-      this.employee = authentication.employee.data;
-      this.bookings = authentication.bookings;
-      this.bookingsdisplay = authentication.bookingsdisplay;
-      this.pending = authentication.pending;
-    });
-    if (this.bookings.meta === null) {
+
+    this.mainmodule = this.route.snapshot.url[0]?.path;
+    console.log(this.route.snapshot);
+    if (this.mainmodule === 'bookings') {
+      this.store.select('authentication').subscribe((authentication) => {
+        this.employee = authentication.employee.data;
+        this.employee_id = this.employee?.id;
+        this.bookings = authentication.bookings;
+        this.bookingsdisplay = authentication.bookingsdisplay;
+        this.pending = authentication.pending;
+      });
+      this.bookingsdisplay = {
+        range: 'week',
+        date: dateAAAAMMDD(new Date(Date.now())),
+      };
       this.dispatchLoad();
+    } else if (this.mainmodule === 'employees') {
+      this.store.select('employees').subscribe((employees) => {
+        this.employees = employees.employees;
+        this.pending_employees = employees.pending;
+      });
+
+      this.store.select('authentication').subscribe((authentication) => {
+        this.bookings = authentication.bookings;
+        this.bookingsdisplay = authentication.bookingsdisplay;
+        this.pending = authentication.pending;
+      });
+
+      this.route.params.subscribe((params) => {
+        this.employee_id = +params.employee_id;
+        const the_employee: any = (this.employees?.data.find(
+          (employee: any) => employee.id === this.employee_id
+        ) || {}) as Employee;
+        if (the_employee !== {}) {
+          this.employee = the_employee;
+        }
+        this.bookingsdisplay = {
+          range: 'week',
+          date: dateAAAAMMDD(new Date(Date.now())),
+        };
+        this.dispatchLoad();
+      });
     }
+
+    //if (this.bookings?.meta === null) {
+    //this.dispatchLoad();
+    //}
   }
 
   getTextColourFromName = getTextColourFromName;
@@ -66,15 +105,10 @@ export class BookingsListComponent implements OnInit {
 
     this.store.dispatch(
       authenticationActions.getEmployeeBookings({
-        employee_id: this.employee.id,
+        employee_id: this.employee_id,
         bookingsdisplay: this.bookingsdisplay,
       })
     );
-  }
-
-  loadpage(page: string) {
-    // this.bookingsdisplay = { ...this.bookingsdisplay, page: page };
-    // this.dispatchLoad();
   }
 
   onRangeSelected(event: any) {
