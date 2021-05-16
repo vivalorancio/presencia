@@ -6,10 +6,12 @@ export interface DisplayResourceCollection {
 }
 
 export interface DisplayBookingsCollection {
-  page: string;
-  per_page: string;
-  start_date: string;
-  end_date: string;
+  range: string;
+  date: string;
+  // page: string;
+  // per_page: string;
+  // start_date: string;
+  // end_date: string;
 }
 
 export interface ListHeader {

@@ -1,4 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
+import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
 import { DayBookingsCollection } from 'src/app/shared/models/booking.model';
 import {
   Employee,
@@ -31,10 +32,12 @@ export const initialState: AuthenticationState = {
   shift: {} as ShiftResource,
   incidences: [],
   bookingsdisplay: {
-    page: '1',
-    per_page: '7',
-    start_date: '',
-    end_date: '',
+    range: 'week',
+    date: dateAAAAMMDD(new Date(Date.now())),
+    // page: '1',
+    // per_page: '7',
+    // start_date: '',
+    // end_date: '',
   },
   bookings: { data: [], links: null, meta: null },
 };

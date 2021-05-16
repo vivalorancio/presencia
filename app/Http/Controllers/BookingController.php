@@ -24,7 +24,8 @@ class BookingController extends Controller
 {
 
     private $request_order = 'date ASC, time ASC';
-    private $perPage = '7';
+    //    private $perPage = '7';
+    private $range = 'week'; //'month' 'year'
 
     private function nextday($aday)
     {
@@ -147,72 +148,122 @@ class BookingController extends Controller
 
     public function index(EmployeeSelfRequest $request, Employee $employee)
     {
-        $request_perPage = request('per_page', $this->perPage);
-        $request_page = request('page', '1');
+        // $request_perPage = request('per_page', $this->perPage);
+        // $request_page = request('page', '1');
+        $request_range = request('range', $this->range);
+        $request_date = request('date', '');
+        $start_date = $request_date;
+        $end_date = ''; //request('end_date', '');
+        $prev_date = '';
+        $next_date = '';
 
-        $monday = date('Y-m-d', strtotime('monday this week'));
-        $sunday = date('Y-m-d', strtotime('sunday this week'));
-
-        //return [$monday, $sunday];
-
-        $start_date = request('start_date', '');
-        $end_date = request('end_date', '');
-
-        if ($start_date == '') {
-            $start_date = $monday;
-            $end_date = $sunday;
+        switch ($request_range) {
+            case 'week': {
+                    if ($start_date == '') {
+                        $start_date = date('Y-m-d', strtotime('monday this week'));
+                        $end_date = date('Y-m-d', strtotime('sunday this week'));
+                    } else {
+                        $data = $start_date;
+                        $nbDay = date('N', strtotime($data));
+                        $start_date = new DateTime($data);
+                        $end_date = new DateTime($data);
+                        $start_date = $start_date->modify('-' . ($nbDay - 1) . ' days')->format("Y-m-d");
+                        $end_date = $end_date->modify('+' . (7 - $nbDay) . ' days')->format("Y-m-d");
+                    }
+                    $prev_date = new DateTime($start_date);
+                    $prev_date = $prev_date->modify('-7 days')->format("Y-m-d");
+                    $next_date = new DateTime($start_date);
+                    $next_date = $next_date->modify('+7 days')->format("Y-m-d");
+                }
+                break;
+            case 'month': {
+                    if ($start_date == '') {
+                        $start_date = date('Y-m-d', strtotime('first day of this month'));
+                        $end_date = date('Y-m-d', strtotime('last day of this month'));
+                    } else {
+                        $start_date = date('Y-m-d', strtotime('first day of ' . date_create($start_date)->format('Y-m')));
+                        $end_date = date('Y-m-d', strtotime('last day of ' . date_create($start_date)->format('Y-m')));
+                    }
+                    $prev_date = new DateTime($start_date);
+                    $prev_date = $prev_date->modify('-1 month')->format("Y-m-d");
+                    $next_date = new DateTime($start_date);
+                    $next_date = $next_date->modify('+1 month')->format("Y-m-d");
+                }
+                break;
+            case 'year':
+                if ($start_date == '') {
+                    $start_date = date('Y-m-d', strtotime('first day of january this year'));
+                    $end_date = date('Y-m-d', strtotime('last day of december this year'));
+                } else {
+                    $start_date = date('Y-m-d', strtotime('first day of january ' . date_create($start_date)->format('Y')));
+                    $end_date = date('Y-m-d', strtotime('last day of december ' . date_create($start_date)->format('Y')));
+                }
+                $prev_date = new DateTime($start_date);
+                $prev_date = $prev_date->modify('-1 year')->format("Y-m-d");
+                $next_date = new DateTime($start_date);
+                $next_date = $next_date->modify('+1 year')->format("Y-m-d");
+                break;
+            default:
+                break;
         }
-        if ($end_date == '') {
-            $end_date = $start_date;
-        }
+
+
+        // return [$start_date, $end_date];
 
 
         //paginar -> per_page i page
-        $dataini = new DateTime($start_date);
-        $datafi = new DateTime($end_date);
-        $interval = $datafi->diff($dataini);
-        $dies = $interval->format("%a") + 1;
-        $pp = intval($request_perPage);
-        $p = intval($request_page);
-        $pagines = ceil($dies / $pp);
+        // $dataini = new DateTime($start_date);
+        // $datafi = new DateTime($end_date);
+        // $interval = $datafi->diff($dataini);
+        // $dies = $interval->format("%a") + 1;
+        // $pp = intval($request_perPage);
+        // $p = intval($request_page);
+        // $pagines = ceil($dies / $pp);
 
-        $ps = [];
-        for ($i = 0; $i < $pagines; $i++) {
-            $di = clone $dataini;
-            $df = clone $di;
-            $ini = 1 + ($pp * ($i));
-            $fi = $ini + $pp - 1 < $dies ? $ini + $pp - 1 : $dies;
+        // $ps = [];
+        // for ($i = 0; $i < $pagines; $i++) {
+        //     $di = clone $dataini;
+        //     $df = clone $di;
+        //     $ini = 1 + ($pp * ($i));
+        //     $fi = $ini + $pp - 1 < $dies ? $ini + $pp - 1 : $dies;
 
-            $di->modify('+' . ($ini - 1) . ' day');
-            $df->modify('+' . ($fi - 1) . ' day');
-
-
-            $ps[$i] = [
-                'i' => $ini,
-                'di' => $di->format('Y-m-d'),
-                'f' => $fi,
-                'df' => $df->format('Y-m-d'),
-            ];
-        }
+        //     $di->modify('+' . ($ini - 1) . ' day');
+        //     $df->modify('+' . ($fi - 1) . ' day');
 
 
+        //     $ps[$i] = [
+        //         'i' => $ini,
+        //         'di' => $di->format('Y-m-d'),
+        //         'f' => $fi,
+        //         'df' => $df->format('Y-m-d'),
+        //     ];
+        // }
+
+
+        // $meta = [
+        //     'total' => $dies,
+        //     'last_page' => $pagines,
+        //     'per_page' => $pp,
+        //     'current_page' => $p,
+        //     'from_d' => $ps[$p - 1]['i'],
+        //     'to_d' => $ps[$p - 1]['f'],
+        //     'from' => $ps[$p - 1]['di'],
+        //     'to' => $ps[$p - 1]['df'],
+        //     'pages' => $ps,
+        // ];
+
+        // $from = $meta['from'];
+        // $to = $meta['to'];
         $meta = [
-            'total' => $dies,
-            'last_page' => $pagines,
-            'per_page' => $pp,
-            'current_page' => $p,
-            'from_d' => $ps[$p - 1]['i'],
-            'to_d' => $ps[$p - 1]['f'],
-            'from' => $ps[$p - 1]['di'],
-            'to' => $ps[$p - 1]['df'],
-            'pages' => $ps,
+            'date' => $request_date,
+            'range' => $request_range,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'prev_date' => $prev_date,
+            'next_date' => $next_date
         ];
-        //$data->modify('+1 day');
-        //$data->format('Y-m-d');
-
-        $from = $meta['from'];
-        $to = $meta['to'];
-        //return [$from, $to];
+        $from = $start_date;
+        $to = $end_date;
 
         $bookings = Booking::where('employee_id', '=', $employee->id)->when($from != '', function ($query) use ($from) {
             $query->where('date', '>=', $from);

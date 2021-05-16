@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
+import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
 import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
 import {
   DayBookings,
@@ -40,10 +41,12 @@ export class BookingsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.bookingsdisplay = {
-      page: '1',
-      per_page: '7',
-      start_date: '',
-      end_date: '',
+      range: 'week',
+      date: dateAAAAMMDD(new Date(Date.now())),
+      // page: '1',
+      // per_page: '7',
+      // start_date: '',
+      // end_date: '',
     };
     this.store.select('authentication').subscribe((authentication) => {
       this.employee = authentication.employee.data;
@@ -52,12 +55,6 @@ export class BookingsListComponent implements OnInit {
       this.pending = authentication.pending;
     });
     if (this.bookings.meta === null) {
-      this.bookingsdisplay = {
-        page: '1',
-        per_page: '7',
-        start_date: '2021-01-01',
-        end_date: '2021-05-31',
-      };
       this.dispatchLoad();
     }
   }
@@ -76,16 +73,40 @@ export class BookingsListComponent implements OnInit {
   }
 
   loadpage(page: string) {
-    this.bookingsdisplay = { ...this.bookingsdisplay, page: page };
+    // this.bookingsdisplay = { ...this.bookingsdisplay, page: page };
+    // this.dispatchLoad();
+  }
+
+  onRangeSelected(event: any) {
+    const range = event.target.value;
+    this.bookingsdisplay = {
+      ...this.bookingsdisplay,
+      range: range,
+    };
     this.dispatchLoad();
   }
 
-  onPerpageSelected(event: any) {
-    const per_page = event.target.value;
+  onDateSelected(event: any) {
+    const date = event.target.value;
     this.bookingsdisplay = {
       ...this.bookingsdisplay,
-      per_page: per_page,
-      page: '1',
+      date: date,
+    };
+    this.dispatchLoad();
+  }
+
+  previous() {
+    this.bookingsdisplay = {
+      ...this.bookingsdisplay,
+      date: this.bookings.meta.prev_date,
+    };
+    this.dispatchLoad();
+  }
+
+  next() {
+    this.bookingsdisplay = {
+      ...this.bookingsdisplay,
+      date: this.bookings.meta.next_date,
     };
     this.dispatchLoad();
   }

@@ -158,10 +158,12 @@ export class EmployeeService {
   ): Observable<DayBookingsCollection> {
     let params = new HttpParams();
 
-    params = params.append('page', bookingsdisplay.page);
-    params = params.append('per_page', bookingsdisplay.per_page);
-    params = params.append('start_date', bookingsdisplay.start_date);
-    params = params.append('end_date', bookingsdisplay.end_date);
+    params = params.append('range', bookingsdisplay.range);
+    params = params.append('date', bookingsdisplay.date);
+    // params = params.append('page', bookingsdisplay.page);
+    // params = params.append('per_page', bookingsdisplay.per_page);
+    // params = params.append('start_date', bookingsdisplay.start_date);
+    // params = params.append('end_date', bookingsdisplay.end_date);
 
     return this.http.get<DayBookingsCollection>(
       `/api/employees/${employee_id}/bookings`,
