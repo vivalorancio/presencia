@@ -62,7 +62,6 @@ export class AreaListComponent implements OnInit {
   }
 
   open(id: number) {
-    console.log(id);
     this.router.navigate([`/management/areas/area/${id}`]);
   }
 

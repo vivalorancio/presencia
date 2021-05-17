@@ -12,14 +12,18 @@ export class AdminGuard implements CanActivate {
   constructor(private store: Store<AppState>, private router: Router) {}
 
   canActivate(): Observable<boolean> {
-    console.log('AdminGuard#canActivate called');
+    // console.log('AdminGuard#canActivate called');
 
     return this.store.select('authentication', 'user').pipe(
       switchMap((user) => {
-        if (!user?.is_admin) return this.router.navigate(['/']);
+        if (!user?.is_admin) {
+          return this.router.navigate(['/']);
+        }
         return of(true);
       }),
-      catchError(() => of(false))
+      catchError(() => {
+        return of(false);
+      })
     );
   }
 }

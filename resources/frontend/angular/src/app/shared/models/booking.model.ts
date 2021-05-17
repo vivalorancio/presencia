@@ -6,8 +6,13 @@ export interface Booking {
   //employee_id: number;
   date: string;
   time: string;
+  incidence_id: number | null;
   incidence: Incidence;
-  is_manual: boolean;
+  user_id: number | null;
+}
+
+export interface BookingResource {
+  data: Booking;
 }
 
 export interface DayBookings {

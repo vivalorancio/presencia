@@ -62,7 +62,6 @@ export class DepartmentListComponent implements OnInit {
   }
 
   open(id: number) {
-    console.log(id);
     this.router.navigate([`/management/departments/department/${id}`]);
   }
 

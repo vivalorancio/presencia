@@ -9,7 +9,10 @@ import * as calendars from './views/calendar/reducers';
 
 export interface AppState {
   authentication: authentication.AuthenticationState;
+  employee: employees.EmployeeState;
   employees: employees.EmployeesState;
+  booking: employees.BookingState;
+  bookings: employees.BookingsState;
   employeecalendars: employees.EmployeeCalendarsState;
   shifts: shifts.ShiftsState;
   calendars: calendars.CalendarsState;
@@ -24,7 +27,10 @@ export interface AppState {
 
 export const appReducers: ActionReducerMap<AppState> = {
   authentication: authentication.authenticationReducer,
+  employee: employees.employeeReducer,
   employees: employees.employeesReducer,
+  booking: employees.bookingReducer,
+  bookings: employees.bookingsReducer,
   employeecalendars: employees.employeecalendarsReducer,
   shifts: shifts.shiftsReducer,
   calendars: calendars.calendarsReducer,

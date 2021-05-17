@@ -10,6 +10,7 @@ import { SpinnerOverlayModule } from 'src/app/shared/spinner-overlay/spinner-ove
 import { DialogsModule } from 'src/app/shared/dialogs/dialogs.module';
 import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
 import { BookingsListComponent } from './components/bookings-list/bookings-list.component';
+import { BookingEditComponent } from './components/booking-edit/booking-edit.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { BookingsListComponent } from './components/bookings-list/bookings-list.
     EmployeeEditComponent,
     EmployeecalendarListComponent,
     BookingsListComponent,
+    BookingEditComponent,
   ],
   imports: [
     CommonModule,

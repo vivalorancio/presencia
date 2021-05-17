@@ -236,4 +236,154 @@ export class EmployeesEffects {
       )
     )
   );
+
+  initEmployeeBookings$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.initEmployeeBookings),
+      withLatestFrom(this.store.select('bookings')),
+      map(([action, bookings]) =>
+        employeesActions.loadEmployeeBookings({
+          employee_id: action.employee_id,
+          bookingsdisplay: bookings.bookingsdisplay,
+        })
+      ),
+      tap(() => this.router.navigate(['/dashboard/bookings']))
+    )
+  );
+
+  loadEmployeeBookings$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeBookings),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.employeeService
+          .getEmployeeBookings(action.employee_id, action.bookingsdisplay)
+          .pipe(
+            map((bookings) =>
+              employeesActions.loadEmployeeBookingsSuccess({ bookings })
+            ),
+            catchError((error) =>
+              of(employeesActions.loadEmployeeBookingsFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  book$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.book),
+      mergeMap((action) =>
+        this.employeeService
+          .postBooking(action.employee_id, action.booking)
+          .pipe(
+            map((res) => employeesActions.bookSuccess({ res })),
+            //tap(() => this.router.navigate(['/management/employees'])),
+            catchError((error) => of(employeesActions.bookFailure({ error })))
+          )
+      )
+    )
+  );
+
+  addBooking$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.addEmployeeBooking),
+      mergeMap((action) =>
+        this.employeeService
+          .postBooking(action.employee_id, action.booking)
+          .pipe(
+            map((res) => employeesActions.addEmployeeBookingSuccess({ res })),
+            tap(() =>
+              this.router.navigate([
+                `/management/employees/employee/${action.employee_id}/bookings`,
+              ])
+            ),
+            catchError((error) =>
+              of(employeesActions.addEmployeeBookingFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  // addBookingSuccess$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(employeesActions.addEmployeeBookingSuccess),
+  //     withLatestFrom(this.store.select('employees')),
+  //     map(([action, employees]) =>
+  //       employeesActions.loadEmployees({
+  //         display: employees.display,
+  //         search: employees.search,
+  //       })
+  //     )
+  //   )
+  // );
+
+  //addEmployeeFailure ---> PROCESS ERROR MESSAGE / retry /etc
+
+  loadEmployee$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployee),
+      mergeMap((action) =>
+        this.employeeService.getEmployee(action.employee_id).pipe(
+          map((employee) => employeesActions.loadEmployeeSuccess({ employee })),
+          catchError((error) =>
+            of(employeesActions.loadEmployeeFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  loadEmployeeSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeSuccess),
+      map((action) =>
+        employeesActions.loadEmployeeShift({
+          employee_id: action.employee.data.id,
+        })
+      )
+    )
+  );
+
+  loadEmployeeShift$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeShift),
+      mergeMap((action) =>
+        this.employeeService.getEmployeeShift(action.employee_id).pipe(
+          map((shift) => employeesActions.loadEmployeeShiftSuccess({ shift })),
+          catchError((error) =>
+            of(employeesActions.loadEmployeeShiftFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  loadEmployeeSuccess2$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeSuccess),
+      map((action) =>
+        employeesActions.loadEmployeeIncidences({
+          employee_id: action.employee.data.id,
+        })
+      )
+    )
+  );
+
+  loadEmployeeIncidences$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeIncidences),
+      mergeMap((action) =>
+        this.employeeService.getEmployeeIncidences(action.employee_id).pipe(
+          map((incidences) =>
+            employeesActions.loadEmployeeIncidencesSuccess({ incidences })
+          ),
+          catchError((error) =>
+            of(employeesActions.loadEmployeeIncidencesFailure({ error }))
+          )
+        )
+      )
+    )
+  );
 }

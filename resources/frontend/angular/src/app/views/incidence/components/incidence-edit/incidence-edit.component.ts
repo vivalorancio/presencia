@@ -105,8 +105,6 @@ export class IncidenceEditComponent implements OnInit {
       ...this.incidenceForm.value,
       colour: this.colourItem.name,
     };
-    console.log(this.colourItem);
-    console.log(incidenceToSave);
     if (this.incidence.id == null) {
       this.store.dispatch(
         incidencesActions.addIncidence({ incidence: incidenceToSave })

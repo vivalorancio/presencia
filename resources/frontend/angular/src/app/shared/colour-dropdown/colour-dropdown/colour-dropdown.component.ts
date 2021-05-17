@@ -64,7 +64,7 @@ export class ColourDropdownComponent implements OnInit {
 
   selected(): ColourDropdownItem {
     return (
-      this.items.find((item) => item.id === this.selectedId) || this.default
+      this.items?.find((item) => item.id === this.selectedId) || this.default
     );
   }
 }

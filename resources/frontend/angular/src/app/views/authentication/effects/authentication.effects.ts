@@ -68,14 +68,14 @@ export class AuthenticationEffects {
           } else {
             this.router.navigate(['/dashboard']);
           }
-        }),
-        map((action) =>
-          authenticationActions.getEmployee({
-            employee_id: action.user.employee_id,
-          })
-        )
-      )
-    //{ dispatch: false }
+        })
+        // map((action) =>
+        //   authenticationActions.getEmployee({
+        //     employee_id: action.user.employee_id,
+        //   })
+        // )
+      ),
+    { dispatch: false }
   );
 
   logout$ = createEffect(() =>
@@ -120,16 +120,16 @@ export class AuthenticationEffects {
     )
   );
 
-  getUserSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authenticationActions.getUserSuccess),
-      map((action) =>
-        authenticationActions.getEmployee({
-          employee_id: action.user.employee_id,
-        })
-      )
-    )
-  );
+  // getUserSuccess$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(authenticationActions.getUserSuccess),
+  //     map((action) =>
+  //       authenticationActions.getEmployee({
+  //         employee_id: action.user.employee_id,
+  //       })
+  //     )
+  //   )
+  // );
 
   getUserFailure$ = createEffect(
     () =>
@@ -140,106 +140,73 @@ export class AuthenticationEffects {
     { dispatch: false }
   );
 
-  getEmployee$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authenticationActions.getEmployee),
-      mergeMap((action) =>
-        this.employeeService.getEmployee(action.employee_id).pipe(
-          map((employee) =>
-            authenticationActions.getEmployeeSuccess({ employee })
-          ),
-          catchError((error) =>
-            of(authenticationActions.getEmployeeFailure({ error }))
-          )
-        )
-      )
-    )
-  );
+  // getEmployee$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(authenticationActions.getEmployee),
+  //     mergeMap((action) =>
+  //       this.employeeService.getEmployee(action.employee_id).pipe(
+  //         map((employee) =>
+  //           authenticationActions.getEmployeeSuccess({ employee })
+  //         ),
+  //         catchError((error) =>
+  //           of(authenticationActions.getEmployeeFailure({ error }))
+  //         )
+  //       )
+  //     )
+  //   )
+  // );
 
-  getEmployeeSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authenticationActions.getEmployeeSuccess),
-      map((action) =>
-        authenticationActions.getEmployeeShift({
-          employee_id: action.employee.data.id,
-        })
-      )
-    )
-  );
+  // getEmployeeSuccess$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(authenticationActions.getEmployeeSuccess),
+  //     map((action) =>
+  //       authenticationActions.getEmployeeShift({
+  //         employee_id: action.employee.data.id,
+  //       })
+  //     )
+  //   )
+  // );
 
-  getEmployeeShift$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authenticationActions.getEmployeeShift),
-      mergeMap((action) =>
-        this.employeeService.getEmployeeShift(action.employee_id).pipe(
-          map((shift) =>
-            authenticationActions.getEmployeeShiftSuccess({ shift })
-          ),
-          catchError((error) =>
-            of(authenticationActions.getEmployeeShiftFailure({ error }))
-          )
-        )
-      )
-    )
-  );
+  // getEmployeeShift$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(authenticationActions.getEmployeeShift),
+  //     mergeMap((action) =>
+  //       this.employeeService.getEmployeeShift(action.employee_id).pipe(
+  //         map((shift) =>
+  //           authenticationActions.getEmployeeShiftSuccess({ shift })
+  //         ),
+  //         catchError((error) =>
+  //           of(authenticationActions.getEmployeeShiftFailure({ error }))
+  //         )
+  //       )
+  //     )
+  //   )
+  // );
 
-  getEmployeeSuccess2$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authenticationActions.getEmployeeSuccess),
-      map((action) =>
-        authenticationActions.getEmployeeIncidences({
-          employee_id: action.employee.data.id,
-        })
-      )
-    )
-  );
+  // getEmployeeSuccess2$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(authenticationActions.getEmployeeSuccess),
+  //     map((action) =>
+  //       authenticationActions.getEmployeeIncidences({
+  //         employee_id: action.employee.data.id,
+  //       })
+  //     )
+  //   )
+  // );
 
-  getEmployeeIncidences$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authenticationActions.getEmployeeIncidences),
-      mergeMap((action) =>
-        this.employeeService.getEmployeeIncidences(action.employee_id).pipe(
-          map((incidences) =>
-            authenticationActions.getEmployeeIncidencesSuccess({ incidences })
-          ),
-          catchError((error) =>
-            of(authenticationActions.getEmployeeIncidencesFailure({ error }))
-          )
-        )
-      )
-    )
-  );
-
-  initEmployeeBookings$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authenticationActions.initEmployeeBookings),
-      withLatestFrom(this.store.select('authentication')),
-      map(([action, authentication]) =>
-        authenticationActions.getEmployeeBookings({
-          employee_id: action.employee_id,
-          bookingsdisplay: authentication.bookingsdisplay,
-        })
-      ),
-      tap(() => this.router.navigate(['/dashboard/bookings']))
-    )
-  );
-
-  loadEmployeeBookings$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authenticationActions.getEmployeeBookings),
-      tap((action) => console.log(action)),
-      mergeMap((action) =>
-        this.employeeService
-          .getEmployeeBookings(action.employee_id, action.bookingsdisplay)
-          .pipe(
-            map((bookings) =>
-              authenticationActions.getEmployeeBookingsSuccess({ bookings })
-            ),
-            catchError((error) =>
-              of(authenticationActions.getEmployeeBookingsFailure({ error }))
-            )
-          )
-      )
-    )
-  );
+  // getEmployeeIncidences$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(authenticationActions.getEmployeeIncidences),
+  //     mergeMap((action) =>
+  //       this.employeeService.getEmployeeIncidences(action.employee_id).pipe(
+  //         map((incidences) =>
+  //           authenticationActions.getEmployeeIncidencesSuccess({ incidences })
+  //         ),
+  //         catchError((error) =>
+  //           of(authenticationActions.getEmployeeIncidencesFailure({ error }))
+  //         )
+  //       )
+  //     )
+  //   )
+  // );
 }

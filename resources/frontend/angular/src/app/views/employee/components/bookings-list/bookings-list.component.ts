@@ -14,7 +14,7 @@ import {
   ListHeader,
 } from 'src/app/shared/models/resource.model';
 
-import * as authenticationActions from '../../../authentication/actions';
+import * as employeesActions from '../../actions';
 
 @Component({
   selector: 'app-bookings-list',
@@ -22,12 +22,14 @@ import * as authenticationActions from '../../../authentication/actions';
   styleUrls: ['./bookings-list.component.css'],
 })
 export class BookingsListComponent implements OnInit {
-  mainmodule!: string;
+  is_management: boolean = false;
 
-  employee!: Employee;
   bookings!: DayBookingsCollection;
   bookingsdisplay!: DisplayBookingsCollection;
   pending: boolean = false;
+
+  employee!: Employee;
+  pending_employee: boolean = false;
 
   employees!: EmployeeCollection;
   employee_id!: number;
@@ -50,31 +52,26 @@ export class BookingsListComponent implements OnInit {
       date: dateAAAAMMDD(new Date(Date.now())),
     };
 
-    this.mainmodule = this.route.snapshot.url[0]?.path;
-    console.log(this.route.snapshot);
-    if (this.mainmodule === 'bookings') {
-      this.store.select('authentication').subscribe((authentication) => {
-        this.employee = authentication.employee.data;
+    this.is_management = this.route.snapshot.url[0]?.path === 'employees';
+
+    if (!this.is_management) {
+      this.store.select('employee').subscribe((employee) => {
+        this.employee = employee.employee.data;
         this.employee_id = this.employee?.id;
-        this.bookings = authentication.bookings;
-        this.bookingsdisplay = authentication.bookingsdisplay;
-        this.pending = authentication.pending;
+        this.pending_employee = employee.pending;
       });
-      this.bookingsdisplay = {
-        range: 'week',
-        date: dateAAAAMMDD(new Date(Date.now())),
-      };
-      this.dispatchLoad();
-    } else if (this.mainmodule === 'employees') {
+
+      if (!this.pending_employee && this.employee_id) {
+        this.bookingsdisplay = {
+          range: 'week',
+          date: dateAAAAMMDD(new Date(Date.now())),
+        };
+        this.dispatchLoad();
+      }
+    } else if (this.is_management) {
       this.store.select('employees').subscribe((employees) => {
         this.employees = employees.employees;
         this.pending_employees = employees.pending;
-      });
-
-      this.store.select('authentication').subscribe((authentication) => {
-        this.bookings = authentication.bookings;
-        this.bookingsdisplay = authentication.bookingsdisplay;
-        this.pending = authentication.pending;
       });
 
       this.route.params.subscribe((params) => {
@@ -85,26 +82,30 @@ export class BookingsListComponent implements OnInit {
         if (the_employee !== {}) {
           this.employee = the_employee;
         }
-        this.bookingsdisplay = {
-          range: 'week',
-          date: dateAAAAMMDD(new Date(Date.now())),
-        };
-        this.dispatchLoad();
       });
+
+      this.bookingsdisplay = {
+        range: 'week',
+        date: dateAAAAMMDD(new Date(Date.now())),
+      };
+      this.dispatchLoad();
     }
 
-    //if (this.bookings?.meta === null) {
-    //this.dispatchLoad();
-    //}
+    this.store.select('bookings').subscribe((bookings) => {
+      this.bookings = bookings.bookings;
+      this.pending = bookings.pending;
+    });
   }
 
   getTextColourFromName = getTextColourFromName;
 
-  dispatchLoad(): void {
-    console.log(this.employee.id);
+  ispending(): boolean {
+    return this.pending || this.pending_employee || this.pending_employees;
+  }
 
+  dispatchLoad(): void {
     this.store.dispatch(
-      authenticationActions.getEmployeeBookings({
+      employeesActions.loadEmployeeBookings({
         employee_id: this.employee_id,
         bookingsdisplay: this.bookingsdisplay,
       })

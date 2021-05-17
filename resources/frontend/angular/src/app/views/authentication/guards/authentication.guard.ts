@@ -15,7 +15,7 @@ export class AuthenticationGuard implements CanActivate {
   constructor(private store: Store<AppState>) {}
 
   canActivate(): Observable<boolean> {
-    console.log('AuthenticationGuard#canActivate called');
+    // console.log('AuthenticationGuard#canActivate called');
     return this.loadUser().pipe(
       switchMap((user) => of(true)),
       catchError(() => of(false))

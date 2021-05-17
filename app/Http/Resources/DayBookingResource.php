@@ -19,7 +19,7 @@ class DayBookingResource extends JsonResource
         // return parent::toArray($request);
         return [
             'day' => $this['day'],
-            'shift' => ShiftResource::collection([$this['shift']]),
+            'shift' => $this['shift'] == null ? null : ShiftResource::collection([$this['shift']]),
             'bookings' => BookingResource::collection($this['bookings']),
             'eval' => $this['eval']
         ];

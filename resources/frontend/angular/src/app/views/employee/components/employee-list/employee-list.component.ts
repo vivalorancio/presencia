@@ -109,7 +109,6 @@ export class EmployeeListComponent implements OnInit {
   getTextColourFromName = getTextColourFromName;
 
   open(id: number) {
-    console.log(id);
     this.router.navigate([`/management/employees/employee/${id}`]);
   }
 

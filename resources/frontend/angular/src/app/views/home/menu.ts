@@ -55,9 +55,7 @@ export function initDashboardStore(
 ): void {
   switch (link) {
     case 'bookings':
-      store.dispatch(
-        authenticationActions.initEmployeeBookings({ employee_id })
-      );
+      store.dispatch(employeesActions.initEmployeeBookings({ employee_id }));
       break;
     default:
       break;

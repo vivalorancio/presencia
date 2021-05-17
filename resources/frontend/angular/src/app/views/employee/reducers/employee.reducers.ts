@@ -1,98 +1,88 @@
 import { createReducer, on } from '@ngrx/store';
 import {
   EmployeeCollection,
+  EmployeeResource,
   EmployeeSearch,
 } from 'src/app/shared/models/employee.model';
+import {
+  Incidence,
+  IncidenceCollection,
+} from 'src/app/shared/models/incidence.model';
 import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
+import { ShiftResource } from 'src/app/shared/models/shift.model';
 import * as employeesActions from '../actions';
 
-export interface EmployeesState {
+export interface EmployeeState {
   error: string | null;
-  display: DisplayResourceCollection;
-  search: EmployeeSearch;
   pending: boolean;
-  employees: EmployeeCollection;
+  employee: EmployeeResource;
+  shift: ShiftResource;
+  incidences: IncidenceCollection;
 }
 
-export const initialState: EmployeesState = {
+export const initialEmployeeState: EmployeeState = {
   error: null,
-  display: {
-    page: '1',
-    per_page: '25',
-    sort_field: 'last_name',
-    sort_direction: 'asc',
-  },
-  search: {} as EmployeeSearch,
   pending: false,
-  employees: { data: [], links: null, meta: null },
+  employee: {} as EmployeeResource,
+  shift: {} as ShiftResource,
+  incidences: {} as IncidenceCollection,
 };
 
-export const _employeesReducer = createReducer(
-  initialState,
-  on(employeesActions.initEmployees, (state) => ({ ...initialState })),
-  on(employeesActions.loadEmployees, (state, { display, search }) => ({
+export const _employeeReducer = createReducer(
+  initialEmployeeState,
+  on(employeesActions.loadEmployee, (state) => ({
     ...state,
-    display,
-    search,
+    employee: initialEmployeeState.employee,
     pending: true,
   })),
-  on(employeesActions.loadEmployeesSuccess, (state, { employees }) => ({
+  on(employeesActions.loadEmployeeSuccess, (state, { employee }) => ({
     ...state,
     error: null,
     pending: false,
-    employees,
+    employee,
   })),
-  on(employeesActions.loadEmployeesFailure, (state, { error }) => ({
-    ...initialState,
-    error,
-  })),
-  on(employeesActions.addEmployee, (state, { employee }) => ({
-    ...state,
-    pending: true,
-    error: null,
-  })),
-  on(employeesActions.addEmployeeSuccess, (state, { employee }) => ({
-    ...state,
-    pending: false,
-    error: null,
-  })),
-  on(employeesActions.addEmployeeFailure, (state, { error }) => ({
+  on(employeesActions.loadEmployeeFailure, (state, { error }) => ({
     ...state,
     pending: false,
     error,
   })),
-  on(employeesActions.updateEmployee, (state, { employee }) => ({
+  on(employeesActions.loadEmployeeShift, (state) => ({
     ...state,
+    shift: initialEmployeeState.shift,
     pending: true,
-    error: null,
   })),
-  on(employeesActions.updateEmployeeSuccess, (state, { employee }) => ({
+  on(employeesActions.loadEmployeeShiftSuccess, (state, { shift }) => ({
     ...state,
-    pending: false,
     error: null,
+    pending: false,
+    shift,
   })),
-  on(employeesActions.updateEmployeeFailure, (state, { error }) => ({
+  on(employeesActions.loadEmployeeShiftFailure, (state, { error }) => ({
     ...state,
     pending: false,
     error,
   })),
-  on(employeesActions.deleteEmployee, (state, { id }) => ({
+  on(employeesActions.loadEmployeeIncidences, (state) => ({
     ...state,
+    incidences: initialEmployeeState.incidences,
     pending: true,
-    error: null,
   })),
-  on(employeesActions.deleteEmployeeSuccess, (state, { message }) => ({
-    ...state,
-    pending: false,
-    error: null,
-  })),
-  on(employeesActions.deleteEmployeeFailure, (state, { error }) => ({
+  on(
+    employeesActions.loadEmployeeIncidencesSuccess,
+    (state, { incidences }) => ({
+      ...state,
+      error: null,
+      pending: false,
+      incidences,
+    })
+  ),
+  on(employeesActions.loadEmployeeIncidencesFailure, (state, { error }) => ({
     ...state,
     pending: false,
     error,
   }))
 );
 
-export function employeesReducer(state: any, action: any) {
-  return _employeesReducer(state, action);
+export function employeeReducer(state: any, action: any) {
+  return _employeeReducer(state, action);
 }

@@ -11,8 +11,15 @@ import {
   EmployeeSearch,
 } from 'src/app/shared/models/employee.model';
 import { ShiftResource } from 'src/app/shared/models/shift.model';
-import { Incidence } from 'src/app/shared/models/incidence.model';
-import { DayBookingsCollection } from 'src/app/shared/models/booking.model';
+import {
+  Incidence,
+  IncidenceCollection,
+} from 'src/app/shared/models/incidence.model';
+import {
+  Booking,
+  BookingResource,
+  DayBookingsCollection,
+} from 'src/app/shared/models/booking.model';
 import {
   DisplayBookingsCollection,
   DisplayResourceCollection,
@@ -54,19 +61,10 @@ export class EmployeeService {
       ? params.append('search_section', search.section)
       : params;
 
-    // return this._HttpClient.get(`${API_URL}/api/v1/data/logs`, { params: params })
-
     return this.http.get<EmployeeCollection>('/api/employees/', {
       withCredentials: true,
       params: params,
     });
-
-    // return this.http.get<EmployeeCollection>(
-    //   `/api/employees/?page=${display.page}&per_page=${display.per_page}&sort_field=${display.sort_field}&sort_direction=${display.sort_direction}`,
-    //   {
-    //     withCredentials: true,
-    //   }
-    // );
   }
 
   getEmployee(employee_id: number): Observable<EmployeeResource> {
@@ -137,20 +135,24 @@ export class EmployeeService {
     );
   }
 
+  //Current Employee Shift
+
   getEmployeeShift(employee_id: number): Observable<ShiftResource> {
     return this.http.get<ShiftResource>(`/api/employees/${employee_id}/shift`, {
       withCredentials: true,
     });
   }
 
-  getEmployeeIncidences(employee_id: number): Observable<Incidence[]> {
-    return this.http.get<Incidence[]>(
+  getEmployeeIncidences(employee_id: number): Observable<IncidenceCollection> {
+    return this.http.get<IncidenceCollection>(
       `/api/employees/${employee_id}/incidences`,
       {
         withCredentials: true,
       }
     );
   }
+
+  //Employee Bookings
 
   getEmployeeBookings(
     employee_id: number,
@@ -160,10 +162,6 @@ export class EmployeeService {
 
     params = params.append('range', bookingsdisplay.range);
     params = params.append('date', bookingsdisplay.date);
-    // params = params.append('page', bookingsdisplay.page);
-    // params = params.append('per_page', bookingsdisplay.per_page);
-    // params = params.append('start_date', bookingsdisplay.start_date);
-    // params = params.append('end_date', bookingsdisplay.end_date);
 
     return this.http.get<DayBookingsCollection>(
       `/api/employees/${employee_id}/bookings`,
@@ -171,6 +169,46 @@ export class EmployeeService {
         withCredentials: true,
         params: params,
       }
+    );
+  }
+
+  //Booking
+
+  getBooking(
+    employee_id: number,
+    booking_id: number
+  ): Observable<BookingResource> {
+    return this.http.get<BookingResource>(
+      `/api/employees/${employee_id}/bookings/${booking_id}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  postBooking(employee_id: number, booking: Booking): Observable<any> {
+    return this.http.post<any>(
+      `/api/employees/${employee_id}/bookings`,
+      booking,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  putBooking(employee_id: number, booking: Booking): Observable<any> {
+    return this.http.put<any>(
+      `/api/employees/${employee_id}/bookings/${booking.id}`,
+      booking,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  deleteBooking(employee_id: number, booking_id: number): Observable<any> {
+    return this.http.delete<any>(
+      `/api/employees/${employee_id}/bookings/${booking_id}`
     );
   }
 }

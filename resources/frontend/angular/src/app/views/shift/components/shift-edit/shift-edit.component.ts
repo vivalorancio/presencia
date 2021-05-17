@@ -142,8 +142,6 @@ export class ShiftEditComponent implements OnInit {
       colour: this.colourItem.name,
     };
     shiftToSave.code = shiftToSave.code.toUpperCase();
-    console.log(this.colourItem);
-    console.log(shiftToSave);
     if (this.shift.id == null) {
       this.store.dispatch(shiftsActions.addShift({ shift: shiftToSave }));
     } else {

@@ -9,6 +9,9 @@ import { Incidence } from 'src/app/shared/models/incidence.model';
 import { dateAAAAMMDD, timeHHMMSS } from 'src/app/shared/calendar/calendar';
 import { BookingNotificationService } from 'src/app/shared/notifications/booking/booking-notification.service';
 import { delay } from 'rxjs/operators';
+import { Booking } from 'src/app/shared/models/booking.model';
+
+import * as employeesActions from '../../../views/employee/actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,15 +19,23 @@ import { delay } from 'rxjs/operators';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  pending: boolean = false;
   employee!: Employee;
   employeedisplayname = '';
-
   shift!: Shift;
-
   incidences: Incidence[] = [];
   selectedIncidenceId: number = -1;
+
+  pending_employee: boolean = false;
+  // employee2!: Employee;
+  // employeedisplayname2 = '';
+  // shift2!: Shift;
+  // incidences2: Incidence[] = [];
+
   datetime!: Date;
-  pending: boolean = false;
+  pending_booking: boolean = false;
+  res_booking!: any;
+  err_booking!: any;
 
   constructor(
     private store: Store<AppState>,
@@ -33,60 +44,107 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select('authentication', 'employee').subscribe((employee) => {
-      this.employee = employee.data;
-      this.employeedisplayname = employee.data?.first_name;
+    this.store.select('authentication').subscribe((authentication) => {
+      // this.employee = authentication.employee.data;
+      // this.employeedisplayname = authentication.employee.data?.first_name;
+      // this.shift = authentication.shift.data;
+      // this.incidences = authentication.incidences;
+      this.pending = authentication.pending;
+
+      if (authentication.user.employee_id !== null) {
+        this.store.dispatch(
+          employeesActions.loadEmployee({
+            employee_id: authentication.user.employee_id,
+          })
+        );
+      }
     });
-    this.store.select('authentication', 'shift').subscribe((shift) => {
-      this.shift = shift.data;
+    this.store.select('employee').subscribe((employee) => {
+      this.employee = employee.employee.data;
+      this.employeedisplayname = employee.employee.data?.first_name;
+      this.shift = employee.shift.data;
+      this.incidences = employee.incidences.data;
+      this.pending_employee = employee.pending;
     });
-    this.store
-      .select('authentication', 'incidences')
-      .subscribe((incidences) => {
-        this.incidences = incidences;
-      });
+
+    this.store.select('booking').subscribe((booking) => {
+      this.pending_booking = booking.pending;
+      this.res_booking = booking.res;
+      this.err_booking = booking.error;
+
+      if (this.res_booking) {
+        this.bookingnotificationService.showSuccessNotification(
+          this.res_booking.message
+        );
+      }
+      if (this.err_booking) {
+        this.bookingnotificationService.showErrorNotification(
+          this.err_booking.error.errors.date
+        );
+      }
+    });
+
+    // Refresh User
   }
 
   getTextColourFromName = getTextColourFromName;
+
+  isloading() {
+    return this.pending || this.pending_employee;
+  }
 
   updateDatetime(datetime: Date) {
     this.datetime = datetime;
   }
 
   book() {
-    this.pending = true;
+    let booking: Booking = {
+      date: dateAAAAMMDD(this.datetime),
+      time: timeHHMMSS(this.datetime),
+      incidence_id:
+        this.selectedIncidenceId != -1 ? this.selectedIncidenceId : null,
+    } as Booking;
 
-    let date = dateAAAAMMDD(this.datetime);
-    let time = timeHHMMSS(this.datetime);
+    this.store.dispatch(
+      employeesActions.book({
+        employee_id: this.employee.id,
+        booking,
+      })
+    );
+    this.selectedIncidenceId = -1;
 
-    let incidence_id =
-      this.selectedIncidenceId != -1 ? this.selectedIncidenceId : null;
+    // this.pending_booking = true;
+    // let date = dateAAAAMMDD(this.datetime);
+    // let time = timeHHMMSS(this.datetime);
 
-    this.http
-      .post(
-        `/api/employees/${this.employee.id}/bookings`,
-        { date, time, incidence_id },
-        {
-          withCredentials: true,
-          // observe: 'response',
-        }
-      )
-      // .pipe(delay(1000))
-      .subscribe(
-        (res: any) => {
-          this.pending = false;
-          this.selectedIncidenceId = -1;
-          this.bookingnotificationService.showSuccessNotification(res.message);
-          console.log(res);
-        },
-        (err) => {
-          this.pending = false;
-          this.selectedIncidenceId = -1;
-          this.bookingnotificationService.showErrorNotification(
-            err.error.errors.date
-          );
-          console.log(err.error);
-        }
-      );
+    // let incidence_id =
+    //   this.selectedIncidenceId != -1 ? this.selectedIncidenceId : null;
+
+    // this.http
+    //   .post(
+    //     `/api/employees/${this.employee.id}/bookings`,
+    //     { date, time, incidence_id },
+    //     {
+    //       withCredentials: true,
+    //       // observe: 'response',
+    //     }
+    //   )
+    //   // .pipe(delay(1000))
+    //   .subscribe(
+    //     (res: any) => {
+    //       this.pending_booking = false;
+    //       this.selectedIncidenceId = -1;
+    //       this.bookingnotificationService.showSuccessNotification(res.message);
+    //       console.log(res);
+    //     },
+    //     (err) => {
+    //       this.pending_booking = false;
+    //       this.selectedIncidenceId = -1;
+    //       this.bookingnotificationService.showErrorNotification(
+    //         err.error.errors.date
+    //       );
+    //       console.log(err.error);
+    //     }
+    //   );
   }
 }

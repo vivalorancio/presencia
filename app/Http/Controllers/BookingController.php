@@ -92,9 +92,15 @@ class BookingController extends Controller
     {
         $time0 = new DateTime('00:00');
         $eval = ['count' => count($day['bookings'])];
-        $eval['totalbookedtime'] = '00:00:00';
         $eval['anomalies'] = [];
         $eval['balance'] = '';
+
+        if ($day['shift'] == null) {
+            array_push($eval['anomalies'], 'no_shift');
+            $day['eval'] = $eval;
+            return $eval;
+        }
+        $eval['totalbookedtime'] = '00:00:00';
 
         $expected_time = date("H:i:s", strtotime($day['shift']->expected_time));
         $recess_time = $day['shift']->recess_time == null ? "00:00:00" : date("H:i:s", strtotime($day['shift']->recess_time));

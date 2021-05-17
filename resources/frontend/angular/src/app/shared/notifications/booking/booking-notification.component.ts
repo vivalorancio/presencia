@@ -25,7 +25,7 @@ export class BookingNotificationComponent implements OnInit {
         setTimeout(() => {
           // this.bookingnotifications = this.bookingnotifications.filter((x) => x !== bookingnotification);
           this.bookingnotifications.splice(0, 1);
-        }, 4000);
+        }, 2000);
       });
   }
 

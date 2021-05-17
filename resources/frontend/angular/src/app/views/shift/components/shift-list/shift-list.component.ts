@@ -71,7 +71,6 @@ export class ShiftListComponent implements OnInit {
   getTextColourFromName = getTextColourFromName;
 
   open(id: number) {
-    console.log(id);
     this.router.navigate([`/management/shifts/shift/${id}`]);
   }
 

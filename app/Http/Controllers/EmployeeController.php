@@ -251,12 +251,16 @@ class EmployeeController extends Controller
     public function incidences(EmployeeSelfRequest $request, Employee $employee)
     {
         $result = [];
-        $employeeincidencesgroupincidences = $employee->incidences_group->incidences;
+        $employeeincidencesgroup = $employee->incidences_group;
+        if ($employeeincidencesgroup != null) {
 
-        foreach ($employeeincidencesgroupincidences as $employeeincidencesgroupincidence) {
-            array_push($result, $employeeincidencesgroupincidence->incidence);
+            $employeeincidencesgroupincidences = $employeeincidencesgroup->incidences;
+
+            foreach ($employeeincidencesgroupincidences as $employeeincidencesgroupincidence) {
+                array_push($result, $employeeincidencesgroupincidence->incidence);
+            }
         }
-
-        return $result;
+        return ['data' => IncidenceResource::collection($result)];
+        //return $result;
     }
 }

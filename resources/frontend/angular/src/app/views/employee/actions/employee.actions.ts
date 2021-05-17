@@ -1,5 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import {
+  Booking,
+  DayBookingsCollection,
+} from 'src/app/shared/models/booking.model';
+import {
   Employee,
   EmployeeCalendar,
   EmployeeCalendarCollection,
@@ -8,7 +12,15 @@ import {
   EmployeeResource,
   EmployeeSearch,
 } from 'src/app/shared/models/employee.model';
-import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
+import {
+  Incidence,
+  IncidenceCollection,
+} from 'src/app/shared/models/incidence.model';
+import {
+  DisplayBookingsCollection,
+  DisplayResourceCollection,
+} from 'src/app/shared/models/resource.model';
+import { ShiftResource } from 'src/app/shared/models/shift.model';
 
 // ------------ Init Employees ----------
 export const initEmployees = createAction(
@@ -106,5 +118,93 @@ export const deleteEmployeeCalendarSuccess = createAction(
 );
 export const deleteEmployeeCalendarFailure = createAction(
   '[Employee Management] Delete EmployeeCalendar Failure',
+  props<{ error: any }>()
+);
+// ------------ Employee Bookings----------
+export const initEmployeeBookings = createAction(
+  '[Employee] Init Employee Bookings',
+  props<{ employee_id: number }>()
+);
+export const loadEmployeeBookings = createAction(
+  '[Employee] Load Employee Bookings',
+  props<{ employee_id: number; bookingsdisplay: DisplayBookingsCollection }>()
+);
+export const loadEmployeeBookingsSuccess = createAction(
+  '[Employee] Load Employee Bookings Success',
+  props<{ bookings: DayBookingsCollection }>()
+);
+
+export const loadEmployeeBookingsFailure = createAction(
+  '[Employee] Load Employee Bookings Failure',
+  props<{ error: any }>()
+);
+// ------------ Book ----------
+export const book = createAction(
+  '[Employee] Book',
+  props<{ employee_id: number; booking: Booking }>()
+);
+export const bookSuccess = createAction(
+  '[Employee] Book Success',
+  props<{ res: any }>()
+);
+export const bookFailure = createAction(
+  '[Employee] Book Failure',
+  props<{ error: any }>()
+);
+// ------------ Add Employee Booking ----------
+export const addEmployeeBooking = createAction(
+  '[Employee] Add EmployeeBooking',
+  props<{ employee_id: number; booking: Booking }>()
+);
+export const addEmployeeBookingSuccess = createAction(
+  '[Employee] Add EmployeeBooking Success',
+  props<{ res: any }>()
+);
+export const addEmployeeBookingFailure = createAction(
+  '[Employee] Add EmployeeBooking Failure',
+  props<{ error: any }>()
+);
+
+// ------------ Employee ----------
+export const loadEmployee = createAction(
+  '[Employee] Load Employee',
+  props<{ employee_id: number }>()
+);
+export const loadEmployeeSuccess = createAction(
+  '[Employee] Load Employee Success',
+  props<{ employee: EmployeeResource }>()
+);
+
+export const loadEmployeeFailure = createAction(
+  '[Employee] Load Employee Failure',
+  props<{ error: any }>()
+);
+
+// ------------ Employee Today Shift----------
+export const loadEmployeeShift = createAction(
+  '[Employee] Load EmployeeShift',
+  props<{ employee_id: number }>()
+);
+export const loadEmployeeShiftSuccess = createAction(
+  '[Employee] Load EmployeeShift Success',
+  props<{ shift: ShiftResource }>()
+);
+
+export const loadEmployeeShiftFailure = createAction(
+  '[Employee] Load EmployeeShift Failure',
+  props<{ error: any }>()
+);
+// ------------ Employee Incidences----------
+export const loadEmployeeIncidences = createAction(
+  '[Employee] Load Employee Incidences',
+  props<{ employee_id: number }>()
+);
+export const loadEmployeeIncidencesSuccess = createAction(
+  '[Employee] Load Employee Incidences Success',
+  props<{ incidences: IncidenceCollection }>()
+);
+
+export const loadEmployeeIncidencesFailure = createAction(
+  '[Employee] Load Employee Incidences Failure',
   props<{ error: any }>()
 );

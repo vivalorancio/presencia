@@ -57,7 +57,6 @@ export class CalendarListComponent implements OnInit {
   }
 
   open(id: number) {
-    console.log(id);
     this.router.navigate([`/management/calendars/calendar/${id}`]);
   }
 

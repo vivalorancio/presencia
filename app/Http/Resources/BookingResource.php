@@ -20,11 +20,11 @@ class BookingResource extends JsonResource
             // 'employee_id' => $this->employee_id,
             'date' => $this->date,
             'time' => $this->time,
-            // 'incidence_id' => $this->incidence_id,
+            'incidence_id' => $this->incidence_id,
             'incidence' => $this->incidence,
             //'shift' => ShiftResource::collection([$this->shift]),
             // 'shift.start_time' => $this->shift->start_time->format('H:i'),
-            'is_manual' => $this->user_id != null,
+            'user_id' => $this->user_id,
         ];
     }
 }

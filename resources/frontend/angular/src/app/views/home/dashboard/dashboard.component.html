@@ -10,6 +10,11 @@
 4. Bookings Report
 -->
 
+<app-spinner-overlay
+  [active]="isloading()"
+  [text]="'Loading ...'"
+></app-spinner-overlay>
+
 <div
   class="grid max-w-screen-lg grid-cols-6 mx-3 my-6 lg:mx-auto gap-x-3 gap-y-2"
 >
@@ -56,7 +61,7 @@
       </button>
       <div class="h-12">
         <div
-          *ngIf="pending"
+          *ngIf="pending_booking"
           class="flex items-center justify-center w-full px-5 py-2 font-normal text-white bg-yellow-500 rounded-md "
         >
           <svg
@@ -89,12 +94,18 @@
       >
         Hello, {{ employeedisplayname }}.
       </h2>
-      <div *ngIf="shift.id === undefined" class="flex flex-col space-y-4">
+      <div
+        *ngIf="!isloading() && shift?.id === undefined"
+        class="flex flex-col space-y-4"
+      >
         <h3 class="text-lg font-medium text-red-500">
           You don't currently have a shift
         </h3>
       </div>
-      <div *ngIf="shift.id !== undefined" class="flex flex-col space-y-4">
+      <div
+        *ngIf="!isloading() && shift?.id !== undefined"
+        class="flex flex-col space-y-4"
+      >
         <h3 class="text-lg font-medium-text-gray-700">Today, your shift is:</h3>
         <div class="flex items-baseline space-x-2">
           <div
@@ -116,7 +127,7 @@
           class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
           type="button"
           [routerLink]="['bookings']"
-          [disabled]="pending"
+          [disabled]="isloading()"
         >
           Bookings
         </button>

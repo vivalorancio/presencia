@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 
 import * as authenticationActions from 'src/app/views/authentication/actions';
+import * as employeesActions from 'src/app/views/employee/actions';
+
 import {
   dashboardMenu,
   managementMenu,
@@ -37,10 +39,12 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.store.select('authentication').subscribe((authentication) => {
       this.user = authentication.user?.username ? authentication.user : null;
-      this.employee = authentication.employee.data;
+    });
+    this.store.select('employee').subscribe((employee) => {
+      this.employee = employee.employee.data;
     });
     this.mainmodule = this.route.snapshot.url[0]?.path;
-    console.log(this.route.snapshot);
+    // console.log(this.route.snapshot);
   }
 
   logout(): void {

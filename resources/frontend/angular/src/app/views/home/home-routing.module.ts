@@ -23,10 +23,10 @@ const routes: Routes = [
         path: '',
         component: DashboardComponent,
       },
-      {
-        path: 'bookings',
-        component: BookingsListComponent,
-      },
+      // {
+      //   path: 'bookings',
+      //   component: BookingsListComponent,
+      // },
     ],
     canActivate: [AuthenticationGuard],
   },

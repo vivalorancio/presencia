@@ -47,63 +47,45 @@ export const getUserFailure = createAction(
 );
 
 // ------------ Employee ----------
-export const getEmployee = createAction(
-  '[Authentication] Get Employee',
-  props<{ employee_id: number }>()
-);
-export const getEmployeeSuccess = createAction(
-  '[Authentication] Get Employee Success',
-  props<{ employee: EmployeeResource }>()
-);
+// export const getEmployee = createAction(
+//   '[Authentication] Get Employee',
+//   props<{ employee_id: number }>()
+// );
+// export const getEmployeeSuccess = createAction(
+//   '[Authentication] Get Employee Success',
+//   props<{ employee: EmployeeResource }>()
+// );
 
-export const getEmployeeFailure = createAction(
-  '[Authentication] Get Employee Failure',
-  props<{ error: any }>()
-);
+// export const getEmployeeFailure = createAction(
+//   '[Authentication] Get Employee Failure',
+//   props<{ error: any }>()
+// );
 
-// ------------ Employee Today Shift----------
-export const getEmployeeShift = createAction(
-  '[Authentication] Get EmployeeShift',
-  props<{ employee_id: number }>()
-);
-export const getEmployeeShiftSuccess = createAction(
-  '[Authentication] Get EmployeeShift Success',
-  props<{ shift: ShiftResource }>()
-);
+// // ------------ Employee Today Shift----------
+// export const getEmployeeShift = createAction(
+//   '[Authentication] Get EmployeeShift',
+//   props<{ employee_id: number }>()
+// );
+// export const getEmployeeShiftSuccess = createAction(
+//   '[Authentication] Get EmployeeShift Success',
+//   props<{ shift: ShiftResource }>()
+// );
 
-export const getEmployeeShiftFailure = createAction(
-  '[Authentication] Get EmployeeShift Failure',
-  props<{ error: any }>()
-);
+// export const getEmployeeShiftFailure = createAction(
+//   '[Authentication] Get EmployeeShift Failure',
+//   props<{ error: any }>()
+// );
 // ------------ Employee Incidences----------
-export const getEmployeeIncidences = createAction(
-  '[Authentication] Get Employee Incidences',
-  props<{ employee_id: number }>()
-);
-export const getEmployeeIncidencesSuccess = createAction(
-  '[Authentication] Get Employee Incidences Success',
-  props<{ incidences: Incidence[] }>()
-);
+// export const getEmployeeIncidences = createAction(
+//   '[Authentication] Get Employee Incidences',
+//   props<{ employee_id: number }>()
+// );
+// export const getEmployeeIncidencesSuccess = createAction(
+//   '[Authentication] Get Employee Incidences Success',
+//   props<{ incidences: Incidence[] }>()
+// );
 
-export const getEmployeeIncidencesFailure = createAction(
-  '[Authentication] Get Employee Incidences Failure',
-  props<{ error: any }>()
-);
-// ------------ Employee Bookings----------
-export const initEmployeeBookings = createAction(
-  '[Authentication] Init Employee Bookings',
-  props<{ employee_id: number }>()
-);
-export const getEmployeeBookings = createAction(
-  '[Authentication] Get Employee Bookings',
-  props<{ employee_id: number; bookingsdisplay: DisplayBookingsCollection }>()
-);
-export const getEmployeeBookingsSuccess = createAction(
-  '[Authentication] Get Employee Bookings Success',
-  props<{ bookings: DayBookingsCollection }>()
-);
-
-export const getEmployeeBookingsFailure = createAction(
-  '[Authentication] Get Employee Bookings Failure',
-  props<{ error: any }>()
-);
+// export const getEmployeeIncidencesFailure = createAction(
+//   '[Authentication] Get Employee Incidences Failure',
+//   props<{ error: any }>()
+// );

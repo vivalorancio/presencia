@@ -69,7 +69,6 @@ export class IncidenceListComponent implements OnInit {
   getTextColourFromName = getTextColourFromName;
 
   open(id: number) {
-    console.log(id);
     this.router.navigate([`/management/incidences/incidence/${id}`]);
   }
 

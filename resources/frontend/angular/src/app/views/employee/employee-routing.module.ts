@@ -7,8 +7,20 @@ import { EmployeeEditComponent } from './components/employee-edit/employee-edit.
 import { EmployeecalendarListComponent } from './components/employeecalendar-list/employeecalendar-list.component';
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { BookingsListComponent } from './components/bookings-list/bookings-list.component';
+import { BookingEditComponent } from './components/booking-edit/booking-edit.component';
 
 const routes: Routes = [
+  {
+    path: 'dashboard',
+    component: MainComponent,
+    children: [
+      {
+        path: 'bookings',
+        component: BookingsListComponent,
+      },
+    ],
+    canActivate: [AuthenticationGuard],
+  },
   {
     path: 'management',
     component: MainComponent,
@@ -32,6 +44,14 @@ const routes: Routes = [
       {
         path: 'employees/employee/:employee_id/bookings',
         component: BookingsListComponent,
+      },
+      {
+        path: 'employees/employee/:employee_id/bookings/booking',
+        component: BookingEditComponent,
+      },
+      {
+        path: 'employees/employee/:employee_id/bookings/booking/:booking_id',
+        component: BookingEditComponent,
       },
     ],
     canActivate: [AuthenticationGuard, AdminGuard],
