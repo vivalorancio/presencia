@@ -209,7 +209,14 @@
                         />
                       </svg>
                     </div>
-                    <div class="py-1 mr-0.5">
+                    <div
+                      [class]="{
+                        'cursor-pointer': is_management,
+                        'hover:underline': is_management
+                      }"
+                      class="py-1 mr-0.5"
+                      (click)="is_management ? open(abooking.id) : null"
+                    >
                       {{ abooking.time }}
                     </div>
                     <div class="mr-1">

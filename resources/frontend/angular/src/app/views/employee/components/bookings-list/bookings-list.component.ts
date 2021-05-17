@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
@@ -44,7 +44,11 @@ export class BookingsListComponent implements OnInit {
     { text: 'Anomalies', sort_by: '', hides: false, search_by: '' },
   ];
 
-  constructor(private store: Store<AppState>, private route: ActivatedRoute) {}
+  constructor(
+    private store: Store<AppState>,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.bookingsdisplay = {
@@ -101,6 +105,12 @@ export class BookingsListComponent implements OnInit {
 
   ispending(): boolean {
     return this.pending || this.pending_employee || this.pending_employees;
+  }
+
+  open(id: number) {
+    this.router.navigate([
+      `/management/employees/employee/${this.employee_id}/bookings/booking/${id}`,
+    ]);
   }
 
   dispatchLoad(): void {

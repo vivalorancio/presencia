@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import {
   Booking,
+  BookingResource,
   DayBookingsCollection,
 } from 'src/app/shared/models/booking.model';
 import {
@@ -107,7 +108,7 @@ export const addEmployeeCalendarFailure = createAction(
   '[Employee Management] Add EmployeeCalendar Failure',
   props<{ error: any }>()
 );
-// ------------ Delete Employee ----------
+// ------------ Delete EmployeeCalendar ----------
 export const deleteEmployeeCalendar = createAction(
   '[Employee Management] Delete EmployeeCalendar',
   props<{ employee_id: number; employeecalendar_id: number }>()
@@ -138,6 +139,22 @@ export const loadEmployeeBookingsFailure = createAction(
   '[Employee] Load Employee Bookings Failure',
   props<{ error: any }>()
 );
+
+// ------------ Load Booking ----------
+export const loadBooking = createAction(
+  '[Employee] Load Booking',
+  props<{ employee_id: number; booking_id: number }>()
+);
+export const loadBookingSuccess = createAction(
+  '[Employee] Load Booking Success',
+  props<{ booking: BookingResource }>()
+);
+
+export const loadBookingFailure = createAction(
+  '[Employee] Load Booking Failure',
+  props<{ error: any }>()
+);
+
 // ------------ Book ----------
 export const book = createAction(
   '[Employee] Book',
@@ -151,6 +168,7 @@ export const bookFailure = createAction(
   '[Employee] Book Failure',
   props<{ error: any }>()
 );
+
 // ------------ Add Employee Booking ----------
 export const addEmployeeBooking = createAction(
   '[Employee] Add EmployeeBooking',
@@ -164,7 +182,32 @@ export const addEmployeeBookingFailure = createAction(
   '[Employee] Add EmployeeBooking Failure',
   props<{ error: any }>()
 );
-
+// ------------ Update Employee Booking ----------
+export const updateEmployeeBooking = createAction(
+  '[Employee] Update EmployeeBooking',
+  props<{ employee_id: number; booking: Booking }>()
+);
+export const updateEmployeeBookingSuccess = createAction(
+  '[Employee] Update EmployeeBooking Success',
+  props<{ res: any }>()
+);
+export const updateEmployeeBookingFailure = createAction(
+  '[Employee] Update EmployeeBooking Failure',
+  props<{ error: any }>()
+);
+// ------------ Delete Employee ----------
+export const deleteEmployeeBooking = createAction(
+  '[Employee] Delete EmployeeBooking',
+  props<{ employee_id: number; booking_id: number }>()
+);
+export const deleteEmployeeBookingSuccess = createAction(
+  '[Employee] Delete EmployeeBooking Success',
+  props<{ message: string }>()
+);
+export const deleteEmployeeBookingFailure = createAction(
+  '[Employee] Delete EmployeeBooking Failure',
+  props<{ error: any }>()
+);
 // ------------ Employee ----------
 export const loadEmployee = createAction(
   '[Employee] Load Employee',

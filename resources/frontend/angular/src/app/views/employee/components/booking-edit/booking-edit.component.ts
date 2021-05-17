@@ -9,7 +9,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
-import { Booking } from 'src/app/shared/models/booking.model';
+import {
+  Booking,
+  DayBookingsCollection,
+} from 'src/app/shared/models/booking.model';
 import {
   Employee,
   EmployeeCollection,
@@ -32,13 +35,16 @@ export class BookingEditComponent implements OnInit {
   ) {}
 
   bookingForm!: FormGroup;
-  booking: Booking = {} as Booking;
+  bookings!: DayBookingsCollection;
+  pending_bookings: boolean = false;
   pending: boolean = false;
   submiterror: any;
 
   submitted: boolean = false;
   showDeleteConfirmation = false;
 
+  booking_id!: number;
+  booking: Booking = {} as Booking;
   employee_id!: number;
 
   user!: User;
@@ -69,8 +75,10 @@ export class BookingEditComponent implements OnInit {
       this.pending_employee = employee.pending;
     });
 
-    this.store.select('booking').subscribe((booking) => {
-      this.submiterror = booking.error;
+    this.store.select('bookings').subscribe((bookings) => {
+      this.bookings = bookings.bookings;
+      this.submiterror = bookings.error;
+      this.pending_bookings = bookings.pending;
     });
 
     this.route.params.subscribe((params) => {
@@ -78,9 +86,22 @@ export class BookingEditComponent implements OnInit {
       this.store.dispatch(
         employeesActions.loadEmployee({ employee_id: this.employee_id })
       );
+      this.booking_id = +params.booking_id;
+
+      let the_bookings = this.bookings?.data
+        .map((day) => day.bookings)
+        .reduce((acc, val) => acc.concat(val), []);
+
+      const the_booking: any = (the_bookings?.find(
+        (booking: any) => booking.id === this.booking_id
+      ) || {}) as Booking;
+
+      if (the_booking !== {}) {
+        this.booking = the_booking;
+      }
     });
 
-    this.selectedIncidenceId = this.booking.incidence_id || -1;
+    this.selectedIncidenceId = this.booking?.incidence_id || -1;
 
     this.bookingForm = this.formBuilder.group({
       date: [
@@ -94,6 +115,7 @@ export class BookingEditComponent implements OnInit {
   ispending() {
     return (
       this.pending ||
+      this.pending_bookings ||
       this.pending_user ||
       this.pending_employees ||
       this.pending_employee
@@ -107,8 +129,13 @@ export class BookingEditComponent implements OnInit {
 
   actionDelete(proceed: boolean) {
     this.showDeleteConfirmation = false;
-    // if (proceed)
-    //   this.store.dispatch(employeesActions.deleteEmployeeBooking({ id: this.booking.id }));
+    if (proceed)
+      this.store.dispatch(
+        employeesActions.deleteEmployeeBooking({
+          employee_id: this.employee_id,
+          booking_id: this.booking.id,
+        })
+      );
   }
 
   onSubmit() {
@@ -135,7 +162,12 @@ export class BookingEditComponent implements OnInit {
         id: this.booking.id,
         ...bookingToSave,
       };
-      // this.store.dispatch(employeesActions.updateEmployeeBooking({ booking: bookingToSave }));
+      this.store.dispatch(
+        employeesActions.updateEmployeeBooking({
+          employee_id: this.employee_id,
+          booking: bookingToSave,
+        })
+      );
     }
   }
 

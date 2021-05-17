@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
 import {
   Booking,
+  BookingResource,
   DayBookingsCollection,
 } from 'src/app/shared/models/booking.model';
 import { DisplayBookingsCollection } from 'src/app/shared/models/resource.model';
@@ -12,7 +13,7 @@ export interface BookingState {
   res: string | null;
   pending: boolean;
   employee_id: number;
-  //booking: Booking;
+  booking: BookingResource;
 }
 
 export const initialBookingState: BookingState = {
@@ -20,11 +21,28 @@ export const initialBookingState: BookingState = {
   res: null,
   pending: false,
   employee_id: -1,
-  // bookings: { data: [], links: null, meta: null },
+  booking: {} as BookingResource,
 };
 
 export const _bookingReducer = createReducer(
   initialBookingState,
+  on(employeesActions.loadBooking, (state, { employee_id, booking_id }) => ({
+    ...state,
+    employee_id,
+    booking: initialBookingState.booking,
+    pending: true,
+  })),
+  on(employeesActions.loadBookingSuccess, (state, { booking }) => ({
+    ...state,
+    error: null,
+    pending: false,
+    booking,
+  })),
+  on(employeesActions.loadBookingFailure, (state, { error }) => ({
+    ...state,
+    pending: false,
+    error,
+  })),
   on(employeesActions.book, (state, { employee_id, booking }) => ({
     ...initialBookingState,
     pending: true,
@@ -61,6 +79,44 @@ export const _bookingReducer = createReducer(
     error,
     pending: false,
     res: null,
+  })),
+  on(
+    employeesActions.updateEmployeeBooking,
+    (state, { employee_id, booking }) => ({
+      ...state,
+      pending: true,
+      error: null,
+    })
+  ),
+  on(employeesActions.updateEmployeeBookingSuccess, (state, { res }) => ({
+    ...state,
+    res,
+    pending: false,
+    error: null,
+  })),
+  on(employeesActions.updateEmployeeBookingFailure, (state, { error }) => ({
+    ...state,
+    pending: false,
+    error,
+  })),
+  on(
+    employeesActions.deleteEmployeeBooking,
+    (state, { employee_id, booking_id }) => ({
+      ...state,
+      pending: true,
+      error: null,
+    })
+  ),
+  on(employeesActions.deleteEmployeeBookingSuccess, (state, { message }) => ({
+    ...state,
+    res: message,
+    pending: false,
+    error: null,
+  })),
+  on(employeesActions.deleteEmployeeBookingFailure, (state, { error }) => ({
+    ...state,
+    pending: false,
+    error,
   }))
 );
 

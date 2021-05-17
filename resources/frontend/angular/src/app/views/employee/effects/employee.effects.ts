@@ -270,6 +270,22 @@ export class EmployeesEffects {
     )
   );
 
+  loadBookings$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadBooking),
+      mergeMap((action) =>
+        this.employeeService
+          .getBooking(action.employee_id, action.booking_id)
+          .pipe(
+            map((booking) => employeesActions.loadBookingSuccess({ booking })),
+            catchError((error) =>
+              of(employeesActions.loadBookingFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
   book$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.book),
@@ -320,6 +336,80 @@ export class EmployeesEffects {
   // );
 
   //addEmployeeFailure ---> PROCESS ERROR MESSAGE / retry /etc
+
+  updateEmployeeBooking$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.updateEmployeeBooking),
+      mergeMap((action) =>
+        this.employeeService
+          .putBooking(action.employee_id, action.booking)
+          .pipe(
+            map((res) =>
+              employeesActions.updateEmployeeBookingSuccess({ res })
+            ),
+            tap(() =>
+              this.router.navigate([
+                `/management/employees/employee/${action.employee_id}/bookings`,
+              ])
+            ),
+            catchError((error) =>
+              of(employeesActions.updateEmployeeBookingFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  // updateEmployeeSuccess$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(employeesActions.updateEmployeeSuccess),
+  //     withLatestFrom(this.store.select('employees')),
+  //     map(([action, employees]) =>
+  //       employeesActions.loadEmployees({
+  //         display: employees.display,
+  //         search: employees.search,
+  //       })
+  //     )
+  //   )
+  // );
+
+  //updateEmployeeFailure ---> PROCESS ERROR MESSAGE / retry /etc
+
+  deleteEmployeeBooking$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.deleteEmployeeBooking),
+      mergeMap((action) =>
+        this.employeeService
+          .deleteBooking(action.employee_id, action.booking_id)
+          .pipe(
+            map((message) =>
+              employeesActions.deleteEmployeeBookingSuccess({ message })
+            ),
+            tap(() =>
+              this.router.navigate([
+                `/management/employees/employee/${action.employee_id}/bookings`,
+              ])
+            ),
+            catchError((error) =>
+              of(employeesActions.deleteEmployeeBookingFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  // deleteEmployeeSuccess$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(employeesActions.deleteEmployeeSuccess),
+  //     withLatestFrom(this.store.select('employees')),
+  //     map(([action, employees]) =>
+  //       employeesActions.loadEmployees({
+  //         display: employees.display,
+  //         search: employees.search,
+  //       })
+  //     )
+  //   )
+  // );
 
   loadEmployee$ = createEffect(() =>
     this.actions$.pipe(
