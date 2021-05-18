@@ -34,30 +34,20 @@ export class CalendarService {
     params = search.name ? params.append('search_name', search.name) : params;
 
     return this.http.get<CalendarCollection>('/api/calendars/', {
-      withCredentials: true,
       params: params,
     });
-    // return this.http.get<CalendarCollection>(`/api/calendars/?page=${page}`, {
-    //   withCredentials: true,
-    // });
   }
 
   getCalendar(calendar_id: number): Observable<CalendarResource> {
-    return this.http.get<CalendarResource>(`/api/calendars/${calendar_id}`, {
-      withCredentials: true,
-    });
+    return this.http.get<CalendarResource>(`/api/calendars/${calendar_id}`);
   }
 
   postCalendar(calendar: Calendar): Observable<CalendarResource> {
-    return this.http.post<any>(`/api/calendars/`, calendar, {
-      withCredentials: true,
-    });
+    return this.http.post<any>(`/api/calendars/`, calendar);
   }
 
   putCalendar(calendar: Calendar): Observable<CalendarResource> {
-    return this.http.put<any>(`/api/calendars/${calendar.id}`, calendar, {
-      withCredentials: true,
-    });
+    return this.http.put<any>(`/api/calendars/${calendar.id}`, calendar);
   }
 
   deleteCalendar(id: number): Observable<any> {
@@ -71,10 +61,7 @@ export class CalendarService {
     page: string
   ): Observable<CalendarShiftCollection> {
     return this.http.get<CalendarShiftCollection>(
-      `/api/calendars/${calendar_id}/shifts/?page=${page}`,
-      {
-        withCredentials: true,
-      }
+      `/api/calendars/${calendar_id}/shifts/?page=${page}`
     );
   }
 
@@ -83,10 +70,7 @@ export class CalendarService {
     calendarshift_id: number
   ): Observable<CalendarShiftResource> {
     return this.http.get<CalendarShiftResource>(
-      `/api/calendars/${calendar_id}/shifts/${calendarshift_id}`,
-      {
-        withCredentials: true,
-      }
+      `/api/calendars/${calendar_id}/shifts/${calendarshift_id}`
     );
   }
 
@@ -94,8 +78,6 @@ export class CalendarService {
     calendar_id: number,
     days: { day: number; shift_id: number | null }[]
   ): Observable<CalendarShiftCollection> {
-    return this.http.post<any>(`/api/calendars/${calendar_id}/shifts/`, days, {
-      withCredentials: true,
-    });
+    return this.http.post<any>(`/api/calendars/${calendar_id}/shifts/`, days);
   }
 }

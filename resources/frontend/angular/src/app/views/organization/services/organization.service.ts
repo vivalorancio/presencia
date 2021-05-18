@@ -42,34 +42,22 @@ export class OrganizationService {
       : params;
 
     return this.http.get<DepartmentCollection>('/api/departments/', {
-      withCredentials: true,
       params: params,
     });
-
-    // return this.http.get<DepartmentCollection>(`/api/departments/?page=${page}`, {
-    //   withCredentials: true,
-    // });
   }
 
   getDepartment(department_id: number): Observable<DepartmentResource> {
     return this.http.get<DepartmentResource>(
-      `/api/departments/${department_id}`,
-      {
-        withCredentials: true,
-      }
+      `/api/departments/${department_id}`
     );
   }
 
   postDepartment(department: Department): Observable<DepartmentResource> {
-    return this.http.post<any>(`/api/departments/`, department, {
-      withCredentials: true,
-    });
+    return this.http.post<any>(`/api/departments/`, department);
   }
 
   putDepartment(department: Department): Observable<DepartmentResource> {
-    return this.http.put<any>(`/api/departments/${department.id}`, department, {
-      withCredentials: true,
-    });
+    return this.http.put<any>(`/api/departments/${department.id}`, department);
   }
 
   deleteDepartment(id: number): Observable<any> {
@@ -95,31 +83,20 @@ export class OrganizationService {
       : params;
 
     return this.http.get<AreaCollection>('/api/areas/', {
-      withCredentials: true,
       params: params,
     });
-
-    // return this.http.get<AreaCollection>(`/api/areas/?page=${page}`, {
-    //   withCredentials: true,
-    // });
   }
 
   getArea(area_id: number): Observable<AreaResource> {
-    return this.http.get<AreaResource>(`/api/areas/${area_id}`, {
-      withCredentials: true,
-    });
+    return this.http.get<AreaResource>(`/api/areas/${area_id}`);
   }
 
   postArea(area: Area): Observable<AreaResource> {
-    return this.http.post<any>(`/api/areas/`, area, {
-      withCredentials: true,
-    });
+    return this.http.post<any>(`/api/areas/`, area);
   }
 
   putArea(area: Area): Observable<AreaResource> {
-    return this.http.put<any>(`/api/areas/${area.id}`, area, {
-      withCredentials: true,
-    });
+    return this.http.put<any>(`/api/areas/${area.id}`, area);
   }
 
   deleteArea(id: number): Observable<any> {
@@ -145,31 +122,20 @@ export class OrganizationService {
       : params;
 
     return this.http.get<SectionCollection>('/api/sections/', {
-      withCredentials: true,
       params: params,
     });
-
-    // return this.http.get<SectionCollection>(`/api/sections/?page=${page}`, {
-    //   withCredentials: true,
-    // });
   }
 
   getSection(section_id: number): Observable<SectionResource> {
-    return this.http.get<SectionResource>(`/api/sections/${section_id}`, {
-      withCredentials: true,
-    });
+    return this.http.get<SectionResource>(`/api/sections/${section_id}`);
   }
 
   postSection(section: Section): Observable<SectionResource> {
-    return this.http.post<any>(`/api/sections/`, section, {
-      withCredentials: true,
-    });
+    return this.http.post<any>(`/api/sections/`, section);
   }
 
   putSection(section: Section): Observable<SectionResource> {
-    return this.http.put<any>(`/api/sections/${section.id}`, section, {
-      withCredentials: true,
-    });
+    return this.http.put<any>(`/api/sections/${section.id}`, section);
   }
 
   deleteSection(id: number): Observable<any> {

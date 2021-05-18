@@ -32,33 +32,20 @@ export class ShiftService {
       : params;
 
     return this.http.get<ShiftCollection>('/api/shifts/', {
-      withCredentials: true,
       params: params,
     });
-    // return this.http.get<ShiftCollection>(
-    //   `/api/shifts/?page=${display.page}&per_page=${display.per_page}&sort_field=${display.sort_field}&sort_direction=${display.sort_direction}`,
-    //   {
-    //     withCredentials: true,
-    //   }
-    // );
   }
 
   getShift(shift_id: number): Observable<ShiftResource> {
-    return this.http.get<ShiftResource>(`/api/shifts/${shift_id}`, {
-      withCredentials: true,
-    });
+    return this.http.get<ShiftResource>(`/api/shifts/${shift_id}`);
   }
 
   postShift(shift: Shift): Observable<ShiftResource> {
-    return this.http.post<any>(`/api/shifts/`, shift, {
-      withCredentials: true,
-    });
+    return this.http.post<any>(`/api/shifts/`, shift);
   }
 
   putShift(shift: Shift): Observable<ShiftResource> {
-    return this.http.put<any>(`/api/shifts/${shift.id}`, shift, {
-      withCredentials: true,
-    });
+    return this.http.put<any>(`/api/shifts/${shift.id}`, shift);
   }
 
   deleteShift(id: number): Observable<any> {

@@ -21,7 +21,7 @@ class EmployeeCalendarController extends Controller
      */
     public function index(EmployeeSelfRequest $request, Employee $employee)
     {
-        $calendars_per_page = 25;
+        $calendars_per_page = 10000;
         return EmployeeCalendarResource::collection($employee->calendars()->paginate($calendars_per_page));
     }
 

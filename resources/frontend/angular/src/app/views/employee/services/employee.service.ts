@@ -62,27 +62,20 @@ export class EmployeeService {
       : params;
 
     return this.http.get<EmployeeCollection>('/api/employees/', {
-      withCredentials: true,
       params: params,
     });
   }
 
   getEmployee(employee_id: number): Observable<EmployeeResource> {
-    return this.http.get<EmployeeResource>(`/api/employees/${employee_id}`, {
-      withCredentials: true,
-    });
+    return this.http.get<EmployeeResource>(`/api/employees/${employee_id}`);
   }
 
   postEmployee(employee: Employee): Observable<EmployeeResource> {
-    return this.http.post<any>(`/api/employees/`, employee, {
-      withCredentials: true,
-    });
+    return this.http.post<any>(`/api/employees/`, employee);
   }
 
   putEmployee(employee: Employee): Observable<EmployeeResource> {
-    return this.http.put<any>(`/api/employees/${employee.id}`, employee, {
-      withCredentials: true,
-    });
+    return this.http.put<any>(`/api/employees/${employee.id}`, employee);
   }
 
   deleteEmployee(id: number): Observable<any> {
@@ -96,10 +89,7 @@ export class EmployeeService {
     page: string
   ): Observable<EmployeeCalendarCollection> {
     return this.http.get<EmployeeCalendarCollection>(
-      `/api/employees/${employee_id}/calendars/?page=${page}`,
-      {
-        withCredentials: true,
-      }
+      `/api/employees/${employee_id}/calendars/?page=${page}`
     );
   }
 
@@ -108,10 +98,7 @@ export class EmployeeService {
     employeecalendar_id: number
   ): Observable<EmployeeCalendarResource> {
     return this.http.get<EmployeeCalendarResource>(
-      `/api/employees/${employee_id}/calendars/${employeecalendar_id}`,
-      {
-        withCredentials: true,
-      }
+      `/api/employees/${employee_id}/calendars/${employeecalendar_id}`
     );
   }
 
@@ -121,8 +108,7 @@ export class EmployeeService {
   ): Observable<EmployeeCalendarResource> {
     return this.http.post<any>(
       `/api/employees/${employee_id}/calendars`,
-      employeecalendar,
-      { withCredentials: true }
+      employeecalendar
     );
   }
 
@@ -138,17 +124,12 @@ export class EmployeeService {
   //Current Employee Shift
 
   getEmployeeShift(employee_id: number): Observable<ShiftResource> {
-    return this.http.get<ShiftResource>(`/api/employees/${employee_id}/shift`, {
-      withCredentials: true,
-    });
+    return this.http.get<ShiftResource>(`/api/employees/${employee_id}/shift`);
   }
 
   getEmployeeIncidences(employee_id: number): Observable<IncidenceCollection> {
     return this.http.get<IncidenceCollection>(
-      `/api/employees/${employee_id}/incidences`,
-      {
-        withCredentials: true,
-      }
+      `/api/employees/${employee_id}/incidences`
     );
   }
 
@@ -166,7 +147,6 @@ export class EmployeeService {
     return this.http.get<DayBookingsCollection>(
       `/api/employees/${employee_id}/bookings`,
       {
-        withCredentials: true,
         params: params,
       }
     );
@@ -179,30 +159,21 @@ export class EmployeeService {
     booking_id: number
   ): Observable<BookingResource> {
     return this.http.get<BookingResource>(
-      `/api/employees/${employee_id}/bookings/${booking_id}`,
-      {
-        withCredentials: true,
-      }
+      `/api/employees/${employee_id}/bookings/${booking_id}`
     );
   }
 
   postBooking(employee_id: number, booking: Booking): Observable<any> {
     return this.http.post<any>(
       `/api/employees/${employee_id}/bookings`,
-      booking,
-      {
-        withCredentials: true,
-      }
+      booking
     );
   }
 
   putBooking(employee_id: number, booking: Booking): Observable<any> {
     return this.http.put<any>(
       `/api/employees/${employee_id}/bookings/${booking.id}`,
-      booking,
-      {
-        withCredentials: true,
-      }
+      booking
     );
   }
 

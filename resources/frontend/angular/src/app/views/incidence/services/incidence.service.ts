@@ -41,31 +41,20 @@ export class IncidenceService {
       : params;
 
     return this.http.get<IncidenceCollection>('/api/incidences/', {
-      withCredentials: true,
       params: params,
     });
-
-    // return this.http.get<IncidenceCollection>(`/api/incidences/?page=${page}`, {
-    //   withCredentials: true,
-    // });
   }
 
   getIncidence(incidence_id: number): Observable<IncidenceResource> {
-    return this.http.get<IncidenceResource>(`/api/incidences/${incidence_id}`, {
-      withCredentials: true,
-    });
+    return this.http.get<IncidenceResource>(`/api/incidences/${incidence_id}`);
   }
 
   postIncidence(incidence: Incidence): Observable<IncidenceResource> {
-    return this.http.post<any>(`/api/incidences/`, incidence, {
-      withCredentials: true,
-    });
+    return this.http.post<any>(`/api/incidences/`, incidence);
   }
 
   putIncidence(incidence: Incidence): Observable<IncidenceResource> {
-    return this.http.put<any>(`/api/incidences/${incidence.id}`, incidence, {
-      withCredentials: true,
-    });
+    return this.http.put<any>(`/api/incidences/${incidence.id}`, incidence);
   }
 
   deleteIncidence(id: number): Observable<any> {
@@ -91,34 +80,22 @@ export class IncidenceService {
       : params;
 
     return this.http.get<IncidencesGroupCollection>('/api/incidences_groups/', {
-      withCredentials: true,
       params: params,
     });
-    // return this.http.get<IncidencesGroupCollection>(
-    //   `/api/incidences_groups/?page=${page}`,
-    //   {
-    //     withCredentials: true,
-    //   }
-    // );
   }
 
   getIncidencesGroup(
     incidencesgroup_id: number
   ): Observable<IncidencesGroupResource> {
     return this.http.get<IncidencesGroupResource>(
-      `/api/incidences_groups/${incidencesgroup_id}`,
-      {
-        withCredentials: true,
-      }
+      `/api/incidences_groups/${incidencesgroup_id}`
     );
   }
 
   postIncidencesGroup(
     incidencesgroup: IncidencesGroup
   ): Observable<IncidencesGroupResource> {
-    return this.http.post<any>(`/api/incidences_groups/`, incidencesgroup, {
-      withCredentials: true,
-    });
+    return this.http.post<any>(`/api/incidences_groups/`, incidencesgroup);
   }
 
   putIncidencesGroup(
@@ -126,10 +103,7 @@ export class IncidenceService {
   ): Observable<IncidencesGroupResource> {
     return this.http.put<any>(
       `/api/incidences_groups/${incidencesgroup.id}`,
-      incidencesgroup,
-      {
-        withCredentials: true,
-      }
+      incidencesgroup
     );
   }
 
@@ -144,10 +118,7 @@ export class IncidenceService {
     page: string
   ): Observable<IncidencesGroupIncidenceCollection> {
     return this.http.get<IncidencesGroupIncidenceCollection>(
-      `/api/incidences_groups/${incidencesgroup_id}/incidences/?page=${page}`,
-      {
-        withCredentials: true,
-      }
+      `/api/incidences_groups/${incidencesgroup_id}/incidences/?page=${page}`
     );
   }
 
@@ -156,10 +127,7 @@ export class IncidenceService {
     incidencesgroupincidence_id: number
   ): Observable<IncidencesGroupIncidenceResource> {
     return this.http.get<IncidencesGroupIncidenceResource>(
-      `/api/incidences_groups/${incidencesgroup_id}/incidences/${incidencesgroupincidence_id}`,
-      {
-        withCredentials: true,
-      }
+      `/api/incidences_groups/${incidencesgroup_id}/incidences/${incidencesgroupincidence_id}`
     );
   }
 
@@ -169,10 +137,7 @@ export class IncidenceService {
   ): Observable<IncidencesGroupIncidenceResource> {
     return this.http.post<any>(
       `/api/incidences_groups/${incidencesgroup_id}/incidences/`,
-      incidencesgroupincidence,
-      {
-        withCredentials: true,
-      }
+      incidencesgroupincidence
     );
   }
 

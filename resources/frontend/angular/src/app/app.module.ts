@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthenticationModule } from './views/authentication/authentication.module';
 import { HeaderComponent } from './shared/layout/header/header.component';
 import { MainComponent } from './shared/layout/main/main.component';
@@ -28,6 +28,7 @@ import { IncidenceModule } from './views/incidence/incidence.module';
 import { IncidencesEffects } from './views/incidence/effects';
 import { OrganizationModule } from './views/organization/organization.module';
 import { OrganizationEffects } from './views/organization/effects';
+import { RequestInterceptor } from './shared/interceptors/request.inteceptor';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, MainComponent, FooterComponent],
@@ -58,7 +59,13 @@ import { OrganizationEffects } from './views/organization/effects';
       OrganizationEffects,
     ]),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

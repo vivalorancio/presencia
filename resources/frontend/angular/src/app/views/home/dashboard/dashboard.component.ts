@@ -83,8 +83,6 @@ export class DashboardComponent implements OnInit {
         );
       }
     });
-
-    // Refresh User
   }
 
   getTextColourFromName = getTextColourFromName;
@@ -112,39 +110,5 @@ export class DashboardComponent implements OnInit {
       })
     );
     this.selectedIncidenceId = -1;
-
-    // this.pending_booking = true;
-    // let date = dateAAAAMMDD(this.datetime);
-    // let time = timeHHMMSS(this.datetime);
-
-    // let incidence_id =
-    //   this.selectedIncidenceId != -1 ? this.selectedIncidenceId : null;
-
-    // this.http
-    //   .post(
-    //     `/api/employees/${this.employee.id}/bookings`,
-    //     { date, time, incidence_id },
-    //     {
-    //       withCredentials: true,
-    //       // observe: 'response',
-    //     }
-    //   )
-    //   // .pipe(delay(1000))
-    //   .subscribe(
-    //     (res: any) => {
-    //       this.pending_booking = false;
-    //       this.selectedIncidenceId = -1;
-    //       this.bookingnotificationService.showSuccessNotification(res.message);
-    //       console.log(res);
-    //     },
-    //     (err) => {
-    //       this.pending_booking = false;
-    //       this.selectedIncidenceId = -1;
-    //       this.bookingnotificationService.showErrorNotification(
-    //         err.error.errors.date
-    //       );
-    //       console.log(err.error);
-    //     }
-    //   );
   }
 }

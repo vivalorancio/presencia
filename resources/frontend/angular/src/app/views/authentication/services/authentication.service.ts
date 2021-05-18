@@ -10,18 +10,14 @@ export class AuthenticationService {
   constructor(private http: HttpClient) {}
 
   login({ username, password }: any): Observable<any> {
-    return this.http.post(
-      '/api/login',
-      { username, password },
-      { withCredentials: true }
-    );
+    return this.http.post('/api/login', { username, password });
   }
 
   logout(): Observable<any> {
-    return this.http.post('/api/logout', {}, { withCredentials: true });
+    return this.http.post('/api/logout', {});
   }
 
   getUser(): Observable<User> {
-    return this.http.get<User>('/api/user', { withCredentials: true });
+    return this.http.get<User>('/api/user');
   }
 }
