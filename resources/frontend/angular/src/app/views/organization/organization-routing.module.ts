@@ -9,6 +9,8 @@ import { AreaEditComponent } from './components/area-edit/area-edit.component';
 import { AreaListComponent } from './components/area-list/area-list.component';
 import { SectionEditComponent } from './components/section-edit/section-edit.component';
 import { SectionListComponent } from './components/section-list/section-list.component';
+import { SupervisiongroupListComponent } from './components/supervisiongroup-list/supervisiongroup-list.component';
+import { SupervisiongroupEditComponent } from '../components/organization/supervisiongroup-edit/supervisiongroup-edit.component';
 
 const routes: Routes = [
   {
@@ -50,6 +52,18 @@ const routes: Routes = [
       {
         path: 'sections/section/:id',
         component: SectionEditComponent,
+      },
+      {
+        path: 'supervisiongroups',
+        component: SupervisiongroupListComponent,
+      },
+      {
+        path: 'supervisiongroups/supervisiongroup',
+        component: SupervisiongroupEditComponent,
+      },
+      {
+        path: 'supervisiongroups/supervisiongroup/:id',
+        component: SupervisiongroupEditComponent,
       },
     ],
     canActivate: [AuthenticationGuard, AdminGuard],

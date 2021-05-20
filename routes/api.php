@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CalendarShiftsController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\IncidencesGroupIncidenceController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\SupervisionGroupController;
+use App\Http\Controllers\SupervisionGroupSupervisorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,9 +49,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('employees/{employee}/shift', [EmployeeController::class, 'shift']);
     Route::get('employees/{employee}/calendar', [EmployeeController::class, 'calendar']);
     Route::get('employees/{employee}/incidences', [EmployeeController::class, 'incidences']);
+
     Route::apiResource('employees/{employee}/calendars', EmployeeCalendarController::class);
 
     Route::apiResource('employees/{employee}/bookings', BookingController::class);
+
+    Route::apiResource('employees/{employee}/requests', RequestController::class);
+
+
 
     //Shifts
     Route::apiResource('shifts', ShiftController::class);
@@ -71,6 +79,8 @@ Route::middleware('auth:sanctum')->group(function () {
     //Sections
     Route::apiResource('sections', SectionController::class);
     //Supervision Groups
+    Route::apiResource('supervision_groups', SupervisionGroupController::class);
+    Route::apiResource('supervision_groups/{supervision_group}/supervisors', SupervisionGroupSupervisorController::class);
 });
 
 

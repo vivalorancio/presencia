@@ -26,11 +26,12 @@ class EmployeeResource extends JsonResource
             'end_date' => $this->end_date,
             'incidences_group' => $this->incidences_group,
             // 'incidences' => $this->incidences_group->incidences,
-            'supervision_group_id' => $this->supervision_group_id,
+            //'supervision_group_id' => $this->supervision_group_id,
             'default_shift' => $this->shift,
             'department' => $this->department,
             'area' => $this->area,
             'section' => $this->section,
+            'supervision_group' => $this->supervision_group,
             'user' => $this->user,
         ];
     }

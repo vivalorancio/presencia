@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SpinnerOverlayModule } from 'src/app/shared/spinner-overlay/spinner-overlay.module';
 import { DialogsModule } from 'src/app/shared/dialogs/dialogs.module';
 import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
+import { SupervisiongroupListComponent } from './components/supervisiongroup-list/supervisiongroup-list.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
     AreaEditComponent,
     SectionListComponent,
     SectionEditComponent,
+    SupervisiongroupListComponent,
   ],
   imports: [
     CommonModule,

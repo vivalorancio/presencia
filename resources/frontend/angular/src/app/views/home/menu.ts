@@ -89,6 +89,7 @@ export function initManagementStore(store: Store, link: string): void {
       store.dispatch(organizationActions.initSections());
       break;
     case 'supervisiongroups':
+      store.dispatch(organizationActions.initSupervisionGroups());
       break;
     case 'holidays':
       break;

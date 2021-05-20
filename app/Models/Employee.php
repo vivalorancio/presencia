@@ -64,9 +64,24 @@ class Employee extends Model
         return $this->belongsTo(Section::class);
     }
 
+    public function supervision_group()
+    {
+        return $this->belongsTo(SupervisionGroup::class);
+    }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(SupervisionGroupSupervisor::class);
+    }
+
     public function calendars()
     {
         return $this->hasMany(EmployeeCalendar::class);
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
     }
 
     // public function currentcalendar()

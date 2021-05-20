@@ -34,6 +34,8 @@ import {
   DepartmentSearch,
   SectionCollection,
   SectionSearch,
+  SupervisionGroupCollection,
+  SupervisionGroupSearch,
 } from 'src/app/shared/models/organization.model';
 
 const rangeValidator: any = (fg: FormGroup) => {
@@ -77,6 +79,10 @@ export class EmployeeEditComponent implements OnInit {
   sections!: SectionCollection;
   pending_sections: boolean = false;
   selectedSectionId: number = -1;
+
+  supervisiongroups!: SupervisionGroupCollection;
+  pending_supervisiongroups: boolean = false;
+  selectedSupervisionGroupId: number = -1;
 
   shifts!: ShiftCollection;
   pending_shifts: boolean = false;
@@ -156,6 +162,24 @@ export class EmployeeEditComponent implements OnInit {
       this.pending_sections = sections.pending;
     });
 
+    //if (this.supervisiongroups.meta === null)
+    this.store.dispatch(
+      organizationActions.loadSupervisionGroups({
+        display: {
+          page: '1',
+          per_page: '10000',
+          sort_field: 'code',
+          sort_direction: 'asc',
+        },
+        search: {} as SupervisionGroupSearch,
+      })
+    );
+
+    this.store.select('supervisiongroups').subscribe((supervisiongroups) => {
+      this.supervisiongroups = supervisiongroups.supervisiongroups;
+      this.pending_supervisiongroups = supervisiongroups.pending;
+    });
+
     //if (this.shifts.meta === null)
     this.store.dispatch(
       shiftsActions.loadShifts({
@@ -205,6 +229,7 @@ export class EmployeeEditComponent implements OnInit {
     this.selectedDepartmentId = this.employee.department?.id || -1;
     this.selectedAreaId = this.employee.area?.id || -1;
     this.selectedSectionId = this.employee.section?.id || -1;
+    this.selectedSupervisionGroupId = this.employee.supervision_group?.id || -1;
     this.selectedShiftId = this.employee.default_shift?.id || -1;
     this.selectedIncidencesGroupId = this.employee.incidences_group?.id || -1;
     this.submitted = false;
@@ -259,7 +284,7 @@ export class EmployeeEditComponent implements OnInit {
           [Validators.required],
         ],
         end_date: [this.employee.end_date],
-        supervision_group_id: [this.employee.supervision_group_id],
+        //        supervision_group_id: [this.employee.supervision_group_id],
         username: [this.employee.user?.username /*[Validators.***]*/],
         password: [
           {
@@ -280,6 +305,7 @@ export class EmployeeEditComponent implements OnInit {
       this.pending_departments ||
       this.pending_areas ||
       this.pending_sections ||
+      this.pending_supervisiongroups ||
       this.pending_shifts ||
       this.pending_incidences_groups
     );
@@ -319,6 +345,10 @@ export class EmployeeEditComponent implements OnInit {
         this.selectedDepartmentId === -1 ? null : this.selectedDepartmentId,
       area_id: this.selectedAreaId === -1 ? null : this.selectedAreaId,
       section_id: this.selectedSectionId === -1 ? null : this.selectedSectionId,
+      supervision_group_id:
+        this.selectedSupervisionGroupId === -1
+          ? null
+          : this.selectedSupervisionGroupId,
       shift_id: this.selectedShiftId === -1 ? null : this.selectedShiftId,
       incidences_group_id:
         this.selectedIncidencesGroupId === -1

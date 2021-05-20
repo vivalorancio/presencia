@@ -12,6 +12,10 @@ import {
   SectionCollection,
   SectionResource,
   SectionSearch,
+  SupervisionGroupSearch,
+  SupervisionGroupCollection,
+  SupervisionGroup,
+  SupervisionGroupResource,
 } from 'src/app/shared/models/organization.model';
 import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
@@ -179,5 +183,65 @@ export const deleteSectionSuccess = createAction(
 );
 export const deleteSectionFailure = createAction(
   '[Section Management] Delete Section Failure',
+  props<{ error: any }>()
+);
+
+// ------------ Init SupervisionGroups ----------
+export const initSupervisionGroups = createAction(
+  '[SupervisionGroup Management] Init SupervisionGroups'
+);
+// ------------ Load SupervisionGroups ----------
+export const loadSupervisionGroups = createAction(
+  '[SupervisionGroup Management] Load SupervisionGroups',
+  props<{
+    display: DisplayResourceCollection;
+    search: SupervisionGroupSearch;
+  }>()
+);
+export const loadSupervisionGroupsSuccess = createAction(
+  '[SupervisionGroup Management] Load SupervisionGroups Success',
+  props<{ supervisiongroups: SupervisionGroupCollection }>()
+);
+export const loadSupervisionGroupsFailure = createAction(
+  '[SupervisionGroup Management] Load SupervisionGroups Failure',
+  props<{ error: any }>()
+);
+// ------------ Add SupervisionGroup ----------
+export const addSupervisionGroup = createAction(
+  '[SupervisionGroup Management] Add SupervisionGroup',
+  props<{ supervisiongroup: SupervisionGroup }>()
+);
+export const addSupervisionGroupSuccess = createAction(
+  '[SupervisionGroup Management] Add SupervisionGroup Success',
+  props<{ supervisiongroup: SupervisionGroupResource }>()
+);
+export const addSupervisionGroupFailure = createAction(
+  '[SupervisionGroup Management] Add SupervisionGroup Failure',
+  props<{ error: any }>()
+);
+// ------------ Update SupervisionGroup ----------
+export const updateSupervisionGroup = createAction(
+  '[SupervisionGroup Management] Update SupervisionGroup',
+  props<{ supervisiongroup: SupervisionGroup }>()
+);
+export const updateSupervisionGroupSuccess = createAction(
+  '[SupervisionGroup Management] Update SupervisionGroup Success',
+  props<{ supervisiongroup: SupervisionGroupResource }>()
+);
+export const updateSupervisionGroupFailure = createAction(
+  '[SupervisionGroup Management] Update SupervisionGroup Failure',
+  props<{ error: any }>()
+);
+// ------------ Delete SupervisionGroup ----------
+export const deleteSupervisionGroup = createAction(
+  '[SupervisionGroup Management] Delete SupervisionGroup',
+  props<{ id: number }>()
+);
+export const deleteSupervisionGroupSuccess = createAction(
+  '[SupervisionGroup Management] Delete SupervisionGroup Success',
+  props<{ message: string }>()
+);
+export const deleteSupervisionGroupFailure = createAction(
+  '[SupervisionGroup Management] Delete SupervisionGroup Failure',
   props<{ error: any }>()
 );

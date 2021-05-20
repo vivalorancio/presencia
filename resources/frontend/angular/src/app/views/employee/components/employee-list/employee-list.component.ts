@@ -73,6 +73,12 @@ export class EmployeeListComponent implements OnInit {
       hides: false,
       search_by: 'section',
     },
+    {
+      text: 'Supervision Group',
+      sort_by: 'supervisiongroup',
+      hides: false,
+      search_by: 'supervisiongroup',
+    },
   ];
 
   constructor(private store: Store<AppState>, private router: Router) {}
@@ -93,6 +99,7 @@ export class EmployeeListComponent implements OnInit {
       department: '',
       area: '',
       section: '',
+      supervision_group: '',
     };
 
     this.store.select('employees').subscribe((employees) => {
@@ -193,6 +200,7 @@ export class EmployeeListComponent implements OnInit {
       department: '',
       area: '',
       section: '',
+      supervision_group: '',
     };
 
     this.display = { ...this.display, page: '1' };

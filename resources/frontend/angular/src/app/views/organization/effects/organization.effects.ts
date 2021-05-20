@@ -423,4 +423,150 @@ export class OrganizationEffects {
       )
     )
   );
+  // SupervisionGroups
+
+  initSupervisionGroups$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.initSupervisionGroups),
+      withLatestFrom(this.store.select('supervisiongroups')),
+      map(([action, supervisiongroups]) =>
+        organizationsActions.loadSupervisionGroups({
+          display: supervisiongroups.display,
+          search: supervisiongroups.search,
+        })
+      ),
+      tap(() => this.router.navigate(['/management/supervisiongroups']))
+    )
+  );
+
+  loadSupervisionGroups$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.loadSupervisionGroups),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.organizationService
+          .getSupervisionGroups(action.display, action.search)
+          .pipe(
+            map((supervisiongroups) =>
+              organizationsActions.loadSupervisionGroupsSuccess({
+                supervisiongroups,
+              })
+            ),
+            catchError((error) =>
+              of(organizationsActions.loadSupervisionGroupsFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  //loadSupervisionGroupsFailure ---> PROCESS ERROR MESSAGE?? /retry /etc
+
+  addSupervisionGroup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.addSupervisionGroup),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.organizationService
+          .postSupervisionGroup(action.supervisiongroup)
+          .pipe(
+            map((supervisiongroup) =>
+              organizationsActions.addSupervisionGroupSuccess({
+                supervisiongroup,
+              })
+            ),
+            tap(() => this.router.navigate(['/management/supervisiongroups'])),
+            catchError((error) =>
+              of(organizationsActions.addSupervisionGroupFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  addSupervisionGroupSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.addSupervisionGroupSuccess),
+      // tap((action) => console.log(action)),
+      withLatestFrom(this.store.select('supervisiongroups')),
+      map(([action, supervisiongroups]) =>
+        organizationsActions.loadSupervisionGroups({
+          display: supervisiongroups.display,
+          search: supervisiongroups.search,
+        })
+      )
+    )
+  );
+
+  //addSupervisionGroupFailure ---> PROCESS ERROR MESSAGE / retry /etc
+
+  updateSupervisionGroup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.updateSupervisionGroup),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.organizationService
+          .putSupervisionGroup(action.supervisiongroup)
+          .pipe(
+            map((supervisiongroup) =>
+              organizationsActions.updateSupervisionGroupSuccess({
+                supervisiongroup,
+              })
+            ),
+            tap(() => this.router.navigate(['/management/supervisiongroups'])),
+            catchError((error) =>
+              of(organizationsActions.updateSupervisionGroupFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  updateSupervisionGroupSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.updateSupervisionGroupSuccess),
+      // tap((action) => console.log(action)),
+      withLatestFrom(this.store.select('supervisiongroups')),
+      map(([action, supervisiongroups]) =>
+        organizationsActions.loadSupervisionGroups({
+          display: supervisiongroups.display,
+          search: supervisiongroups.search,
+        })
+      )
+    )
+  );
+
+  //updateSupervisionGroupFailure ---> PROCESS ERROR MESSAGE / retry /etc
+
+  deleteSupervisionGroup$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.deleteSupervisionGroup),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.organizationService.deleteSupervisionGroup(action.id).pipe(
+          map((message) =>
+            organizationsActions.deleteSupervisionGroupSuccess({ message })
+          ),
+          tap(() => this.router.navigate(['/management/supervisiongroups'])),
+          catchError((error) =>
+            of(organizationsActions.deleteSupervisionGroupFailure({ error }))
+          )
+        )
+      )
+    )
+  );
+
+  deleteSupervisionGroupSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.deleteSupervisionGroupSuccess),
+      // tap((action) => console.log(action)),
+      withLatestFrom(this.store.select('supervisiongroups')),
+      map(([action, supervisiongroups]) =>
+        organizationsActions.loadSupervisionGroups({
+          display: supervisiongroups.display,
+          search: supervisiongroups.search,
+        })
+      )
+    )
+  );
 }

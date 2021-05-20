@@ -14,6 +14,10 @@ import {
   SectionCollection,
   SectionResource,
   SectionSearch,
+  SupervisionGroupSearch,
+  SupervisionGroupCollection,
+  SupervisionGroupResource,
+  SupervisionGroup,
 } from 'src/app/shared/models/organization.model';
 import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
@@ -140,5 +144,58 @@ export class OrganizationService {
 
   deleteSection(id: number): Observable<any> {
     return this.http.delete<any>(`/api/sections/${id}`);
+  }
+
+  //SupervisionGroups
+
+  getSupervisionGroups(
+    display: DisplayResourceCollection,
+    search: SupervisionGroupSearch
+  ): Observable<SupervisionGroupCollection> {
+    let params = new HttpParams();
+
+    params = params.append('page', display.page);
+    params = params.append('per_page', display.per_page);
+    params = params.append('sort_field', display.sort_field);
+    params = params.append('sort_direction', display.sort_direction);
+
+    params = search.code ? params.append('search_code', search.code) : params;
+    params = search.description
+      ? params.append('search_description', search.description)
+      : params;
+
+    return this.http.get<SupervisionGroupCollection>(
+      '/api/supervision_groups/',
+      {
+        params: params,
+      }
+    );
+  }
+
+  getSupervisionGroup(
+    supervisiongroup_id: number
+  ): Observable<SupervisionGroupResource> {
+    return this.http.get<SupervisionGroupResource>(
+      `/api/supervision_groups/${supervisiongroup_id}`
+    );
+  }
+
+  postSupervisionGroup(
+    supervisiongroup: SupervisionGroup
+  ): Observable<SupervisionGroupResource> {
+    return this.http.post<any>(`/api/supervision_groups/`, supervisiongroup);
+  }
+
+  putSupervisionGroup(
+    supervisiongroup: SupervisionGroup
+  ): Observable<SupervisionGroupResource> {
+    return this.http.put<any>(
+      `/api/supervision_groups/${supervisiongroup.id}`,
+      supervisiongroup
+    );
+  }
+
+  deleteSupervisionGroup(id: number): Observable<any> {
+    return this.http.delete<any>(`/api/supervision_groups/${id}`);
   }
 }

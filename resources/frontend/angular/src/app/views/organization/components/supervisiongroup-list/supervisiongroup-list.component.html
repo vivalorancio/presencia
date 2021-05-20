@@ -3,12 +3,12 @@
   [text]="'Loading ...'"
 ></app-spinner-overlay>
 
-<div class="mx-auto max-w-screen-2xl">
+<div class="max-w-screen-lg mx-auto">
   <div class="mx-6 my-6 border-t-4 rounded-md shadow border-secondary-500">
     <div class="px-4 py-5 bg-white rounded-t-md sm:p-6">
       <div class="flex justify-between">
         <h2 class="pb-6 text-2xl font-semibold leading-6 text-gray-700">
-          Employees
+          Supervision Groups
         </h2>
         <div class="cursor-pointer" [routerLink]="['../']">
           <svg
@@ -25,20 +25,21 @@
           </svg>
         </div>
       </div>
-      <div class="items-center justify-between sm:flex sm:flex-row-reverse">
+
+      <div class="justify-between sm:flex sm:flex-row-reverse">
         <button
           class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
           type="button"
-          [routerLink]="['employee']"
+          [routerLink]="['supervisiongroup']"
           [disabled]="pending"
         >
-          New Employee
+          New Supervision Group
         </button>
         <div class="flex space-x-4">
           <app-pagination
-            *ngIf="employees.meta"
+            *ngIf="supervisiongroups.meta"
             [active]="!pending"
-            [meta]="employees.meta"
+            [meta]="supervisiongroups.meta"
             (page)="loadpage($event)"
           ></app-pagination>
           <div class="flex items-baseline py-3 space-x-2">
@@ -139,130 +140,27 @@
             </td>
           </tr>
           <tr
-            *ngFor="let employee of employees.data"
+            *ngFor="let supervisiongroup of supervisiongroups.data"
             class="cursor-pointer hover:bg-gray-100"
-            (dblclick)="open(employee.id)"
+            (dblclick)="open(supervisiongroup.id)"
           >
-            <td class="px-1 py-2 whitespace-normal lg:whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">
-                {{ employee.last_name }}, {{ employee.first_name }}
-              </div>
-            </td>
             <td class="px-1 py-2 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">
-                {{ employee.code }}
+              <div
+                class="w-12 px-2 py-1 text-xs font-medium text-center text-gray-900 bg-gray-300 rounded-md  group"
+              >
+                {{ supervisiongroup.code }}
               </div>
             </td>
             <td class="px-1 py-2 whitespace-nowrap">
               <div class="text-sm font-medium text-gray-900">
-                {{ employee.national_id }}
+                {{ supervisiongroup.description }}
               </div>
             </td>
-            <td class="hidden px-1 py-2 lg:table-cell whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">
-                {{ employee.email }}
-              </div>
-            </td>
-            <td class="px-1 py-2 whitespace-normal xl:whitespace-nowrap">
-              <div
-                class="flex flex-col text-sm font-medium text-gray-900  xl:flex-row xl:space-x-1"
-              >
-                <div>{{ employee.start_date | date: "dd/MM/yyyy" }}</div>
-                <span *ngIf="employee.end_date" class="hidden xl:inline">
-                  -
-                </span>
-                <div *ngIf="employee.end_date">
-                  {{ employee.end_date | date: "dd/MM/yyyy" }}
-                </div>
-              </div>
-            </td>
-            <td class="px-1 py-2 whitespace-nowrap">
-              <div
-                class="text-xs text-center font-medium group w-12 {{
-                  employee.default_shift?.colour
-                }} {{
-                  getTextColourFromName(
-                    employee.default_shift?.colour || 'bg-white'
-                  )
-                }} rounded-md py-1 px-2"
-              >
-                {{ employee.default_shift?.code }}
-                <span
-                  class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
-                  >{{ employee.default_shift?.description }}</span
-                >
-              </div>
-            </td>
-            <td class="px-1 py-2 whitespace-nowrap">
-              <div
-                class="text-xs text-center font-medium group w-12 text-gray-900 rounded-md py-1 px-2
-              {{ employee.incidences_group?.code ? 'bg-gray-300' : '' }}"
-              >
-                {{ employee.incidences_group?.code }}
-                <span
-                  class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
-                  >{{ employee.incidences_group?.description }}</span
-                >
-              </div>
-            </td>
-            <td class="px-1 py-2 whitespace-nowrap">
-              <div
-                class="text-xs text-center font-medium group w-12 text-gray-900 rounded-md py-1 px-2
-              {{ employee.department?.code ? 'bg-gray-300' : '' }}"
-              >
-                {{ employee.department?.code }}
-                <span
-                  class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
-                  >{{ employee.department?.description }}</span
-                >
-              </div>
-            </td>
-            <td class="px-1 py-2 whitespace-nowrap">
-              <div
-                class="text-xs text-center font-medium group w-12 text-gray-900 rounded-md py-1 px-2
-              {{ employee.area?.code ? 'bg-gray-300' : '' }}"
-              >
-                {{ employee.area?.code }}
-                <span
-                  class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
-                  >{{ employee.area?.description }}</span
-                >
-              </div>
-            </td>
-            <td class="px-1 py-2 whitespace-nowrap">
-              <div
-                class="text-xs text-center font-medium group w-12 text-gray-900 rounded-md py-1 px-2
-              {{ employee.section?.code ? 'bg-gray-300' : '' }}"
-              >
-                {{ employee.section?.code }}
-                <span
-                  class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
-                  >{{ employee.section?.description }}</span
-                >
-              </div>
-            </td>
-            <td class="px-1 py-2 whitespace-nowrap">
-              <div
-                class="text-xs text-center font-medium group w-12 text-gray-900 rounded-md py-1 px-2
-              {{ employee.supervision_group?.code ? 'bg-gray-300' : '' }}"
-              >
-                {{ employee.supervision_group?.code }}
-                <span
-                  class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
-                  >{{ employee.supervision_group?.description }}</span
-                >
-              </div>
-            </td>
-            <!-- <td class="px-1 py-2 whitespace-nowrap">
-              <div class="text-sm font-medium text-gray-900">
-                {{ employee.supervision_group_id }}
-              </div>
-            </td> -->
             <td>
               <button
                 class="relative w-full px-2 py-1 text-sm font-medium bg-white border border-gray-300 rounded-md shadow-sm  text-primary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 type="button"
-                [routerLink]="['employee', employee.id]"
+                [routerLink]="['supervisiongroup', supervisiongroup.id]"
                 [disabled]="pending"
               >
                 Open
@@ -273,9 +171,9 @@
       </table>
 
       <app-pagination
-        *ngIf="employees.meta"
+        *ngIf="supervisiongroups.meta"
         [active]="!pending"
-        [meta]="employees.meta"
+        [meta]="supervisiongroups.meta"
         (page)="loadpage($event)"
       ></app-pagination>
     </div>

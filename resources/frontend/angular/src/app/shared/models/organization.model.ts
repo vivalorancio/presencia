@@ -60,3 +60,23 @@ export interface SectionSearch {
   code: string;
   description: string;
 }
+export interface SupervisionGroup {
+  id: number;
+  code: string;
+  description: string;
+}
+
+export interface SupervisionGroupResource {
+  data: SupervisionGroup;
+}
+
+export interface SupervisionGroupCollection {
+  data: SupervisionGroup[];
+  links: any;
+  meta: any;
+}
+
+export interface SupervisionGroupSearch {
+  code: string;
+  description: string;
+}

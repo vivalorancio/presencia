@@ -1,5 +1,10 @@
 import { IncidencesGroup } from './incidence.model';
-import { Area, Department, Section } from './organization.model';
+import {
+  Area,
+  Department,
+  Section,
+  SupervisionGroup,
+} from './organization.model';
 import { Shift } from './shift.model';
 import { User } from './user.model';
 export interface Employee {
@@ -18,6 +23,7 @@ export interface Employee {
   department: Department;
   area: Area;
   section: Section;
+  supervision_group: SupervisionGroup;
   is_manager: boolean;
   user: User;
 }
@@ -41,6 +47,7 @@ export interface EmployeeSearch {
   department: string;
   area: string;
   section: string;
+  supervision_group: string;
 }
 export interface EmployeeCalendar {
   id: number;
