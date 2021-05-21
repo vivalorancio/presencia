@@ -29,10 +29,9 @@ import { IncidencesEffects } from './views/incidence/effects';
 import { OrganizationModule } from './views/organization/organization.module';
 import { OrganizationEffects } from './views/organization/effects';
 import { RequestInterceptor } from './shared/interceptors/request.inteceptor';
-import { SupervisiongroupEditComponent } from './views/components/organization/supervisiongroup-edit/supervisiongroup-edit.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, MainComponent, FooterComponent, SupervisiongroupEditComponent],
+  declarations: [AppComponent, HeaderComponent, MainComponent, FooterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

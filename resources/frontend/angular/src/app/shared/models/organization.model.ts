@@ -80,3 +80,19 @@ export interface SupervisionGroupSearch {
   code: string;
   description: string;
 }
+
+export interface SupervisionGroupSupervisor {
+  id: number;
+  supervisiongroup_id: number;
+  employee_id: number;
+}
+
+export interface SupervisionGroupSupervisorResource {
+  data: SupervisionGroupSupervisor;
+}
+
+export interface SupervisionGroupSupervisorCollection {
+  data: SupervisionGroupSupervisor[];
+  links: any;
+  meta: any;
+}

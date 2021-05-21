@@ -16,6 +16,9 @@ import {
   SupervisionGroupCollection,
   SupervisionGroup,
   SupervisionGroupResource,
+  SupervisionGroupSupervisorCollection,
+  SupervisionGroupSupervisor,
+  SupervisionGroupSupervisorResource,
 } from 'src/app/shared/models/organization.model';
 import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
@@ -243,5 +246,50 @@ export const deleteSupervisionGroupSuccess = createAction(
 );
 export const deleteSupervisionGroupFailure = createAction(
   '[SupervisionGroup Management] Delete SupervisionGroup Failure',
+  props<{ error: any }>()
+);
+// ------------ Load SupervisionGroupSupervisors ----------
+export const loadSupervisionGroupSupervisors = createAction(
+  '[SupervisonGroup Management] Load SupervisionGroupSupervisors',
+  props<{ supervisiongroup_id: number; page: string }>()
+);
+export const loadSupervisionGroupSupervisorsSuccess = createAction(
+  '[SupervisonGroup Management] Load SupervisionGroupSupervisors Success',
+  props<{ supervisiongroupsupervisors: SupervisionGroupSupervisorCollection }>()
+);
+export const loadSupervisionGroupSupervisorsFailure = createAction(
+  '[SupervisonGroup Management] Load SupervisionGroupSupervisors Failure',
+  props<{ error: any }>()
+);
+// ------------ Add SupervisionGroupSupervisor ----------
+export const addSupervisionGroupSupervisor = createAction(
+  '[SupervisonGroup Management] Add SupervisionGroupSupervisor',
+  props<{
+    supervisiongroup_id: number;
+    supervisiongroupsupervisor: SupervisionGroupSupervisor;
+  }>()
+);
+export const addSupervisionGroupSupervisorSuccess = createAction(
+  '[SupervisonGroup Management] Add SupervisionGroupSupervisor Success',
+  props<{ supervisiongroupsupervisor: SupervisionGroupSupervisorResource }>()
+);
+export const addSupervisionGroupSupervisorFailure = createAction(
+  '[SupervisonGroup Management] Add SupervisionGroupSupervisor Failure',
+  props<{ error: any }>()
+);
+// ------------ Delete SupervisionGroupSupervisor ----------
+export const deleteSupervisionGroupSupervisor = createAction(
+  '[SupervisonGroup Management] Delete SupervisionGroupSupervisor',
+  props<{
+    supervisiongroup_id: number;
+    supervisiongroupsupervisor_id: number;
+  }>()
+);
+export const deleteSupervisionGroupSupervisorSuccess = createAction(
+  '[SupervisonGroup Management] Delete SupervisionGroupSupervisor Success',
+  props<{ message: string }>()
+);
+export const deleteSupervisionGroupSupervisorFailure = createAction(
+  '[SupervisonGroup Management] Delete SupervisionGroupSupervisor Failure',
   props<{ error: any }>()
 );

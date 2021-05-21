@@ -18,6 +18,9 @@ import {
   SupervisionGroupCollection,
   SupervisionGroupResource,
   SupervisionGroup,
+  SupervisionGroupSupervisorCollection,
+  SupervisionGroupSupervisorResource,
+  SupervisionGroupSupervisor,
 } from 'src/app/shared/models/organization.model';
 import { DisplayResourceCollection } from 'src/app/shared/models/resource.model';
 
@@ -197,5 +200,44 @@ export class OrganizationService {
 
   deleteSupervisionGroup(id: number): Observable<any> {
     return this.http.delete<any>(`/api/supervision_groups/${id}`);
+  }
+
+  // Supervision Groups Supervisors
+
+  getSupervisionGroupSupervisors(
+    supervisiongroup_id: number,
+    page: string
+  ): Observable<SupervisionGroupSupervisorCollection> {
+    return this.http.get<SupervisionGroupSupervisorCollection>(
+      `/api/supervision_groups/${supervisiongroup_id}/supervisors/?page=${page}`
+    );
+  }
+
+  getSupervisionGroupSupervisor(
+    supervisiongroup_id: number,
+    supervisiongroupsupervisor_id: number
+  ): Observable<SupervisionGroupSupervisorResource> {
+    return this.http.get<SupervisionGroupSupervisorResource>(
+      `/api/supervision_groups/${supervisiongroup_id}/supervisors/${supervisiongroupsupervisor_id}`
+    );
+  }
+
+  postSupervisionGroupSupervisor(
+    supervisiongroup_id: number,
+    supervisiongroupsupervisor: SupervisionGroupSupervisor
+  ): Observable<SupervisionGroupSupervisorResource> {
+    return this.http.post<any>(
+      `/api/supervision_groups/${supervisiongroup_id}/supervisors/`,
+      supervisiongroupsupervisor
+    );
+  }
+
+  deleteSupervisionGroupSupervisor(
+    supervisiongroup_id: number,
+    supervisiongroupsupervisor_id: number
+  ): Observable<any> {
+    return this.http.delete<any>(
+      `/api/supervision_groups/${supervisiongroup_id}/supervisors/${supervisiongroupsupervisor_id}`
+    );
   }
 }

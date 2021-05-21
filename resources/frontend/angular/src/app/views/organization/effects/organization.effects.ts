@@ -569,4 +569,114 @@ export class OrganizationEffects {
       )
     )
   );
+
+  loadSupervisionGroupSupervisors$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.loadSupervisionGroupSupervisors),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.organizationService
+          .getSupervisionGroupSupervisors(
+            action.supervisiongroup_id,
+            action.page
+          )
+          .pipe(
+            map((supervisiongroupsupervisors) =>
+              organizationsActions.loadSupervisionGroupSupervisorsSuccess({
+                supervisiongroupsupervisors,
+              })
+            ),
+            catchError((error) =>
+              of(
+                organizationsActions.loadSupervisionGroupSupervisorsFailure({
+                  error,
+                })
+              )
+            )
+          )
+      )
+    )
+  );
+
+  addSupervisionGroupSupervisor$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.addSupervisionGroupSupervisor),
+      mergeMap((action) =>
+        this.organizationService
+          .postSupervisionGroupSupervisor(
+            action.supervisiongroup_id,
+            action.supervisiongroupsupervisor
+          )
+          .pipe(
+            map((supervisiongroupsupervisor) =>
+              organizationsActions.addSupervisionGroupSupervisorSuccess({
+                supervisiongroupsupervisor,
+              })
+            ),
+            //tap(() => this.router.navigate(['/management/incidences'])),
+            catchError((error) =>
+              of(
+                organizationsActions.addSupervisionGroupSupervisorFailure({
+                  error,
+                })
+              )
+            )
+          )
+      )
+    )
+  );
+
+  addSupervisionGroupSupervisorSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.addSupervisionGroupSupervisorSuccess),
+      withLatestFrom(this.store.select('supervisiongroupsupervisors')),
+      map(([action, supervisiongroupsupervisors]) =>
+        organizationsActions.loadSupervisionGroupSupervisors({
+          supervisiongroup_id: supervisiongroupsupervisors.supervisiongroup_id,
+          page: supervisiongroupsupervisors.page,
+        })
+      )
+    )
+  );
+
+  deleteSupervisionGroupSupervisor$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.deleteSupervisionGroupSupervisor),
+      mergeMap((action) =>
+        this.organizationService
+          .deleteSupervisionGroupSupervisor(
+            action.supervisiongroup_id,
+            action.supervisiongroupsupervisor_id
+          )
+          .pipe(
+            map((message) =>
+              organizationsActions.deleteSupervisionGroupSupervisorSuccess({
+                message,
+              })
+            ),
+            //tap(() => this.router.navigate(['/management/incidences'])),
+            catchError((error) =>
+              of(
+                organizationsActions.deleteSupervisionGroupSupervisorFailure({
+                  error,
+                })
+              )
+            )
+          )
+      )
+    )
+  );
+
+  deleteSupervisionGroupSupervisorSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(organizationsActions.deleteSupervisionGroupSupervisorSuccess),
+      withLatestFrom(this.store.select('supervisiongroupsupervisors')),
+      map(([action, supervisiongroupsupervisors]) =>
+        organizationsActions.loadSupervisionGroupSupervisors({
+          supervisiongroup_id: supervisiongroupsupervisors.supervisiongroup_id,
+          page: supervisiongroupsupervisors.page,
+        })
+      )
+    )
+  );
 }

@@ -24,6 +24,7 @@ export interface AppState {
   areas: organization.AreasState;
   sections: organization.SectionsState;
   supervisiongroups: organization.SupervisionGroupsState;
+  supervisiongroupsupervisors: organization.SupervisionGroupSupervisorsState;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
@@ -43,4 +44,5 @@ export const appReducers: ActionReducerMap<AppState> = {
   areas: organization.areasReducer,
   sections: organization.sectionsReducer,
   supervisiongroups: organization.supervisiongroupsReducer,
+  supervisiongroupsupervisors: organization.supervisiongroupsupervisorsReducer,
 };

@@ -13,6 +13,9 @@ import { SpinnerOverlayModule } from 'src/app/shared/spinner-overlay/spinner-ove
 import { DialogsModule } from 'src/app/shared/dialogs/dialogs.module';
 import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
 import { SupervisiongroupListComponent } from './components/supervisiongroup-list/supervisiongroup-list.component';
+import { SupervisiongroupEditComponent } from './components/supervisiongroup-edit/supervisiongroup-edit.component';
+import { SupervisiongroupsupervisorListComponent } from './components/supervisiongroupsupervisor-list/supervisiongroupsupervisor-list.component';
+import { ColourDropdownModule } from 'src/app/shared/colour-dropdown/colour-dropdown.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,8 @@ import { SupervisiongroupListComponent } from './components/supervisiongroup-lis
     SectionListComponent,
     SectionEditComponent,
     SupervisiongroupListComponent,
+    SupervisiongroupEditComponent,
+    SupervisiongroupsupervisorListComponent,
   ],
   imports: [
     CommonModule,
@@ -32,6 +37,7 @@ import { SupervisiongroupListComponent } from './components/supervisiongroup-lis
     SpinnerOverlayModule,
     DialogsModule,
     PaginationModule,
+    ColourDropdownModule,
   ],
 })
 export class OrganizationModule {}
