@@ -8,14 +8,14 @@ import {
 import { Incidence } from 'src/app/shared/models/incidence.model';
 import { DisplayBookingsCollection } from 'src/app/shared/models/resource.model';
 import { ShiftResource } from 'src/app/shared/models/shift.model';
-import { User } from 'src/app/shared/models/user.model';
+import { User, UserResource } from 'src/app/shared/models/user.model';
 import * as authenticationActions from '../actions';
 
 export interface AuthenticationState {
   logeddin: boolean;
   error: string | null;
   pending: boolean;
-  user: User;
+  user: UserResource;
   employee: EmployeeResource;
   shift: ShiftResource;
   incidences: Incidence[];
@@ -25,7 +25,7 @@ export const initialState: AuthenticationState = {
   logeddin: false,
   error: null,
   pending: false,
-  user: {} as User,
+  user: {} as UserResource,
   employee: {} as EmployeeResource,
   shift: {} as ShiftResource,
   incidences: [],

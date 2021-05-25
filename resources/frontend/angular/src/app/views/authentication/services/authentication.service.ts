@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../../../shared/models/user.model';
+import { User, UserResource } from '../../../shared/models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -17,7 +17,7 @@ export class AuthenticationService {
     return this.http.post('/api/logout', {});
   }
 
-  getUser(): Observable<User> {
-    return this.http.get<User>('/api/user');
+  getUser(): Observable<UserResource> {
+    return this.http.get<UserResource>('/api/user');
   }
 }

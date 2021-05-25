@@ -17,7 +17,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select('authentication', 'user').subscribe((user) => {
-      this.user = user?.username ? user : null;
+      this.user = user.data?.username ? user : null;
     });
   }
 }

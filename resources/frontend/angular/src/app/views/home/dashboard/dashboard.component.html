@@ -103,19 +103,19 @@
         </h3>
       </div>
       <div
-        *ngIf="!isloading() && shift?.id !== undefined"
+        *ngIf="!isloading() && shift !== undefined"
         class="flex flex-col space-y-4"
       >
         <h3 class="text-lg font-medium-text-gray-700">Today, your shift is:</h3>
         <div class="flex items-baseline space-x-2">
           <div
-            class="max-w-max {{ shift.colour }} {{
+            class="max-w-max {{ shift?.colour }} {{
               getTextColourFromName(shift.colour)
             }} px-2 py-1 rounded-md"
           >
             {{ shift.code }}
           </div>
-          <p class="text-lg">{{ shift.description }}</p>
+          <p class="text-lg">{{ shift?.description }}</p>
         </div>
         <p>
           From <span class="font-medium">{{ shift.start_time }} </span> to

@@ -25,7 +25,7 @@ class RequestResource extends JsonResource
             'validator_id' => $this->validator_id,
             'validator' => $this->validator,
             'requested_at' => $this->created_at,
-            'validated_at' => null,
+            'validated_at' => $this->validated_at,
             'validator_comments' => $this->validator_comments,
             'booking' => $this->when($this->type == 'booking', function () {
                 $bookingrequest = $this->bookingrequest;

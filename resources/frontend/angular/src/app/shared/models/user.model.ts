@@ -5,3 +5,7 @@ export interface User {
   is_blocked: boolean;
   is_admin: boolean;
 }
+
+export interface UserResource {
+  data: User;
+}

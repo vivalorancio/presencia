@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/app.reducers';
 import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
 import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
@@ -44,6 +46,13 @@ export class BookingsListComponent implements OnInit {
     { text: 'Anomalies', sort_by: '', hides: false, search_by: '' },
   ];
 
+  public ngDestroyed$ = new Subject();
+
+  public ngOnDestroy() {
+    this.ngDestroyed$.next();
+    this.ngDestroyed$.complete();
+  }
+
   constructor(
     private store: Store<AppState>,
     private route: ActivatedRoute,
@@ -57,17 +66,19 @@ export class BookingsListComponent implements OnInit {
     };
 
     this.is_management = this.route.snapshot.url[0]?.path === 'employees';
-
     if (!this.is_management) {
-      this.store.select('employee').subscribe((employee) => {
-        this.employee = employee.employee.data;
-        this.employee_id = this.employee?.id;
-        this.pending_employee = employee.pending;
+      this.store
+        .select('employee')
+        .pipe(takeUntil(this.ngDestroyed$))
+        .subscribe((employee) => {
+          this.employee = employee.employee.data;
+          this.employee_id = this.employee?.id;
+          this.pending_employee = employee.pending;
 
-        if (!this.employee) {
-          this.router.navigate(['/dashboard']);
-        }
-      });
+          if (!this.employee) {
+            this.router.navigate(['/dashboard']);
+          }
+        });
 
       if (!this.pending_employee && this.employee_id) {
         this.bookingsdisplay = {
@@ -77,20 +88,25 @@ export class BookingsListComponent implements OnInit {
         this.dispatchLoad();
       }
     } else if (this.is_management) {
-      this.store.select('employees').subscribe((employees) => {
-        this.employees = employees.employees;
-        this.pending_employees = employees.pending;
-      });
+      this.store
+        .select('employees')
+        .pipe(takeUntil(this.ngDestroyed$))
+        .subscribe((employees) => {
+          this.employees = employees.employees;
+          this.pending_employees = employees.pending;
+        });
 
-      this.route.params.subscribe((params) => {
-        this.employee_id = +params.employee_id;
-        const the_employee: any = (this.employees?.data.find(
-          (employee: any) => employee.id === this.employee_id
-        ) || {}) as Employee;
-        if (the_employee !== {}) {
-          this.employee = the_employee;
-        }
-      });
+      this.route.params
+        .pipe(takeUntil(this.ngDestroyed$))
+        .subscribe((params) => {
+          this.employee_id = +params.employee_id;
+          const the_employee: any = (this.employees?.data.find(
+            (employee: any) => employee.id === this.employee_id
+          ) || {}) as Employee;
+          if (the_employee !== {}) {
+            this.employee = the_employee;
+          }
+        });
 
       this.bookingsdisplay = {
         range: 'week',
@@ -99,10 +115,13 @@ export class BookingsListComponent implements OnInit {
       this.dispatchLoad();
     }
 
-    this.store.select('bookings').subscribe((bookings) => {
-      this.bookings = bookings.bookings;
-      this.pending = bookings.pending;
-    });
+    this.store
+      .select('bookings')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((bookings) => {
+        this.bookings = bookings.bookings;
+        this.pending = bookings.pending;
+      });
   }
 
   getTextColourFromName = getTextColourFromName;

@@ -7,9 +7,12 @@ use App\Http\Requests\EmployeeSelfRequest;
 use App\Models\Employee;
 use App\Models\Request as RequestModel;
 use App\Models\BookingRequest;
+use App\Models\Booking;
 use App\Http\Resources\RequestResource;
 use App\Http\Requests\Request\RequestStoreRequest;
+use App\Http\Requests\Request\RequestUpdateRequest;
 use App\Http\Requests\Request\RequestDestroyRequest;
+use Carbon\Carbon;
 
 class RequestController extends Controller
 {
@@ -189,9 +192,25 @@ class RequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RequestUpdateRequest $request, Employee $employee, RequestModel $req)
     {
-        //
+        $req->update($request->validated());
+        $req->validated_at = Carbon::now();
+        $req->save();
+        if ($req->status === 'accepted') {
+            if ($req->type === 'booking') {
+                $reqbooking = $req->bookingrequest;
+                $booking = new Booking();
+                $booking->date = $reqbooking->date;
+                $booking->time = $reqbooking->time;
+                $booking->incidence_id = $reqbooking->incidence_id;
+                $booking->employee_id = $req->employee_id;
+                $booking->user_id = $employee->id;
+                $booking->save();
+            }
+        }
+
+        return new RequestResource($req);
     }
 
     /**

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/app.reducers';
 
 import * as authenticationActions from 'src/app/views/authentication/actions';
@@ -32,6 +34,13 @@ export class HeaderComponent implements OnInit {
   managementMenu = managementMenu;
   dashboardMenu = dashboardMenu;
 
+  public ngDestroyed$ = new Subject();
+
+  public ngOnDestroy() {
+    this.ngDestroyed$.next();
+    this.ngDestroyed$.complete();
+  }
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -39,16 +48,20 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select('authentication').subscribe((authentication) => {
-      this.user = authentication.user?.username ? authentication.user : null;
-      this.pending = authentication.pending;
-    });
+    this.store
+      .select('authentication')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((authentication) => {
+        this.user = authentication.user.data?.username
+          ? authentication.user.data
+          : null;
+        this.pending = authentication.pending;
+      });
     this.store.select('employee').subscribe((employee) => {
       this.employee = employee.employee.data;
       this.pending_employee = employee.pending;
     });
     this.mainmodule = this.route.snapshot.url[0]?.path;
-    // console.log(this.route.snapshot);
   }
 
   logout(): void {
@@ -57,13 +70,6 @@ export class HeaderComponent implements OnInit {
 
   ispending(): boolean {
     return this.pending || this.pending_employee;
-  }
-
-  showmenuitem(menuitem: MenuItem): boolean {
-    if (menuitem.supervisor && !this.employee?.is_supervisor) {
-      return false;
-    }
-    return true;
   }
 
   togglemain(): void {

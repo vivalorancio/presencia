@@ -72,7 +72,7 @@ export const _bookingReducer = createReducer(
     ...state,
     error: null,
     pending: false,
-    res,
+    // res,
   })),
   on(employeesActions.addEmployeeBookingFailure, (state, { error }) => ({
     ...initialBookingState,
@@ -90,7 +90,7 @@ export const _bookingReducer = createReducer(
   ),
   on(employeesActions.updateEmployeeBookingSuccess, (state, { res }) => ({
     ...state,
-    res,
+    // res,
     pending: false,
     error: null,
   })),
@@ -109,7 +109,7 @@ export const _bookingReducer = createReducer(
   ),
   on(employeesActions.deleteEmployeeBookingSuccess, (state, { message }) => ({
     ...state,
-    res: message,
+    // res: message,
     pending: false,
     error: null,
   })),

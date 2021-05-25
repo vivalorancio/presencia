@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/app.reducers';
 import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
 import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
@@ -53,23 +55,36 @@ export class BookingrequestEditComponent implements OnInit {
 
   selectedIncidenceId: number = -1;
 
+  public ngDestroyed$ = new Subject();
+
+  public ngOnDestroy() {
+    this.ngDestroyed$.next();
+    this.ngDestroyed$.complete();
+  }
+
   ngOnInit(): void {
-    this.store.select('employee').subscribe((employee) => {
-      this.employee = employee.employee.data;
-      this.incidences = employee.incidences;
-      this.pending_employee = employee.pending;
+    this.store
+      .select('employee')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((employee) => {
+        this.employee = employee.employee.data;
+        this.incidences = employee.incidences;
+        this.pending_employee = employee.pending;
 
-      if (!this.employee) {
-        this.router.navigate(['/dashboard']);
-      }
-    });
+        if (!this.employee) {
+          this.router.navigate(['/dashboard']);
+        }
+      });
 
-    this.store.select('requests').subscribe((requests) => {
-      this.requests = requests.requests;
-      this.pending_requests = requests.pending;
-    });
+    this.store
+      .select('requests')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((requests) => {
+        this.requests = requests.requests;
+        this.pending_requests = requests.pending;
+      });
 
-    this.route.params.subscribe((params) => {
+    this.route.params.pipe(takeUntil(this.ngDestroyed$)).subscribe((params) => {
       this.request_id = +params.request_id;
 
       const the_request: any = (this.requests?.data.find(
@@ -80,7 +95,6 @@ export class BookingrequestEditComponent implements OnInit {
         this.request = the_request;
       }
     });
-    console.log(this.request);
     this.is_supervised =
       this.route.snapshot.url[0]?.path === 'supervisedrequests';
 
@@ -118,12 +132,13 @@ export class BookingrequestEditComponent implements OnInit {
 
     this.selectedIncidenceId = this.request.booking?.incidence_id || -1;
 
-    this.store.select('bookingrequest').subscribe((bookingrequest) => {
-      this.pending = bookingrequest.pending;
-      this.submiterror = bookingrequest.error;
-    });
-
-    console.log(this.request.id);
+    this.store
+      .select('bookingrequest')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((bookingrequest) => {
+        this.pending = bookingrequest.pending;
+        this.submiterror = bookingrequest.error;
+      });
   }
 
   getTextColourFromName = getTextColourFromName;
@@ -149,6 +164,24 @@ export class BookingrequestEditComponent implements OnInit {
     }
   }
 
+  process(status: string) {
+    console.log(this.bookingForm.value);
+
+    let bookingrequestToSave = {
+      ...this.bookingForm.value,
+      status: status,
+      validator_id: this.employee.id,
+      id: this.request.id,
+    } as BookingRequest;
+
+    this.store.dispatch(
+      employeesActions.updateBookingRequest({
+        employee_id: this.employee.id,
+        request: bookingrequestToSave,
+      })
+    );
+  }
+
   onSubmit() {
     this.submitted = true;
     let time = this.bookingForm.get('time')?.value;
@@ -161,7 +194,6 @@ export class BookingrequestEditComponent implements OnInit {
       incidence_id:
         this.selectedIncidenceId === -1 ? null : this.selectedIncidenceId,
     } as BookingRequest;
-    console.log(bookingrequestToSave);
     this.store.dispatch(
       employeesActions.addBookingRequest({
         employee_id: this.employee.id,

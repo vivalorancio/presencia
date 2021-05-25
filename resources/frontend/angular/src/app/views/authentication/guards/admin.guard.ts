@@ -16,7 +16,7 @@ export class AdminGuard implements CanActivate {
 
     return this.store.select('authentication', 'user').pipe(
       switchMap((user) => {
-        if (!user?.is_admin) {
+        if (!user?.data?.is_admin) {
           return this.router.navigate(['/']);
         }
         return of(true);

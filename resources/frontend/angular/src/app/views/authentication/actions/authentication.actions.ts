@@ -7,7 +7,7 @@ import {
 import { Incidence } from 'src/app/shared/models/incidence.model';
 import { DisplayBookingsCollection } from 'src/app/shared/models/resource.model';
 import { ShiftResource } from 'src/app/shared/models/shift.model';
-import { User } from 'src/app/shared/models/user.model';
+import { User, UserResource } from 'src/app/shared/models/user.model';
 
 // ------------ Login ----------
 // export const requirelogin = createAction('[Authentication] Require Login');
@@ -17,7 +17,7 @@ export const login = createAction(
 );
 export const loginSuccess = createAction(
   '[Authentication] Login Success',
-  props<{ user: User }>()
+  props<{ user: UserResource }>()
 );
 export const loginFailure = createAction(
   '[Authentication] Login Failure',
@@ -34,11 +34,11 @@ export const logoutFailure = createAction(
   props<{ error: any }>()
 );
 
-// ------------ User ----------
+// ------------ UserResource ----------
 export const getUser = createAction('[Authentication] Get User');
 export const getUserSuccess = createAction(
   '[Authentication] Get User Success',
-  props<{ user: User }>()
+  props<{ user: UserResource }>()
 );
 
 export const getUserFailure = createAction(

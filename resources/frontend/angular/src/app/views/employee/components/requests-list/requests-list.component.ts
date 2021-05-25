@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/app.reducers';
 import { Employee } from 'src/app/shared/models/employee.model';
 import {
@@ -76,6 +78,13 @@ export class RequestsListComponent implements OnInit {
     },
   ];
 
+  public ngDestroyed$ = new Subject();
+
+  public ngOnDestroy() {
+    this.ngDestroyed$.next();
+    this.ngDestroyed$.complete();
+  }
+
   constructor(
     private store: Store<AppState>,
     private route: ActivatedRoute,
@@ -83,15 +92,18 @@ export class RequestsListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.select('employee').subscribe((employee) => {
-      this.employee = employee.employee.data;
-      this.employee_id = this.employee?.id;
-      this.pending_employee = employee.pending;
+    this.store
+      .select('employee')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((employee) => {
+        this.employee = employee.employee.data;
+        this.employee_id = this.employee?.id;
+        this.pending_employee = employee.pending;
 
-      if (!this.employee) {
-        this.router.navigate(['/dashboard']);
-      }
-    });
+        if (!this.employee) {
+          this.router.navigate(['/dashboard']);
+        }
+      });
 
     this.is_supervised =
       this.route.snapshot.url[0]?.path === 'supervisedrequests';
@@ -109,11 +121,14 @@ export class RequestsListComponent implements OnInit {
       this.dispatchLoad();
     }
 
-    this.store.select('requests').subscribe((requests) => {
-      this.requests = requests.requests;
-      this.pending_requests = requests.pending;
-      this.display = requests.display;
-    });
+    this.store
+      .select('requests')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((requests) => {
+        this.requests = requests.requests;
+        this.pending_requests = requests.pending;
+        this.display = requests.display;
+      });
   }
 
   ispending(): boolean {

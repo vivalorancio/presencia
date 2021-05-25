@@ -8,13 +8,14 @@ import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
 import { Incidence } from 'src/app/shared/models/incidence.model';
 import { dateAAAAMMDD, timeHHMMSS } from 'src/app/shared/calendar/calendar';
 import { BookingNotificationService } from 'src/app/shared/notifications/booking/booking-notification.service';
-import { delay } from 'rxjs/operators';
+import { delay, takeUntil } from 'rxjs/operators';
 import {
   Booking,
   DayBookingsCollection,
 } from 'src/app/shared/models/booking.model';
 
 import * as employeesActions from '../../../views/employee/actions';
+import { Subject } from 'rxjs';
 // import { RequestCollection } from 'src/app/shared/models/request.model';
 // import { DisplayRequestsCollection } from 'src/app/shared/models/resource.model';
 
@@ -51,61 +52,81 @@ export class DashboardComponent implements OnInit {
     private bookingnotificationService: BookingNotificationService
   ) {}
 
+  ngDestroyed$: any;
+
+  public ngOnDestroy() {
+    this.ngDestroyed$.next();
+    this.ngDestroyed$.complete();
+  }
+
   ngOnInit(): void {
-    this.store.select('authentication').subscribe((authentication) => {
-      this.pending = authentication.pending;
+    this.ngDestroyed$ = new Subject();
+    this.store
+      .select('authentication')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((authentication) => {
+        this.pending = authentication.pending;
 
-      if (authentication.user.employee_id !== null && !this.employee) {
-        this.store.dispatch(
-          employeesActions.loadEmployee({
-            employee_id: authentication.user.employee_id,
-          })
-        );
-        // this.loadrequests = true;
-        this.loadbookings = true;
-      }
-    });
+        if (authentication.user.data?.employee_id && !this.employee) {
+          this.store.dispatch(
+            employeesActions.loadEmployee({
+              employee_id: authentication.user.data?.employee_id,
+            })
+          );
+          // this.loadrequests = true;
+          this.loadbookings = true;
+        }
+      });
 
-    this.store.select('employee').subscribe((employee) => {
-      this.employee = employee.employee.data;
-      this.employeedisplayname = employee.employee.data?.first_name;
-      this.shift = employee.shift.data;
-      this.incidences = employee.incidences.data;
-      this.pending_employee = employee.pending;
+    this.store
+      .select('employee')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((employee) => {
+        this.employee = employee.employee.data;
+        this.employeedisplayname = employee.employee.data?.first_name;
+        this.shift = employee.shift.data;
+        this.incidences = employee.incidences.data;
+        this.pending_employee = employee.pending;
 
-      if (
-        this.employee &&
-        this.loadbookings === true &&
-        !this.pending_bookings
-      ) {
-        this.loadbookings = false;
-        this.dispatchEmployeeBookingsLoad();
-      }
-    });
+        if (
+          this.employee &&
+          this.loadbookings === true &&
+          !this.pending_bookings
+        ) {
+          this.loadbookings = false;
+          this.dispatchEmployeeBookingsLoad();
+        }
+      });
 
-    this.store.select('booking').subscribe((booking) => {
-      this.pending_booking = booking.pending;
-      this.res_booking = booking.res;
-      this.err_booking = booking.error;
+    this.store
+      .select('booking')
+      // .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((booking) => {
+        this.pending_booking = booking.pending;
+        this.res_booking = booking.res;
+        this.err_booking = booking.error;
 
-      if (this.res_booking) {
-        this.dispatchEmployeeBookingsLoad();
+        if (this.res_booking) {
+          this.dispatchEmployeeBookingsLoad();
 
-        this.bookingnotificationService.showSuccessNotification(
-          this.res_booking.message
-        );
-      }
-      if (this.err_booking) {
-        this.bookingnotificationService.showErrorNotification(
-          this.err_booking.error.errors.date
-        );
-      }
-    });
+          this.bookingnotificationService.showSuccessNotification(
+            this.res_booking.message
+          );
+        }
+        if (this.err_booking) {
+          this.bookingnotificationService.showErrorNotification(
+            this.err_booking.error.errors.date
+          );
+        }
+      });
 
-    this.store.select('bookings').subscribe((bookings) => {
-      this.bookings = bookings.bookings;
-      this.pending_bookings = bookings.pending;
-    });
+    this.store
+      .select('bookings')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((bookings) => {
+        this.bookings = bookings.bookings;
+        this.pending_bookings = bookings.pending;
+      });
   }
 
   getTextColourFromName = getTextColourFromName;

@@ -574,9 +574,7 @@ export class EmployeesEffects {
           .putBookingRequest(action.employee_id, action.request)
           .pipe(
             map((res) => employeesActions.updateBookingRequestSuccess({ res })),
-            tap(() =>
-              this.router.navigate([`/dashboard/requests/supervisedrequests/`])
-            ),
+            tap(() => this.router.navigate([`/dashboard/supervisedrequests/`])),
             catchError((error) =>
               of(employeesActions.updateBookingRequestFailure({ error }))
             )

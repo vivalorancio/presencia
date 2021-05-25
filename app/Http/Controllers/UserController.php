@@ -29,7 +29,8 @@ class UserController extends Controller
 
     public function show(UserSelfRequest $request, $id)
     {
-        return User::findOrFail($id);
+        $user = User::findOrFail($id);
+        return new UserResource($user);
     }
 
     public function update(UserUpdateRequest $request, $id)

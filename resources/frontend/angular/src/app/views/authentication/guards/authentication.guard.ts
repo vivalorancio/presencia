@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, switchMap, take, tap } from 'rxjs/operators';
 import { AppState } from 'src/app/app.reducers';
-import { User } from 'src/app/shared/models/user.model';
+import { User, UserResource } from 'src/app/shared/models/user.model';
 
 import * as authenticationActions from 'src/app/views/authentication/actions';
 
@@ -22,10 +22,10 @@ export class AuthenticationGuard implements CanActivate {
     );
   }
 
-  private loadUser(): Observable<User> {
+  private loadUser(): Observable<UserResource> {
     return this.store.select('authentication', 'user').pipe(
       tap((user) => {
-        if (!user?.username) {
+        if (!user.data?.username) {
           this.store.dispatch(authenticationActions.getUser());
         }
       }),

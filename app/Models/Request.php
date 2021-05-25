@@ -14,7 +14,7 @@ class Request extends Model
         'type',
         'status',
         'comments',
-        'requested_at',
+        'validated_at',
         'validator_id',
         'validator_comments'
     ];

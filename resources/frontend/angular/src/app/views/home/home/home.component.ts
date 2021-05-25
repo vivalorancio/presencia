@@ -17,8 +17,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select('authentication', 'user').subscribe((user) => {
-      if (user?.username) {
-        const link = user?.is_admin ? '/management' : '/dashboard';
+      if (user?.data?.username) {
+        const link = user?.data?.is_admin ? '/management' : '/dashboard';
         this.router.navigate([link]);
       }
     });

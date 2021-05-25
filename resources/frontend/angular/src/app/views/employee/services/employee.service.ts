@@ -250,7 +250,7 @@ export class EmployeeService {
 
   putBookingRequest(employee_id: number, request: Request): Observable<any> {
     return this.http.put<any>(
-      `/api/employees/${employee_id}/requests`,
+      `/api/employees/${employee_id}/requests/${request.id}`,
       request
     );
   }

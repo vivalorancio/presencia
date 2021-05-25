@@ -37,6 +37,7 @@ export class BookingEditComponent implements OnInit {
   bookingForm!: FormGroup;
   bookings!: DayBookingsCollection;
   pending_bookings: boolean = false;
+  pending_booking: boolean = false;
   pending: boolean = false;
   submiterror: any;
 
@@ -60,7 +61,7 @@ export class BookingEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select('authentication').subscribe((authentication) => {
-      this.user = authentication.user;
+      this.user = authentication.user.data;
       this.pending_user = authentication.pending;
     });
 
@@ -77,8 +78,14 @@ export class BookingEditComponent implements OnInit {
 
     this.store.select('bookings').subscribe((bookings) => {
       this.bookings = bookings.bookings;
-      this.submiterror = bookings.error;
+      // this.submiterror = bookings.error;
       this.pending_bookings = bookings.pending;
+    });
+
+    this.store.select('booking').subscribe((booking) => {
+      // this.bookings = bookings.bookings;
+      this.submiterror = booking.error;
+      this.pending_booking = booking.pending;
     });
 
     this.route.params.subscribe((params) => {
@@ -116,6 +123,7 @@ export class BookingEditComponent implements OnInit {
     return (
       this.pending ||
       this.pending_bookings ||
+      this.pending_booking ||
       this.pending_user ||
       this.pending_employees ||
       this.pending_employee
