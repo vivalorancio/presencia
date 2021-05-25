@@ -9,9 +9,14 @@ import { Incidence } from 'src/app/shared/models/incidence.model';
 import { dateAAAAMMDD, timeHHMMSS } from 'src/app/shared/calendar/calendar';
 import { BookingNotificationService } from 'src/app/shared/notifications/booking/booking-notification.service';
 import { delay } from 'rxjs/operators';
-import { Booking } from 'src/app/shared/models/booking.model';
+import {
+  Booking,
+  DayBookingsCollection,
+} from 'src/app/shared/models/booking.model';
 
 import * as employeesActions from '../../../views/employee/actions';
+// import { RequestCollection } from 'src/app/shared/models/request.model';
+// import { DisplayRequestsCollection } from 'src/app/shared/models/resource.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,19 +25,22 @@ import * as employeesActions from '../../../views/employee/actions';
 })
 export class DashboardComponent implements OnInit {
   pending: boolean = false;
+
+  pending_employee: boolean = false;
   employee!: Employee;
   employeedisplayname = '';
   shift!: Shift;
   incidences: Incidence[] = [];
+
+  bookings!: DayBookingsCollection;
+  pending_bookings: boolean = false;
+
+  loadbookings: boolean = false;
+
   selectedIncidenceId: number = -1;
 
-  pending_employee: boolean = false;
-  // employee2!: Employee;
-  // employeedisplayname2 = '';
-  // shift2!: Shift;
-  // incidences2: Incidence[] = [];
-
   datetime!: Date;
+
   pending_booking: boolean = false;
   res_booking!: any;
   err_booking!: any;
@@ -45,26 +53,34 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.select('authentication').subscribe((authentication) => {
-      // this.employee = authentication.employee.data;
-      // this.employeedisplayname = authentication.employee.data?.first_name;
-      // this.shift = authentication.shift.data;
-      // this.incidences = authentication.incidences;
       this.pending = authentication.pending;
 
-      if (authentication.user.employee_id !== null) {
+      if (authentication.user.employee_id !== null && !this.employee) {
         this.store.dispatch(
           employeesActions.loadEmployee({
             employee_id: authentication.user.employee_id,
           })
         );
+        // this.loadrequests = true;
+        this.loadbookings = true;
       }
     });
+
     this.store.select('employee').subscribe((employee) => {
       this.employee = employee.employee.data;
       this.employeedisplayname = employee.employee.data?.first_name;
       this.shift = employee.shift.data;
       this.incidences = employee.incidences.data;
       this.pending_employee = employee.pending;
+
+      if (
+        this.employee &&
+        this.loadbookings === true &&
+        !this.pending_bookings
+      ) {
+        this.loadbookings = false;
+        this.dispatchEmployeeBookingsLoad();
+      }
     });
 
     this.store.select('booking').subscribe((booking) => {
@@ -73,6 +89,8 @@ export class DashboardComponent implements OnInit {
       this.err_booking = booking.error;
 
       if (this.res_booking) {
+        this.dispatchEmployeeBookingsLoad();
+
         this.bookingnotificationService.showSuccessNotification(
           this.res_booking.message
         );
@@ -83,12 +101,29 @@ export class DashboardComponent implements OnInit {
         );
       }
     });
+
+    this.store.select('bookings').subscribe((bookings) => {
+      this.bookings = bookings.bookings;
+      this.pending_bookings = bookings.pending;
+    });
   }
 
   getTextColourFromName = getTextColourFromName;
 
   isloading() {
-    return this.pending || this.pending_employee;
+    return this.pending || this.pending_employee || this.pending_bookings;
+  }
+
+  dispatchEmployeeBookingsLoad(): void {
+    this.store.dispatch(
+      employeesActions.loadEmployeeBookings({
+        employee_id: this.employee.id,
+        bookingsdisplay: {
+          range: 'day',
+          date: dateAAAAMMDD(new Date(Date.now())),
+        },
+      })
+    );
   }
 
   updateDatetime(datetime: Date) {

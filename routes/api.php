@@ -49,12 +49,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('employees/{employee}/shift', [EmployeeController::class, 'shift']);
     Route::get('employees/{employee}/calendar', [EmployeeController::class, 'calendar']);
     Route::get('employees/{employee}/incidences', [EmployeeController::class, 'incidences']);
+    Route::get('employees/{employee}/supervisor', [EmployeeController::class, 'supervisor']);
 
     Route::apiResource('employees/{employee}/calendars', EmployeeCalendarController::class);
 
     Route::apiResource('employees/{employee}/bookings', BookingController::class);
 
-    Route::apiResource('employees/{employee}/requests', RequestController::class);
+    Route::get('employees/{employee}/requests/supervised', [RequestController::class, 'supervised']);
+    Route::apiResource('employees/{employee}/requests', RequestController::class)->parameters([
+        'requests' => 'req'
+    ]);
 
 
 

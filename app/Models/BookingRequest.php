@@ -22,4 +22,9 @@ class BookingRequest extends Model
     {
         return $this->belongsTo(Request::class);
     }
+
+    public function incidence()
+    {
+        return $this->belongsTo(Incidence::class);
+    }
 }

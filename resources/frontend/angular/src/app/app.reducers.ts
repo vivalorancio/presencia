@@ -13,6 +13,8 @@ export interface AppState {
   employees: employees.EmployeesState;
   booking: employees.BookingState;
   bookings: employees.BookingsState;
+  bookingrequest: employees.BookingRequestState;
+  requests: employees.RequestsState;
   employeecalendars: employees.EmployeeCalendarsState;
   shifts: shifts.ShiftsState;
   calendars: calendars.CalendarsState;
@@ -33,6 +35,8 @@ export const appReducers: ActionReducerMap<AppState> = {
   employees: employees.employeesReducer,
   booking: employees.bookingReducer,
   bookings: employees.bookingsReducer,
+  bookingrequest: employees.bookingrequestReducer,
+  requests: employees.requestsReducer,
   employeecalendars: employees.employeecalendarsReducer,
   shifts: shifts.shiftsReducer,
   calendars: calendars.calendarsReducer,

@@ -75,9 +75,9 @@ export class EmployeeListComponent implements OnInit {
     },
     {
       text: 'Sup. Group',
-      sort_by: 'supervisiongroup',
+      sort_by: 'supervision_group',
       hides: false,
-      search_by: 'supervisiongroup',
+      search_by: 'supervision_group',
     },
   ];
 

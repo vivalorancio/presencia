@@ -13,10 +13,17 @@ export interface MenuItem {
   link: string;
   items: MenuItem[] | null;
   open: boolean;
+  supervisor: boolean;
 }
 
 export const dashboardMenu: MenuItem[] = [
   { label: 'Bookings', link: 'bookings' } as MenuItem,
+  { label: 'Requests', link: 'requests' } as MenuItem,
+  {
+    label: 'Supervised Requests',
+    link: 'supervisedrequests',
+    supervisor: true,
+  } as MenuItem,
 ];
 
 export const managementMenu: MenuItem[] = [
@@ -56,6 +63,14 @@ export function initDashboardStore(
   switch (link) {
     case 'bookings':
       store.dispatch(employeesActions.initEmployeeBookings({ employee_id }));
+      break;
+    case 'requests':
+      store.dispatch(employeesActions.initEmployeeRequests({ employee_id }));
+      break;
+    case 'supervisedrequests':
+      store.dispatch(
+        employeesActions.initEmployeeSupervisedRequests({ employee_id })
+      );
       break;
     default:
       break;

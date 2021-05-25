@@ -8,6 +8,8 @@ import { EmployeecalendarListComponent } from './components/employeecalendar-lis
 import { EmployeeListComponent } from './components/employee-list/employee-list.component';
 import { BookingsListComponent } from './components/bookings-list/bookings-list.component';
 import { BookingEditComponent } from './components/booking-edit/booking-edit.component';
+import { BookingrequestEditComponent } from './components/bookingrequest-edit/bookingrequest-edit.component';
+import { RequestsListComponent } from './components/requests-list/requests-list.component';
 
 const routes: Routes = [
   {
@@ -17,6 +19,26 @@ const routes: Routes = [
       {
         path: 'bookings',
         component: BookingsListComponent,
+      },
+      {
+        path: 'requests/booking',
+        component: BookingrequestEditComponent,
+      },
+      {
+        path: 'requests/booking/:request_id',
+        component: BookingrequestEditComponent,
+      },
+      {
+        path: 'requests',
+        component: RequestsListComponent,
+      },
+      {
+        path: 'supervisedrequests',
+        component: RequestsListComponent,
+      },
+      {
+        path: 'supervisedrequests/booking/:request_id',
+        component: BookingrequestEditComponent,
       },
     ],
     canActivate: [AuthenticationGuard],

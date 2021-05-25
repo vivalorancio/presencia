@@ -71,7 +71,8 @@ class Employee extends Model
 
     public function supervisor()
     {
-        return $this->belongsTo(SupervisionGroupSupervisor::class);
+        //return $this->hasMany(SupervisionGroupSupervisor::class);
+        return $this->belongsToMany(SupervisionGroup::class, 'supervision_group_supervisors', 'employee_id', 'supervision_group_id');
     }
 
     public function calendars()

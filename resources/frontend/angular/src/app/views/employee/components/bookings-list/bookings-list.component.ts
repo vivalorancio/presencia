@@ -63,6 +63,10 @@ export class BookingsListComponent implements OnInit {
         this.employee = employee.employee.data;
         this.employee_id = this.employee?.id;
         this.pending_employee = employee.pending;
+
+        if (!this.employee) {
+          this.router.navigate(['/dashboard']);
+        }
       });
 
       if (!this.pending_employee && this.employee_id) {

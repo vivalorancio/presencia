@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthorizeAdminRequest;
 use App\Http\Requests\IncidencesGroupIncidence\IncidencesGroupIncidenceStoreRequest;
-use App\Http\Requests\IncidencesGroupIncidence\IncidencesGroupIncidenceUpdateRequest;
 use App\Http\Resources\IncidencesGroupIncidenceResource;
 use App\Models\IncidencesGroupIncidence;
 use App\Models\IncidencesGroup;
@@ -22,7 +21,7 @@ class IncidencesGroupIncidenceController extends Controller
         // $incidences_group_incidences = IncidencesGroupIncidence::paginate(25);
         // return IncidencesGroupIncidenceResource::collection($incidences_group_incidences);
 
-        $incidences_group_incidences_per_page = 25;
+        $incidences_group_incidences_per_page = 10000;
         return IncidencesGroupIncidenceResource::collection($incidences_group->incidences()->paginate($incidences_group_incidences_per_page));
     }
 

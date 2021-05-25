@@ -33,6 +33,7 @@ class EmployeeResource extends JsonResource
             'section' => $this->section,
             'supervision_group' => $this->supervision_group,
             'user' => $this->user,
+            'is_supervisor' => count($this->supervisor) > 0
         ];
     }
 }

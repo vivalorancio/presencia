@@ -23,7 +23,9 @@ import { Employee } from '../../models/employee.model';
 })
 export class HeaderComponent implements OnInit {
   user: any;
+  pending: boolean = false;
   employee!: Employee;
+  pending_employee: boolean = false;
   mainmodule!: string;
   openmain: boolean = false;
 
@@ -39,9 +41,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.store.select('authentication').subscribe((authentication) => {
       this.user = authentication.user?.username ? authentication.user : null;
+      this.pending = authentication.pending;
     });
     this.store.select('employee').subscribe((employee) => {
       this.employee = employee.employee.data;
+      this.pending_employee = employee.pending;
     });
     this.mainmodule = this.route.snapshot.url[0]?.path;
     // console.log(this.route.snapshot);
@@ -49,6 +53,17 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
     this.store.dispatch(authenticationActions.logout());
+  }
+
+  ispending(): boolean {
+    return this.pending || this.pending_employee;
+  }
+
+  showmenuitem(menuitem: MenuItem): boolean {
+    if (menuitem.supervisor && !this.employee?.is_supervisor) {
+      return false;
+    }
+    return true;
   }
 
   togglemain(): void {

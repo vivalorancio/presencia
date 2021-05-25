@@ -211,6 +211,18 @@ class BookingController extends Controller
         $next_date = '';
 
         switch ($request_range) {
+            case 'day': {
+                    if ($start_date == '') {
+                        $start_date = date('Y-m-d', strtotime('today'));
+                    }
+                    $end_date = $start_date;
+
+                    $prev_date = new DateTime($start_date);
+                    $prev_date = $prev_date->modify('-1 days')->format("Y-m-d");
+                    $next_date = new DateTime($start_date);
+                    $next_date = $next_date->modify('+1 days')->format("Y-m-d");
+                }
+                break;
             case 'week': {
                     if ($start_date == '') {
                         $start_date = date('Y-m-d', strtotime('monday this week'));

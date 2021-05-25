@@ -18,7 +18,13 @@ import {
   IncidenceCollection,
 } from 'src/app/shared/models/incidence.model';
 import {
+  BookingRequest,
+  Request,
+  RequestCollection,
+} from 'src/app/shared/models/request.model';
+import {
   DisplayBookingsCollection,
+  DisplayRequestsCollection,
   DisplayResourceCollection,
 } from 'src/app/shared/models/resource.model';
 import { ShiftResource } from 'src/app/shared/models/shift.model';
@@ -195,7 +201,7 @@ export const updateEmployeeBookingFailure = createAction(
   '[Employee] Update EmployeeBooking Failure',
   props<{ error: any }>()
 );
-// ------------ Delete Employee ----------
+// ------------ Delete Employee Booking ----------
 export const deleteEmployeeBooking = createAction(
   '[Employee] Delete EmployeeBooking',
   props<{ employee_id: number; booking_id: number }>()
@@ -249,5 +255,80 @@ export const loadEmployeeIncidencesSuccess = createAction(
 
 export const loadEmployeeIncidencesFailure = createAction(
   '[Employee] Load Employee Incidences Failure',
+  props<{ error: any }>()
+);
+// ------------ Employee Requests----------
+export const initEmployeeRequests = createAction(
+  '[Employee] Init Employee Requests',
+  props<{ employee_id: number }>()
+);
+export const loadEmployeeRequests = createAction(
+  '[Employee] Load Employee Requests',
+  props<{ employee_id: number; display: DisplayRequestsCollection }>()
+);
+export const loadEmployeeRequestsSuccess = createAction(
+  '[Employee] Load Employee Requests Success',
+  props<{ requests: RequestCollection }>()
+);
+
+export const loadEmployeeRequestsFailure = createAction(
+  '[Employee] Load Employee Requests Failure',
+  props<{ error: any }>()
+);
+// ------------ Employee Supervised Requests----------
+export const initEmployeeSupervisedRequests = createAction(
+  '[Employee] Init Employee SupervisedRequests',
+  props<{ employee_id: number }>()
+);
+export const loadEmployeeSupervisedRequests = createAction(
+  '[Employee] Load Employee SupervisedRequests',
+  props<{ employee_id: number; display: DisplayRequestsCollection }>()
+);
+export const loadEmployeeSupervisedRequestsSuccess = createAction(
+  '[Employee] Load Employee SupervisedRequests Success',
+  props<{ requests: RequestCollection }>()
+);
+
+export const loadEmployeeSupervisedRequestsFailure = createAction(
+  '[Employee] Load Employee SupervisedRequests Failure',
+  props<{ error: any }>()
+);
+// ------------ Add Booking Request ----------
+export const addBookingRequest = createAction(
+  '[Employee] Add Booking Request',
+  props<{ employee_id: number; request: BookingRequest }>()
+);
+export const addBookingRequestSuccess = createAction(
+  '[Employee] Add Booking Request Success',
+  props<{ res: any }>()
+);
+export const addBookingRequestFailure = createAction(
+  '[Employee] Add Booking Request Failure',
+  props<{ error: any }>()
+);
+// ------------ Update Booking Request ----------
+export const updateBookingRequest = createAction(
+  '[Employee] Update Booking Request',
+  props<{ employee_id: number; request: Request }>()
+);
+export const updateBookingRequestSuccess = createAction(
+  '[Employee] Update Booking Request Success',
+  props<{ res: any }>()
+);
+export const updateBookingRequestFailure = createAction(
+  '[Employee] Update Booking Request Failure',
+  props<{ error: any }>()
+);
+// ------------ Delete Booking Request ----------
+export const deleteBookingRequest = createAction(
+  '[Employee] Delete Booking Request',
+  props<{ employee_id: number; request_id: number }>()
+);
+export const deleteBookingRequestSuccess = createAction(
+  '[Employee] Delete Booking Request Success',
+  props<{ message: string }>()
+);
+export const deleteBookingRequestFailure = createAction(
+  '[Employee] Delete Booking Request Failure',
   props<{ error: any }>()
 );

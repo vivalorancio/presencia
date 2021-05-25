@@ -22,8 +22,14 @@ import {
 } from 'src/app/shared/models/booking.model';
 import {
   DisplayBookingsCollection,
+  DisplayRequestsCollection,
   DisplayResourceCollection,
 } from 'src/app/shared/models/resource.model';
+import {
+  BookingRequest,
+  Request,
+  RequestCollection,
+} from 'src/app/shared/models/request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +65,9 @@ export class EmployeeService {
     params = search.area ? params.append('search_area', search.area) : params;
     params = search.section
       ? params.append('search_section', search.section)
+      : params;
+    params = search.supervision_group
+      ? params.append('search_supervision_group', search.supervision_group)
       : params;
 
     return this.http.get<EmployeeCollection>('/api/employees/', {
@@ -180,6 +189,78 @@ export class EmployeeService {
   deleteBooking(employee_id: number, booking_id: number): Observable<any> {
     return this.http.delete<any>(
       `/api/employees/${employee_id}/bookings/${booking_id}`
+    );
+  }
+
+  //Employee Requests
+
+  getEmployeeRequests(
+    employee_id: number,
+    display: DisplayRequestsCollection
+  ): Observable<RequestCollection> {
+    let params = new HttpParams();
+
+    params = params.append('page', display.page);
+    params = params.append('per_page', display.per_page);
+    params = params.append('sort_field', display.sort_field);
+    params = params.append('sort_direction', display.sort_direction);
+    params = params.append('type', display.type);
+    params = params.append('status', display.status);
+
+    return this.http.get<RequestCollection>(
+      `/api/employees/${employee_id}/requests`,
+      {
+        params: params,
+      }
+    );
+  }
+
+  getEmployeeSupervisedRequests(
+    employee_id: number,
+    display: DisplayRequestsCollection
+  ): Observable<RequestCollection> {
+    let params = new HttpParams();
+
+    params = params.append('page', display.page);
+    params = params.append('per_page', display.per_page);
+    params = params.append('sort_field', display.sort_field);
+    params = params.append('sort_direction', display.sort_direction);
+    params = params.append('type', display.type);
+    params = params.append('status', display.status);
+
+    return this.http.get<RequestCollection>(
+      `/api/employees/${employee_id}/requests/supervised`,
+      {
+        params: params,
+      }
+    );
+  }
+
+  //Booking Request
+
+  postBookingRequest(
+    employee_id: number,
+    request: BookingRequest
+  ): Observable<any> {
+    return this.http.post<any>(
+      `/api/employees/${employee_id}/requests`,
+      request
+    );
+  }
+
+  putBookingRequest(employee_id: number, request: Request): Observable<any> {
+    return this.http.put<any>(
+      `/api/employees/${employee_id}/requests`,
+      request
+    );
+  }
+
+  deleteBookingRequest(
+    employee_id: number,
+    request_id: number
+  ): Observable<any> {
+    return this.http.delete<any>(
+      `/api/employees/${employee_id}/requests/${request_id}`
     );
   }
 }

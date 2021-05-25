@@ -122,16 +122,161 @@
           <span class="font-medium">{{ shift.end_time }}</span>
         </p>
       </div>
-      <div>
+    </div>
+  </div>
+  <div
+    class="col-span-6 border-t-4 rounded-md shadow  md:col-span-3 border-secondary-500"
+  >
+    <div class="flex flex-col h-full px-4 py-5 bg-white rounded-md sm:p-6">
+      <h2 class="my-3 text-2xl font-semibold text-gray-700">Requests</h2>
+      <div class="items-center sm:flex sm:space-x-4">
+        <div class="items-center sm:flex sm:space-x-4">
+          <button
+            class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+            type="button"
+            [routerLink]="['requests/booking']"
+            [disabled]="isloading()"
+          >
+            Forgotten Booking
+          </button>
+          <button
+            class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+            type="button"
+            [routerLink]="['employee']"
+            [disabled]="isloading()"
+          >
+            Absence
+          </button>
+          <button
+            class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+            type="button"
+            [routerLink]="['employee']"
+            [disabled]="isloading()"
+          >
+            Holidays
+          </button>
+        </div>
+        <button
+          class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+          type="button"
+          [routerLink]="['requests']"
+          [disabled]="isloading()"
+        >
+          View Requests
+        </button>
+        <button
+          class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+          type="button"
+          [routerLink]="['supervisedrequests']"
+          [disabled]="isloading()"
+        >
+          View Supervised Requests
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-span-6 border-t-4 rounded-md shadow  md:col-span-3 border-secondary-500"
+  >
+    <div class="flex flex-col h-full px-4 py-5 bg-white rounded-md sm:p-6">
+      <h2 class="my-3 text-2xl font-semibold text-gray-700">Bookings</h2>
+      <div class="items-center sm:flex sm:space-x-4">
         <button
           class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
           type="button"
           [routerLink]="['bookings']"
           [disabled]="isloading()"
         >
-          Bookings
+          View All
         </button>
       </div>
+      <div>Today Bookings</div>
+      <table class="min-w-full my-2 border-b divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              *ngFor="let header of ['Time', 'Incidence']"
+              scope="col"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase  text-primary-500"
+            >
+              <div class="flex items-center space-x-1">
+                <div>{{ header }}</div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="font-mono bg-white divide-y divide-gray-200">
+          <tr
+            *ngFor="let booking of bookings.data[0]?.bookings; let i = index"
+            class="align-top hover:bg-gray-100"
+          >
+            <td class="px-1 py-2 whitespace-normal lg:whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="w-4 py-1 mr-0.5">
+                  <svg
+                    *ngIf="booking.user_id"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    />
+                  </svg>
+                </div>
+                <div class="py-1 mr-0.5">
+                  {{ booking.time }}
+                </div>
+                <div class="mr-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5 text-gray-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      *ngIf="i % 2 == 0"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                    />
+                    <path
+                      *ngIf="i % 2 != 0"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-normal lg:whitespace-nowrap">
+              <div
+                *ngIf="booking.incidence"
+                class="font-sans text-xs text-center font-medium group w-12 {{
+                  booking.incidence?.colour
+                }} {{
+                  getTextColourFromName(booking.incidence?.colour || 'bg-white')
+                }} rounded-md py-1 px-1"
+              >
+                {{ booking.incidence?.code }}
+                <span
+                  class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
+                  >{{ booking.incidence?.description }}</span
+                >
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

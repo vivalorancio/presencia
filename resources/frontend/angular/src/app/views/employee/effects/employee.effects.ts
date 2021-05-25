@@ -270,7 +270,7 @@ export class EmployeesEffects {
     )
   );
 
-  loadBookings$ = createEffect(() =>
+  loadBooking$ = createEffect(() =>
     this.actions$.pipe(
       ofType(employeesActions.loadBooking),
       mergeMap((action) =>
@@ -473,6 +473,133 @@ export class EmployeesEffects {
             of(employeesActions.loadEmployeeIncidencesFailure({ error }))
           )
         )
+      )
+    )
+  );
+
+  initEmployeeRequests$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.initEmployeeRequests),
+      withLatestFrom(this.store.select('requests')),
+      map(([action, requests]) =>
+        employeesActions.loadEmployeeRequests({
+          employee_id: action.employee_id,
+          display: requests.display,
+        })
+      ),
+      tap(() => this.router.navigate(['/dashboard/requests']))
+    )
+  );
+
+  loadEmployeeRequests$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeRequests),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.employeeService
+          .getEmployeeRequests(action.employee_id, action.display)
+          .pipe(
+            map((requests) =>
+              employeesActions.loadEmployeeRequestsSuccess({ requests })
+            ),
+            catchError((error) =>
+              of(employeesActions.loadEmployeeRequestsFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  initEmployeeSupervisedRequests$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.initEmployeeSupervisedRequests),
+      withLatestFrom(this.store.select('requests')),
+      map(([action, requests]) =>
+        employeesActions.loadEmployeeSupervisedRequests({
+          employee_id: action.employee_id,
+          display: requests.display,
+        })
+      ),
+      tap(() => this.router.navigate(['/dashboard/supervisedrequests']))
+    )
+  );
+
+  loadEmployeeSupervisedRequests$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeSupervisedRequests),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.employeeService
+          .getEmployeeSupervisedRequests(action.employee_id, action.display)
+          .pipe(
+            map((requests) =>
+              employeesActions.loadEmployeeSupervisedRequestsSuccess({
+                requests,
+              })
+            ),
+            catchError((error) =>
+              of(
+                employeesActions.loadEmployeeSupervisedRequestsFailure({
+                  error,
+                })
+              )
+            )
+          )
+      )
+    )
+  );
+
+  addBookingRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.addBookingRequest),
+      mergeMap((action) =>
+        this.employeeService
+          .postBookingRequest(action.employee_id, action.request)
+          .pipe(
+            map((res) => employeesActions.addBookingRequestSuccess({ res })),
+            tap(() => this.router.navigate(['/dashboard'])),
+            catchError((error) =>
+              of(employeesActions.addBookingRequestFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  updateBookingRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.updateBookingRequest),
+      mergeMap((action) =>
+        this.employeeService
+          .putBookingRequest(action.employee_id, action.request)
+          .pipe(
+            map((res) => employeesActions.updateBookingRequestSuccess({ res })),
+            tap(() =>
+              this.router.navigate([`/dashboard/requests/supervisedrequests/`])
+            ),
+            catchError((error) =>
+              of(employeesActions.updateBookingRequestFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  deleteBookingRequest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.deleteBookingRequest),
+      mergeMap((action) =>
+        this.employeeService
+          .deleteBookingRequest(action.employee_id, action.request_id)
+          .pipe(
+            map((message) =>
+              employeesActions.deleteBookingRequestSuccess({ message })
+            ),
+            tap(() => this.router.navigate([`/dashboard/requests/`])),
+            catchError((error) =>
+              of(employeesActions.deleteBookingRequestFailure({ error }))
+            )
+          )
       )
     )
   );

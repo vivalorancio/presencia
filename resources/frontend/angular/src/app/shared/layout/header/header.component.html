@@ -42,6 +42,7 @@
         <ng-container *ngFor="let menuitem of dashboardMenu">
           <ng-container *ngIf="menuitem.items === undefined">
             <a
+              *ngIf="showmenuitem(menuitem)"
               (click)="navigateDashboard(menuitem.link)"
               class="px-3 py-2 mt-2 text-sm font-semibold text-gray-100 rounded-md cursor-pointer  lg:mt-0 hover:bg-primary-400 hover:text-white focus:text-white focus:bg-primary-400 focus:outline-none focus:shadow-outline"
               >{{ menuitem.label }}</a

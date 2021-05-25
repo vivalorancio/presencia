@@ -30,7 +30,7 @@ class EmployeeController extends Controller
         $request_perPage = request('per_page', $this->perPage);
 
         $request_orderBy = request('sort_field', $this->orderBy);
-        if (!in_array($request_orderBy, ['last_name', 'code', 'national_id', 'email', 'start_date', 'department', 'area', 'section'])) {
+        if (!in_array($request_orderBy, ['last_name', 'code', 'national_id', 'email', 'start_date', 'department', 'area', 'section', 'supervision_group'])) {
             $request_orderBy = $this->orderBy;
         }
 
@@ -43,6 +43,7 @@ class EmployeeController extends Controller
         $orderbydepartments = false;
         $orderbyareas = false;
         $orderbysections = false;
+        $orderbysupervision_groups = false;
         switch ($request_orderBy) {
             case 'last_name':
                 $request_order = 'last_name ' . $request_orderDirection . ', first_name ' . $request_orderDirection;
@@ -62,6 +63,10 @@ class EmployeeController extends Controller
                 $orderbysections = true;
                 $request_order = 'sections.description ' . $request_orderDirection;
                 break;
+            case 'supervision_group':
+                $orderbysupervision_groups = true;
+                $request_order = 'supervision_groups.description ' . $request_orderDirection;
+                break;
             default:
                 $request_order = $request_orderBy . ' ' . $request_orderDirection;
                 break;
@@ -74,10 +79,12 @@ class EmployeeController extends Controller
         $search_department = request('search_department', '');
         $search_area = request('search_area', '');
         $search_section = request('search_section', '');
+        $search_supervision_group = request('search_supervision_group', '');
 
         $joindepartments = $orderbydepartments || $search_department != '';
         $joinareas = $orderbyareas || $search_area != '';
         $joinsections = $orderbysections || $search_section != '';
+        $joinsupervision_groups = $orderbysupervision_groups || $search_supervision_group != '';
 
         $employees = Employee::when($search_name != '', function ($query) use ($search_name) {
             $query->where(function ($q) use ($search_name) {
@@ -135,11 +142,24 @@ class EmployeeController extends Controller
             })->when($orderbysections, function ($query) use ($request_order) {
                 $query->orderByRaw($request_order);
             })->select('employees.*');
-        })->when(!($orderbydepartments || $orderbyareas || $orderbysections), function ($query) use ($request_order) {
+        })->when($joinsupervision_groups, function ($query) use ($orderbysupervision_groups, $search_supervision_group, $request_order) {
+            $query->leftJoin(
+                'supervision_groups',
+                'supervision_groups.id',
+                '=',
+                'employees.supervision_group_id'
+            )->when($search_supervision_group != '' && $search_supervision_group != '*', function ($query) use ($search_supervision_group) {
+                $query->where('supervision_groups.description', 'LIKE', '%' . $search_supervision_group . '%');
+            })->when($search_supervision_group != '' && $search_supervision_group == '*', function ($query) {
+                $query->whereNotNull('supervision_groups.description');
+            })->when($orderbysupervision_groups, function ($query) use ($request_order) {
+                $query->orderByRaw($request_order);
+            })->select('employees.*');
+        })->when(!($orderbydepartments || $orderbyareas || $orderbysections || $orderbysupervision_groups), function ($query) use ($request_order) {
             $query->orderByRaw($request_order);
         })->paginate($request_perPage);
 
-        // return $employees;
+        //return $employees;
         return EmployeeResource::collection($employees);
     }
 
@@ -262,5 +282,12 @@ class EmployeeController extends Controller
         }
         return ['data' => IncidenceResource::collection($result)];
         //return $result;
+    }
+
+    public function supervisor(EmployeeSelfRequest $request, Employee $employee)
+    {
+        $supervisor = $employee->supervisor;
+
+        return $supervisor;
     }
 }

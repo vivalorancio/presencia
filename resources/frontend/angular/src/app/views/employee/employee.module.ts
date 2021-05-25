@@ -11,6 +11,8 @@ import { DialogsModule } from 'src/app/shared/dialogs/dialogs.module';
 import { PaginationModule } from 'src/app/shared/pagination/pagination.module';
 import { BookingsListComponent } from './components/bookings-list/bookings-list.component';
 import { BookingEditComponent } from './components/booking-edit/booking-edit.component';
+import { BookingrequestEditComponent } from './components/bookingrequest-edit/bookingrequest-edit.component';
+import { RequestsListComponent } from './components/requests-list/requests-list.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { BookingEditComponent } from './components/booking-edit/booking-edit.com
     EmployeecalendarListComponent,
     BookingsListComponent,
     BookingEditComponent,
+    BookingrequestEditComponent,
+    RequestsListComponent,
   ],
   imports: [
     CommonModule,

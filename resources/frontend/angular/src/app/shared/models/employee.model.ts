@@ -24,7 +24,7 @@ export interface Employee {
   area: Area;
   section: Section;
   supervision_group: SupervisionGroup;
-  is_manager: boolean;
+  is_supervisor: boolean;
   user: User;
 }
 
