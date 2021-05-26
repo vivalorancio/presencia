@@ -7,6 +7,7 @@ use App\Http\Requests\EmployeeSelfRequest;
 use App\Models\Employee;
 use App\Models\Request as RequestModel;
 use App\Models\BookingRequest;
+use App\Models\AbsenceRequest;
 use App\Models\Booking;
 use App\Http\Resources\RequestResource;
 use App\Http\Requests\Request\RequestStoreRequest;
@@ -164,14 +165,17 @@ class RequestController extends Controller
 
         $employee->requests()->save($requestmodel);
 
-        $bookingrequest = null;
+        $typerequest = null;
         if ($type == 'booking') {
-            $bookingrequest = new BookingRequest($request->validated());
-            $requestmodel->bookingrequest()->save($bookingrequest);
+            $typerequest = new BookingRequest($request->validated());
+            $requestmodel->bookingrequest()->save($typerequest);
+        } else if ($type == 'absence') {
+            $typerequest = new AbsenceRequest($request->validated());
+            $requestmodel->absencerequest()->save($typerequest);
         }
 
 
-        return [$requestmodel, $bookingrequest];
+        return [$requestmodel, $typerequest];
     }
 
     /**

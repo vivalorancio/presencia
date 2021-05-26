@@ -31,17 +31,19 @@ class RequestStoreRequest extends EmployeeSelfRequest
                 Rule::in(['booking', 'absence', 'holiday'])
             ],
             'comments' => 'nullable|sometimes|string',
-            //booking, absence, holiday
-            'date' => 'required|dateformat:Y-m-d',
-            //booking, absenc
-            'incidence_id' => 'nullable|sometimes|integer|exists:incidences,id',
-            //booking
+            //booking,
+            'date' => 'required_if:type,booking|dateformat:Y-m-d',
             'time' => [
                 'required_if:type,booking', 'dateformat:H:i:s',
                 Rule::unique('bookings')
                     ->where('employee_id', $this->employee->id)
                     ->where('date', $this->date)
-            ]
+            ],
+            //booking, absence
+            'incidence_id' => 'nullable|sometimes|required_if:type,absence|integer|exists:incidences,id',
+            //absence
+            'date_from' => 'required_if:type,absence|dateformat:Y-m-d',
+            'date_to' => 'required_if:type,absence|dateformat:Y-m-d'
             //holiday
             //            'holiday_period_id' => 'required_if:type,holiday|integer|exists:holiday_periods,id'
         ];

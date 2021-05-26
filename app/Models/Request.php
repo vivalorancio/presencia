@@ -34,4 +34,9 @@ class Request extends Model
     {
         return $this->hasOne(BookingRequest::class);
     }
+
+    public function absencerequest()
+    {
+        return $this->hasOne(AbsenceRequest::class);
+    }
 }

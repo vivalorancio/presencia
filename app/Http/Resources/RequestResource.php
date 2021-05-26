@@ -36,6 +36,15 @@ class RequestResource extends JsonResource
                     'incidence' => $bookingrequest->incidence
                 ];
             }),
+            'absence' => $this->when($this->type == 'absence', function () {
+                $absencerequest = $this->absencerequest;
+                return [
+                    'date_from' => $absencerequest->date_from,
+                    'date_to' => $absencerequest->date_to,
+                    'incidence_id' => $absencerequest->incidence_id,
+                    'incidence' => $absencerequest->incidence
+                ];
+            }),
         ];
     }
 }
