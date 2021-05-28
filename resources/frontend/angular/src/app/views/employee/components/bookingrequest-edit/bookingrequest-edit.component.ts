@@ -133,11 +133,11 @@ export class BookingrequestEditComponent implements OnInit {
     this.selectedIncidenceId = this.request.booking?.incidence_id || -1;
 
     this.store
-      .select('bookingrequest')
+      .select('request')
       .pipe(takeUntil(this.ngDestroyed$))
-      .subscribe((bookingrequest) => {
-        this.pending = bookingrequest.pending;
-        this.submiterror = bookingrequest.error;
+      .subscribe((request) => {
+        this.pending = request.pending;
+        this.submiterror = request.error;
       });
   }
 
@@ -156,7 +156,7 @@ export class BookingrequestEditComponent implements OnInit {
     this.showDeleteConfirmation = false;
     if (proceed) {
       this.store.dispatch(
-        employeesActions.deleteBookingRequest({
+        employeesActions.deleteRequest({
           employee_id: this.employee.id,
           request_id: this.request.id,
         })
@@ -175,7 +175,7 @@ export class BookingrequestEditComponent implements OnInit {
     } as BookingRequest;
 
     this.store.dispatch(
-      employeesActions.updateBookingRequest({
+      employeesActions.updateRequest({
         employee_id: this.employee.id,
         request: bookingrequestToSave,
       })
@@ -195,7 +195,7 @@ export class BookingrequestEditComponent implements OnInit {
         this.selectedIncidenceId === -1 ? null : this.selectedIncidenceId,
     } as BookingRequest;
     this.store.dispatch(
-      employeesActions.addBookingRequest({
+      employeesActions.addRequest({
         employee_id: this.employee.id,
         request: bookingrequestToSave,
       })

@@ -10,6 +10,7 @@ import { BookingsListComponent } from './components/bookings-list/bookings-list.
 import { BookingEditComponent } from './components/booking-edit/booking-edit.component';
 import { BookingrequestEditComponent } from './components/bookingrequest-edit/bookingrequest-edit.component';
 import { RequestsListComponent } from './components/requests-list/requests-list.component';
+import { AbsencerequestEditComponent } from './components/absencerequest-edit/absencerequest-edit.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,14 @@ const routes: Routes = [
         component: BookingrequestEditComponent,
       },
       {
+        path: 'requests/absence',
+        component: AbsencerequestEditComponent,
+      },
+      {
+        path: 'requests/absence/:request_id',
+        component: AbsencerequestEditComponent,
+      },
+      {
         path: 'requests',
         component: RequestsListComponent,
       },
@@ -39,6 +48,10 @@ const routes: Routes = [
       {
         path: 'supervisedrequests/booking/:request_id',
         component: BookingrequestEditComponent,
+      },
+      {
+        path: 'supervisedrequests/absence/:request_id',
+        component: AbsencerequestEditComponent,
       },
     ],
     canActivate: [AuthenticationGuard],

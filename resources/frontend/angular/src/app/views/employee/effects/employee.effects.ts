@@ -549,53 +549,53 @@ export class EmployeesEffects {
     )
   );
 
-  addBookingRequest$ = createEffect(() =>
+  addRequest$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(employeesActions.addBookingRequest),
+      ofType(employeesActions.addRequest),
       mergeMap((action) =>
         this.employeeService
-          .postBookingRequest(action.employee_id, action.request)
+          .postRequest(action.employee_id, action.request)
           .pipe(
-            map((res) => employeesActions.addBookingRequestSuccess({ res })),
+            map((res) => employeesActions.addRequestSuccess({ res })),
             tap(() => this.router.navigate(['/dashboard'])),
             catchError((error) =>
-              of(employeesActions.addBookingRequestFailure({ error }))
+              of(employeesActions.addRequestFailure({ error }))
             )
           )
       )
     )
   );
 
-  updateBookingRequest$ = createEffect(() =>
+  updateRequest$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(employeesActions.updateBookingRequest),
+      ofType(employeesActions.updateRequest),
       mergeMap((action) =>
         this.employeeService
-          .putBookingRequest(action.employee_id, action.request)
+          .putRequest(action.employee_id, action.request)
           .pipe(
-            map((res) => employeesActions.updateBookingRequestSuccess({ res })),
+            map((res) => employeesActions.updateRequestSuccess({ res })),
             tap(() => this.router.navigate([`/dashboard/supervisedrequests/`])),
             catchError((error) =>
-              of(employeesActions.updateBookingRequestFailure({ error }))
+              of(employeesActions.updateRequestFailure({ error }))
             )
           )
       )
     )
   );
 
-  deleteBookingRequest$ = createEffect(() =>
+  deleteRequest$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(employeesActions.deleteBookingRequest),
+      ofType(employeesActions.deleteRequest),
       mergeMap((action) =>
         this.employeeService
-          .deleteBookingRequest(action.employee_id, action.request_id)
+          .deleteRequest(action.employee_id, action.request_id)
           .pipe(
             map((message) =>
-              employeesActions.deleteBookingRequestSuccess({ message })
+              employeesActions.deleteRequestSuccess({ message })
             ),
             tap(() => this.router.navigate([`/dashboard/requests/`])),
             catchError((error) =>
-              of(employeesActions.deleteBookingRequestFailure({ error }))
+              of(employeesActions.deleteRequestFailure({ error }))
             )
           )
       )

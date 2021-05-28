@@ -18,6 +18,12 @@ export interface BookingRequest extends Request {
   incidence_id?: number;
 }
 
+export interface AbsenceRequest extends Request {
+  date_from: string;
+  date_to: string;
+  incidence_id: number;
+}
+
 export interface RequestResource {
   data: Request;
 }

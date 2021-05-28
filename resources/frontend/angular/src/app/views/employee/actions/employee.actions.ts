@@ -18,6 +18,7 @@ import {
   IncidenceCollection,
 } from 'src/app/shared/models/incidence.model';
 import {
+  AbsenceRequest,
   BookingRequest,
   Request,
   RequestCollection,
@@ -293,42 +294,42 @@ export const loadEmployeeSupervisedRequestsFailure = createAction(
   '[Employee] Load Employee SupervisedRequests Failure',
   props<{ error: any }>()
 );
-// ------------ Add Booking Request ----------
-export const addBookingRequest = createAction(
-  '[Employee] Add Booking Request',
-  props<{ employee_id: number; request: BookingRequest }>()
+// ------------ Add Request ----------
+export const addRequest = createAction(
+  '[Employee] Add Request',
+  props<{ employee_id: number; request: any }>()
 );
-export const addBookingRequestSuccess = createAction(
-  '[Employee] Add Booking Request Success',
+export const addRequestSuccess = createAction(
+  '[Employee] Add Request Success',
   props<{ res: any }>()
 );
-export const addBookingRequestFailure = createAction(
-  '[Employee] Add Booking Request Failure',
+export const addRequestFailure = createAction(
+  '[Employee] Add Request Failure',
   props<{ error: any }>()
 );
-// ------------ Update Booking Request ----------
-export const updateBookingRequest = createAction(
-  '[Employee] Update Booking Request',
+// ------------ Update Request ----------
+export const updateRequest = createAction(
+  '[Employee] Update Request',
   props<{ employee_id: number; request: Request }>()
 );
-export const updateBookingRequestSuccess = createAction(
-  '[Employee] Update Booking Request Success',
+export const updateRequestSuccess = createAction(
+  '[Employee] Update Request Success',
   props<{ res: any }>()
 );
-export const updateBookingRequestFailure = createAction(
-  '[Employee] Update Booking Request Failure',
+export const updateRequestFailure = createAction(
+  '[Employee] Update Request Failure',
   props<{ error: any }>()
 );
-// ------------ Delete Booking Request ----------
-export const deleteBookingRequest = createAction(
-  '[Employee] Delete Booking Request',
+// ------------ Delete Request ----------
+export const deleteRequest = createAction(
+  '[Employee] Delete Request',
   props<{ employee_id: number; request_id: number }>()
 );
-export const deleteBookingRequestSuccess = createAction(
-  '[Employee] Delete Booking Request Success',
+export const deleteRequestSuccess = createAction(
+  '[Employee] Delete Request Success',
   props<{ message: string }>()
 );
-export const deleteBookingRequestFailure = createAction(
-  '[Employee] Delete Booking Request Failure',
+export const deleteRequestFailure = createAction(
+  '[Employee] Delete Request Failure',
   props<{ error: any }>()
 );

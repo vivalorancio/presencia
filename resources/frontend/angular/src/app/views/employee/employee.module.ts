@@ -13,6 +13,7 @@ import { BookingsListComponent } from './components/bookings-list/bookings-list.
 import { BookingEditComponent } from './components/booking-edit/booking-edit.component';
 import { BookingrequestEditComponent } from './components/bookingrequest-edit/bookingrequest-edit.component';
 import { RequestsListComponent } from './components/requests-list/requests-list.component';
+import { AbsencerequestEditComponent } from './components/absencerequest-edit/absencerequest-edit.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { RequestsListComponent } from './components/requests-list/requests-list.
     BookingEditComponent,
     BookingrequestEditComponent,
     RequestsListComponent,
+    AbsencerequestEditComponent,
   ],
   imports: [
     CommonModule,
