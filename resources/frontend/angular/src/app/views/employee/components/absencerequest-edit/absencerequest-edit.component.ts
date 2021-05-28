@@ -22,6 +22,24 @@ import {
 
 import * as employeesActions from '../../actions';
 
+const rangeValidator: any = (fg: FormGroup) => {
+  let invalid = false;
+  const from = fg.get('date_from')?.value;
+  const to = fg.get('date_to')?.value;
+  if (!from || !to) invalid = true;
+  if (from && to) {
+    invalid = new Date(from).valueOf() > new Date(to).valueOf();
+  }
+  if (invalid) {
+    fg.get('date_from')?.setErrors({ notvalid: true });
+    fg.get('date_to')?.setErrors({ notvalid: true });
+  } else {
+    fg.get('date_from')?.updateValueAndValidity({ onlySelf: true });
+    fg.get('date_to')?.updateValueAndValidity({ onlySelf: true });
+  }
+  return null;
+};
+
 @Component({
   selector: 'app-absencerequest-edit',
   templateUrl: './absencerequest-edit.component.html',
@@ -98,39 +116,43 @@ export class AbsencerequestEditComponent implements OnInit {
     this.is_supervised =
       this.route.snapshot.url[0]?.path === 'supervisedrequests';
 
-    this.absenceForm = this.formBuilder.group({
-      date_from: [
-        {
-          value:
-            this.request.absence?.date_from ||
-            dateAAAAMMDD(new Date(Date.now())),
-          disabled: this.request.id,
-        },
-        Validators.required,
-      ],
-      date_to: [
-        {
-          value:
-            this.request.absence?.date_to || dateAAAAMMDD(new Date(Date.now())),
-          disabled: this.request.id,
-        },
-        Validators.required,
-      ],
-      comments: [
-        {
-          value: this.request.comments,
-          disabled: this.request.id,
-        },
-      ],
-      validator_comments: [
-        {
-          value: this.request.validator_comments,
-          disabled:
-            !this.is_supervised ||
-            (this.is_supervised && this.request.status !== 'pending'),
-        },
-      ],
-    });
+    this.absenceForm = this.formBuilder.group(
+      {
+        date_from: [
+          {
+            value:
+              this.request.absence?.date_from ||
+              dateAAAAMMDD(new Date(Date.now())),
+            disabled: this.request.id,
+          },
+          Validators.required,
+        ],
+        date_to: [
+          {
+            value:
+              this.request.absence?.date_to ||
+              dateAAAAMMDD(new Date(Date.now())),
+            disabled: this.request.id,
+          },
+          Validators.required,
+        ],
+        comments: [
+          {
+            value: this.request.comments,
+            disabled: this.request.id,
+          },
+        ],
+        validator_comments: [
+          {
+            value: this.request.validator_comments,
+            disabled:
+              !this.is_supervised ||
+              (this.is_supervised && this.request.status !== 'pending'),
+          },
+        ],
+      },
+      { validator: rangeValidator }
+    );
 
     this.selectedIncidenceId = this.request.absence?.incidence_id || -1;
 
@@ -218,6 +240,8 @@ export class AbsencerequestEditComponent implements OnInit {
       return label + ' has to be at least 1';
     } else if (fc.hasError('timenotvalid')) {
       return 'Invalid time';
+    } else if (fc.hasError('notvalid')) {
+      return 'Invalid date range';
     } else if (fc.hasError('submiterror')) {
       return fc.getError('submiterror');
     }

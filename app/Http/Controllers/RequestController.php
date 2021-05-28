@@ -9,14 +9,25 @@ use App\Models\Request as RequestModel;
 use App\Models\BookingRequest;
 use App\Models\AbsenceRequest;
 use App\Models\Booking;
+use App\Models\Absence;
+use App\Models\Shift;
 use App\Http\Resources\RequestResource;
 use App\Http\Requests\Request\RequestStoreRequest;
 use App\Http\Requests\Request\RequestUpdateRequest;
 use App\Http\Requests\Request\RequestDestroyRequest;
 use Carbon\Carbon;
+use DateTime;
+
 
 class RequestController extends Controller
 {
+
+    private function nextday($aday)
+    {
+        $data = new DateTime($aday);
+        $data->modify('+1 day');
+        return $data->format('Y-m-d');
+    }
 
 
     public function index(EmployeeSelfRequest $request, Employee $employee)
@@ -211,6 +222,80 @@ class RequestController extends Controller
                 $booking->employee_id = $req->employee_id;
                 $booking->user_id = $employee->id;
                 $booking->save();
+            } else if ($req->type === 'absence') {
+                $reqemployee = $req->employee;
+                $reqabsence = $req->absencerequest;
+                $from = $reqabsence->date_from;
+                $to = $reqabsence->date_to;
+
+
+                $yearfrom = intval(date("Y", strtotime($from)));
+                $yearto = intval(date("Y", strtotime($to)));
+
+                $cals = [];
+                $shift_ids = [];
+                for ($i = $yearfrom; $i <= $yearto; $i++) {
+                    $empcalendar = $reqemployee->calendars()->where('year', strval($i))->first();
+                    $calendar = $empcalendar == null ? null : $empcalendar->calendar;
+                    $calendarshifts = $calendar == null ? null : $calendar->shifts;
+                    if ($calendarshifts) {
+                        foreach ($calendarshifts as $calendarshift) {
+                            if (!in_array($calendarshift->shift_id, $shift_ids)) {
+                                array_push($shift_ids, $calendarshift->shift_id);
+                            }
+                        }
+                    }
+                    $cal = [
+                        'year' => strval($i),
+                        'calendarshifts' => $calendarshifts
+                    ];
+                    array_push($cals, $cal);
+                }
+                $shifts = Shift::whereIn('id', $shift_ids)->get();
+
+                $currentday = $from;
+                $currentyear = null;
+                $calshifts = null;
+                $absence_days = [];
+                while ($currentday <= $to) {
+                    $dayshift = $reqemployee->shift;
+                    $year = date("Y", strtotime($currentday));
+                    $dayofyear = date("z", strtotime($currentday));
+
+                    if ($currentyear != $year) {
+                        foreach ($cals as $cal) {
+                            if ($cal['year'] == $year) {
+                                $currentyear = $year;
+                                $calshifts = $cal['calendarshifts'];
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($calshifts != null) {
+                        foreach ($calshifts as $calshift) {
+                            if ($calshift->day == $dayofyear && $shifts != null) {
+                                foreach ($shifts as $shift) {
+                                    if ($shift->id == $calshift->shift_id) {
+                                        $dayshift = $shift;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($dayshift && !$dayshift->is_holiday) {
+                        $absence = new Absence();
+                        $absence->date = $currentday;
+                        $absence->incidence_id = $reqabsence->incidence_id;
+                        $absence->employee_id = $req->employee_id;
+                        $absence->user_id = $employee->id;
+                        $absence->save();
+                    }
+                    $currentday = $this->nextday($currentday);
+                }
             }
         }
 

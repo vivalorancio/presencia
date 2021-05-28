@@ -40,6 +40,7 @@ export class BookingsListComponent implements OnInit {
   headers: ListHeader[] = [
     { text: 'Day', sort_by: '', hides: false, search_by: '' },
     { text: 'Bookings', sort_by: '', hides: false, search_by: '' },
+    { text: 'Absences', sort_by: '', hides: false, search_by: '' },
     { text: 'Total time', sort_by: '', hides: false, search_by: '' },
     { text: 'Shift time', sort_by: '', hides: false, search_by: '' },
     { text: 'Balance', sort_by: '', hides: false, search_by: '' },
@@ -134,6 +135,12 @@ export class BookingsListComponent implements OnInit {
     this.router.navigate([
       `/management/employees/employee/${this.employee_id}/bookings/booking/${id}`,
     ]);
+  }
+
+  openabsence(id: number) {
+    // this.router.navigate([
+    //   `/management/employees/employee/${this.employee_id}/bookings/booking/${id}`,
+    // ]);
   }
 
   dispatchLoad(): void {

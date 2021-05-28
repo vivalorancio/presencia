@@ -11,6 +11,15 @@ export interface Booking {
   user_id: number | null;
 }
 
+export interface Absence {
+  id: number;
+  //employee_id: number;
+  date: string;
+  incidence_id: number | null;
+  incidence: Incidence;
+  user_id: number | null;
+}
+
 export interface BookingResource {
   data: Booking;
 }
@@ -19,6 +28,7 @@ export interface DayBookings {
   day: string;
   shift: Shift[];
   bookings: Booking[];
+  absences: Absence[];
   eval: DayBookingsEval;
 }
 

@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\ShiftResource;
 use App\Http\Resources\BookingResource;
+use App\Http\Resources\AbsenceResource;
 
 class DayBookingResource extends JsonResource
 {
@@ -21,6 +22,7 @@ class DayBookingResource extends JsonResource
             'day' => $this['day'],
             'shift' => $this['shift'] == null ? null : ShiftResource::collection([$this['shift']]),
             'bookings' => BookingResource::collection($this['bookings']),
+            'absences' => AbsenceResource::collection($this['absences']),
             'eval' => $this['eval']
         ];
     }

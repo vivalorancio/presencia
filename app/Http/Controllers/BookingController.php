@@ -10,6 +10,7 @@ use App\Http\Requests\EmployeeSelfRequest;
 use App\Http\Resources\BookingResource;
 use App\Http\Resources\DayBookingResource;
 use App\Models\Booking;
+use App\Models\Absence;
 use App\Models\Employee;
 use App\Models\Shift;
 use DateTime;
@@ -18,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 class BookingController extends Controller
 {
 
-    private $request_order = 'date ASC, time ASC';
     private $range = 'week'; //'month' 'year'
 
     private function nextday($aday)
@@ -113,6 +113,8 @@ class BookingController extends Controller
         $aday = new DateTime($day['day']);
         if ($aday > $today || $day['shift']->is_holiday) {
             $eval['totalbookedtime'] = '';
+        } else if (count($day['absences']) > 0 && $day['absences'][0]->incidence->is_counted) {
+            $eval['totalbookedtime'] = '+' . $eval['totalshifttime'];
         } else if ($eval['count'] > 0 && $eval['count'] % 2 == 0) {
             $eval['diffs'] = [];
             $eval['offtimes'] = [];
@@ -289,8 +291,15 @@ class BookingController extends Controller
             $query->where('date', '>=', $from);
         })->when($to != '', function ($query) use ($to) {
             $query->where('date', '<=', $to);
-        })->orderByRaw($this->request_order)->get(); //paginate($request_perPage);
+        })->orderByRaw('date ASC, time ASC')->get(); //paginate($request_perPage);
         //return $bookings;
+
+        $absences = Absence::where('employee_id', '=', $employee->id)->when($from != '', function ($query) use ($from) {
+            $query->where('date', '>=', $from);
+        })->when($to != '', function ($query) use ($to) {
+            $query->where('date', '<=', $to);
+        })->orderByRaw('date ASC')->get();
+        // return $absences;
 
         $yearfrom = intval(date("Y", strtotime($from)));
         $yearto = intval(date("Y", strtotime($to)));
@@ -325,6 +334,7 @@ class BookingController extends Controller
         //$periodbalanceinterval=new DateInterval('0H0M0S')
 
         $currentday = $from;
+        $absindex = 0;
         foreach ($bookings as $booking) {
 
             while ($booking->date > $currentday) {
@@ -341,7 +351,10 @@ class BookingController extends Controller
                     $day = null;
                 }
                 if ($skip == false) {
-                    $day = ['day' => $currentday, 'eval' => null, 'bookings' => [], 'shift' => $employee->shift];
+                    $day = ['day' => $currentday, 'eval' => null, 'bookings' => [], 'absences' => [], 'shift' => $employee->shift];
+
+                    if ($absindex < count($absences) && $absences[$absindex]->date === $currentday)
+                        array_push($day['absences'], $absences[$absindex++]);
 
                     $year = date("Y", strtotime($day['day']));
                     $dayofyear = date("z", strtotime($day['day']));
@@ -387,7 +400,10 @@ class BookingController extends Controller
                         array_push($days, $day);
                     }
 
-                    $day = ['day' => $currentday, 'eval' => null, 'bookings' => [], 'shift' => $employee->shift];
+                    $day = ['day' => $currentday, 'eval' => null, 'bookings' => [], 'absences' => [], 'shift' => $employee->shift];
+                    if ($absindex < count($absences) && $absences[$absindex]->date === $currentday)
+                        array_push($day['absences'], $absences[$absindex++]);
+
                     $year = date("Y", strtotime($day['day']));
                     $dayofyear = date("z", strtotime($day['day']));
 
@@ -434,7 +450,10 @@ class BookingController extends Controller
         // $currentday = $data->format('Y-m-d');
 
         while ($currentday <= $to) {
-            $day = ['day' => $currentday, 'eval' => null, 'bookings' => [], 'shift' => $employee->shift];
+            $day = ['day' => $currentday, 'eval' => null, 'bookings' => [], 'absences' => [], 'shift' => $employee->shift];
+            if ($absindex < count($absences) && $absences[$absindex]->date === $currentday)
+                array_push($day['absences'], $absences[$absindex++]);
+
 
             $year = date("Y", strtotime($day['day']));
             $dayofyear = date("z", strtotime($day['day']));

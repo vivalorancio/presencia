@@ -265,6 +265,36 @@
             </td>
             <td class="px-1 py-2 whitespace-nowrap">
               <div class="text-sm font-medium text-gray-900">
+                <div
+                  class="flex flex-col"
+                  *ngFor="let anabsence of booking.absences; let i = index"
+                >
+                  <div class="flex items-center">
+                    <div
+                      *ngIf="anabsence.incidence"
+                      class="font-sans text-xs text-center font-medium group w-12
+                      {{
+                        is_management ? 'cursor-pointer hover:underline' : ''
+                      }}
+                      {{ anabsence.incidence?.colour }} {{
+                        getTextColourFromName(
+                          anabsence.incidence?.colour || 'bg-white'
+                        )
+                      }} rounded-md py-1 px-1"
+                      (click)="is_management ? openabsence(anabsence.id) : null"
+                    >
+                      {{ anabsence.incidence?.code }}
+                      <span
+                        class="absolute invisible w-auto p-1 mt-1 text-sm text-gray-800 transition-all duration-200 ease-in delay-300 rounded-md shadow-lg opacity-0  bg-gray-50 group-hover:visible group-hover:z-10 group-hover:opacity-100"
+                        >{{ anabsence.incidence?.description }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-1 py-2 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">
                 {{ booking.eval.totalbookedtime }}
               </div>
             </td>
@@ -299,6 +329,7 @@
           </tr>
           <tr class="font-semibold align-top hover:bg-gray-100">
             <td>Total</td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
