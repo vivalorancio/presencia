@@ -6,11 +6,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CalendarShiftsController;
 use App\Http\Controllers\EmployeeCalendarController;
+use App\Http\Controllers\EmployeeHolidayPeriodController;
+use App\Http\Controllers\EmployeeHolidayController;
 use App\Http\Controllers\IncidenceController;
 use App\Http\Controllers\IncidencesGroupController;
 use App\Http\Controllers\IncidencesGroupIncidenceController;
@@ -19,6 +22,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\SupervisionGroupController;
 use App\Http\Controllers\SupervisionGroupSupervisorController;
+use App\Http\Controllers\HolidayPeriodController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,12 +58,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('employees/{employee}/calendars', EmployeeCalendarController::class);
 
     Route::apiResource('employees/{employee}/bookings', BookingController::class);
+    Route::apiResource('employees/{employee}/absences', AbsenceController::class);
 
     Route::get('employees/{employee}/requests/supervised', [RequestController::class, 'supervised']);
     Route::apiResource('employees/{employee}/requests', RequestController::class)->parameters([
         'requests' => 'req'
     ]);
 
+    Route::apiResource('employees/{employee}/holiday_periods', EmployeeHolidayPeriodController::class);
+    Route::apiResource('employees/{employee}/holiday_periods/{holiday_period}/holidays', EmployeeHolidayController::class);
 
 
     //Shifts
@@ -85,6 +92,8 @@ Route::middleware('auth:sanctum')->group(function () {
     //Supervision Groups
     Route::apiResource('supervision_groups', SupervisionGroupController::class);
     Route::apiResource('supervision_groups/{supervision_group}/supervisors', SupervisionGroupSupervisorController::class);
+    //Holiday Periods
+    Route::apiResource('holiday_periods', HolidayPeriodController::class);
 });
 
 

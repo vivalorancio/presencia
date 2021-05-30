@@ -11,6 +11,7 @@ import { BookingEditComponent } from './components/booking-edit/booking-edit.com
 import { BookingrequestEditComponent } from './components/bookingrequest-edit/bookingrequest-edit.component';
 import { RequestsListComponent } from './components/requests-list/requests-list.component';
 import { AbsencerequestEditComponent } from './components/absencerequest-edit/absencerequest-edit.component';
+import { AbsenceEditComponent } from './components/absence-edit/absence-edit.component';
 
 const routes: Routes = [
   {
@@ -87,6 +88,14 @@ const routes: Routes = [
       {
         path: 'employees/employee/:employee_id/bookings/booking/:booking_id',
         component: BookingEditComponent,
+      },
+      {
+        path: 'employees/employee/:employee_id/bookings/absence',
+        component: AbsenceEditComponent,
+      },
+      {
+        path: 'employees/employee/:employee_id/bookings/absence/:absence_id',
+        component: AbsenceEditComponent,
       },
     ],
     canActivate: [AuthenticationGuard, AdminGuard],

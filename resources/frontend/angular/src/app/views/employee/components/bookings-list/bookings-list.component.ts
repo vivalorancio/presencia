@@ -138,9 +138,9 @@ export class BookingsListComponent implements OnInit {
   }
 
   openabsence(id: number) {
-    // this.router.navigate([
-    //   `/management/employees/employee/${this.employee_id}/bookings/booking/${id}`,
-    // ]);
+    this.router.navigate([
+      `/management/employees/employee/${this.employee_id}/bookings/absence/${id}`,
+    ]);
   }
 
   dispatchLoad(): void {

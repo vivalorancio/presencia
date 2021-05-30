@@ -1,5 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import {
+  Absence,
+  AbsenceResource,
   Booking,
   BookingResource,
   DayBookingsCollection,
@@ -213,6 +215,59 @@ export const deleteEmployeeBookingSuccess = createAction(
 );
 export const deleteEmployeeBookingFailure = createAction(
   '[Employee] Delete EmployeeBooking Failure',
+  props<{ error: any }>()
+);
+// ------------ Load Absence ----------
+export const loadAbsence = createAction(
+  '[Employee] Load Absence',
+  props<{ employee_id: number; absence_id: number }>()
+);
+export const loadAbsenceSuccess = createAction(
+  '[Employee] Load Absence Success',
+  props<{ absence: AbsenceResource }>()
+);
+
+export const loadAbsenceFailure = createAction(
+  '[Employee] Load Absence Failure',
+  props<{ error: any }>()
+);
+// ------------ Add Employee Absence ----------
+export const addEmployeeAbsence = createAction(
+  '[Employee] Add EmployeeAbsence',
+  props<{ employee_id: number; absence: Absence }>()
+);
+export const addEmployeeAbsenceSuccess = createAction(
+  '[Employee] Add EmployeeAbsence Success',
+  props<{ res: any }>()
+);
+export const addEmployeeAbsenceFailure = createAction(
+  '[Employee] Add EmployeeAbsence Failure',
+  props<{ error: any }>()
+);
+// ------------ Update Employee Absence ----------
+export const updateEmployeeAbsence = createAction(
+  '[Employee] Update EmployeeAbsence',
+  props<{ employee_id: number; absence: Absence }>()
+);
+export const updateEmployeeAbsenceSuccess = createAction(
+  '[Employee] Update EmployeeAbsence Success',
+  props<{ res: any }>()
+);
+export const updateEmployeeAbsenceFailure = createAction(
+  '[Employee] Update EmployeeAbsence Failure',
+  props<{ error: any }>()
+);
+// ------------ Delete Employee Absence ----------
+export const deleteEmployeeAbsence = createAction(
+  '[Employee] Delete EmployeeAbsence',
+  props<{ employee_id: number; absence_id: number }>()
+);
+export const deleteEmployeeAbsenceSuccess = createAction(
+  '[Employee] Delete EmployeeAbsence Success',
+  props<{ message: string }>()
+);
+export const deleteEmployeeAbsenceFailure = createAction(
+  '[Employee] Delete EmployeeAbsence Failure',
   props<{ error: any }>()
 );
 // ------------ Employee ----------

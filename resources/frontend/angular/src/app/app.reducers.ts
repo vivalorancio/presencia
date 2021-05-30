@@ -12,6 +12,7 @@ export interface AppState {
   employee: employees.EmployeeState;
   employees: employees.EmployeesState;
   booking: employees.BookingState;
+  absence: employees.AbsenceState;
   bookings: employees.BookingsState;
   request: employees.RequestState;
   requests: employees.RequestsState;
@@ -34,6 +35,7 @@ export const appReducers: ActionReducerMap<AppState> = {
   employee: employees.employeeReducer,
   employees: employees.employeesReducer,
   booking: employees.bookingReducer,
+  absence: employees.absenceReducer,
   bookings: employees.bookingsReducer,
   request: employees.requestReducer,
   requests: employees.requestsReducer,

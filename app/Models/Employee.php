@@ -34,6 +34,11 @@ class Employee extends Model
         return $this->hasMany(Booking::class);
     }
 
+    public function absences()
+    {
+        return $this->hasMany(Absence::class);
+    }
+
     public function user()
     {
         return $this->hasOne(User::class);
@@ -78,6 +83,11 @@ class Employee extends Model
     public function calendars()
     {
         return $this->hasMany(EmployeeCalendar::class);
+    }
+
+    public function holiday_periods()
+    {
+        return $this->hasMany(EmployeeHolidayPeriod::class);
     }
 
     public function requests()

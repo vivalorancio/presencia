@@ -410,6 +410,131 @@ export class EmployeesEffects {
   //     )
   //   )
   // );
+  loadAbsence$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadAbsence),
+      mergeMap((action) =>
+        this.employeeService
+          .getAbsence(action.employee_id, action.absence_id)
+          .pipe(
+            map((absence) => employeesActions.loadAbsenceSuccess({ absence })),
+            catchError((error) =>
+              of(employeesActions.loadAbsenceFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  addAbsence$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.addEmployeeAbsence),
+      mergeMap((action) =>
+        this.employeeService
+          .postAbsence(action.employee_id, action.absence)
+          .pipe(
+            map((res) => employeesActions.addEmployeeAbsenceSuccess({ res })),
+            tap(() =>
+              this.router.navigate([
+                `/management/employees/employee/${action.employee_id}/bookings`,
+              ])
+            ),
+            catchError((error) =>
+              of(employeesActions.addEmployeeAbsenceFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  // addAbsenceSuccess$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(employeesActions.addEmployeeAbsenceSuccess),
+  //     withLatestFrom(this.store.select('employees')),
+  //     map(([action, employees]) =>
+  //       employeesActions.loadEmployees({
+  //         display: employees.display,
+  //         search: employees.search,
+  //       })
+  //     )
+  //   )
+  // );
+
+  //addEmployeeFailure ---> PROCESS ERROR MESSAGE / retry /etc
+
+  updateEmployeeAbsence$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.updateEmployeeAbsence),
+      mergeMap((action) =>
+        this.employeeService
+          .putAbsence(action.employee_id, action.absence)
+          .pipe(
+            map((res) =>
+              employeesActions.updateEmployeeAbsenceSuccess({ res })
+            ),
+            tap(() =>
+              this.router.navigate([
+                `/management/employees/employee/${action.employee_id}/bookings`,
+              ])
+            ),
+            catchError((error) =>
+              of(employeesActions.updateEmployeeAbsenceFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  // updateEmployeeSuccess$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(employeesActions.updateEmployeeSuccess),
+  //     withLatestFrom(this.store.select('employees')),
+  //     map(([action, employees]) =>
+  //       employeesActions.loadEmployees({
+  //         display: employees.display,
+  //         search: employees.search,
+  //       })
+  //     )
+  //   )
+  // );
+
+  //updateEmployeeFailure ---> PROCESS ERROR MESSAGE / retry /etc
+
+  deleteEmployeeAbsence$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.deleteEmployeeAbsence),
+      mergeMap((action) =>
+        this.employeeService
+          .deleteAbsence(action.employee_id, action.absence_id)
+          .pipe(
+            map((message) =>
+              employeesActions.deleteEmployeeAbsenceSuccess({ message })
+            ),
+            tap(() =>
+              this.router.navigate([
+                `/management/employees/employee/${action.employee_id}/bookings`,
+              ])
+            ),
+            catchError((error) =>
+              of(employeesActions.deleteEmployeeAbsenceFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  // deleteEmployeeSuccess$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(employeesActions.deleteEmployeeSuccess),
+  //     withLatestFrom(this.store.select('employees')),
+  //     map(([action, employees]) =>
+  //       employeesActions.loadEmployees({
+  //         display: employees.display,
+  //         search: employees.search,
+  //       })
+  //     )
+  //   )
+  // );
 
   loadEmployee$ = createEffect(() =>
     this.actions$.pipe(

@@ -16,6 +16,8 @@ import {
   IncidenceCollection,
 } from 'src/app/shared/models/incidence.model';
 import {
+  Absence,
+  AbsenceResource,
   Booking,
   BookingResource,
   DayBookingsCollection,
@@ -192,6 +194,36 @@ export class EmployeeService {
       `/api/employees/${employee_id}/bookings/${booking_id}`
     );
   }
+  //Absence
+
+  getAbsence(
+    employee_id: number,
+    absence_id: number
+  ): Observable<AbsenceResource> {
+    return this.http.get<AbsenceResource>(
+      `/api/employees/${employee_id}/absences/${absence_id}`
+    );
+  }
+
+  postAbsence(employee_id: number, absence: Absence): Observable<any> {
+    return this.http.post<any>(
+      `/api/employees/${employee_id}/absences`,
+      absence
+    );
+  }
+
+  putAbsence(employee_id: number, absence: Absence): Observable<any> {
+    return this.http.put<any>(
+      `/api/employees/${employee_id}/absences/${absence.id}`,
+      absence
+    );
+  }
+
+  deleteAbsence(employee_id: number, absence_id: number): Observable<any> {
+    return this.http.delete<any>(
+      `/api/employees/${employee_id}/absences/${absence_id}`
+    );
+  }
 
   //Employee Requests
 
@@ -258,32 +290,4 @@ export class EmployeeService {
       `/api/employees/${employee_id}/requests/${request_id}`
     );
   }
-
-  // //Absence Request
-
-  // postAbsenceRequest(
-  //   employee_id: number,
-  //   request: AbsenceRequest
-  // ): Observable<any> {
-  //   return this.http.post<any>(
-  //     `/api/employees/${employee_id}/requests`,
-  //     request
-  //   );
-  // }
-
-  // putAbsenceRequest(employee_id: number, request: Request): Observable<any> {
-  //   return this.http.put<any>(
-  //     `/api/employees/${employee_id}/requests/${request.id}`,
-  //     request
-  //   );
-  // }
-
-  // deleteAbsenceRequest(
-  //   employee_id: number,
-  //   request_id: number
-  // ): Observable<any> {
-  //   return this.http.delete<any>(
-  //     `/api/employees/${employee_id}/requests/${request_id}`
-  //   );
-  // }
 }

@@ -11,6 +11,10 @@ export interface Booking {
   user_id: number | null;
 }
 
+export interface BookingResource {
+  data: Booking;
+}
+
 export interface Absence {
   id: number;
   //employee_id: number;
@@ -20,8 +24,8 @@ export interface Absence {
   user_id: number | null;
 }
 
-export interface BookingResource {
-  data: Booking;
+export interface AbsenceResource {
+  data: Absence;
 }
 
 export interface DayBookings {
