@@ -21,7 +21,7 @@
           <div class="col-span-6 md:col-span-2">
             <button
               type="button"
-              class="inline-flex justify-center w-full px-4 py-2 mt-1 text-base font-medium text-white border border-transparent rounded-md shadow-sm disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+              class="inline-flex justify-center w-full px-4 py-2 mt-1 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
               (click)="addIncidence()"
               [disabled]="
                 pending ||
@@ -40,13 +40,13 @@
           <tr>
             <th
               scope="col"
-              class="w-12 px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+              class="w-12 px-1 py-3 text-xs font-medium tracking-wider text-left uppercase  text-primary-500"
             >
               Code
             </th>
             <th
               scope="col"
-              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase text-primary-500"
+              class="px-1 py-3 text-xs font-medium tracking-wider text-left uppercase  text-primary-500"
             >
               Description
             </th>
@@ -85,7 +85,7 @@
             </td>
             <td>
               <button
-                class="relative w-full px-2 py-1 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-secondary-500 hover:bg-secondary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500"
+                class="relative px-2 py-1 text-sm font-medium text-white border border-transparent rounded-md shadow-sm  w-max bg-secondary-500 hover:bg-secondary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500"
                 type="button"
                 (click)="removeIncidence(incidencesgroupincidence.id)"
                 [disabled]="pending"
@@ -105,10 +105,10 @@
       ></app-pagination>
     </div>
     <div
-      class="items-center justify-between px-4 py-3 sm:flex sm:flex-row-reverse rounded-b-md bg-gray-50 sm:px-6"
+      class="items-center justify-between px-4 py-3  sm:flex sm:flex-row-reverse rounded-b-md bg-gray-50 sm:px-6"
     >
       <button
-        class="inline-flex justify-center w-full px-4 py-2 text-base font-medium bg-white border border-gray-300 rounded-md shadow-sm text-secondary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+        class="inline-flex justify-center w-full px-4 py-2 text-base font-medium bg-white border border-gray-300 rounded-md shadow-sm  text-secondary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
         type="button"
         [routerLink]="['../']"
         [disabled]="pending"

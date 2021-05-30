@@ -293,6 +293,14 @@
                 type="button"
                 class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
                 [disabled]="ispending()"
+                [routerLink]="['holidayperiods']"
+              >
+                Holiday Periods
+              </button>
+              <button
+                type="button"
+                class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+                [disabled]="ispending()"
                 [routerLink]="['bookings']"
               >
                 Bookings

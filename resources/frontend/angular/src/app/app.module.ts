@@ -29,6 +29,8 @@ import { IncidencesEffects } from './views/incidence/effects';
 import { OrganizationModule } from './views/organization/organization.module';
 import { OrganizationEffects } from './views/organization/effects';
 import { RequestInterceptor } from './shared/interceptors/request.inteceptor';
+import { HolidaysModule } from './views/holidays/holidays.module';
+import { HolidaysEffects } from './views/holidays/effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, MainComponent, FooterComponent],
@@ -45,6 +47,7 @@ import { RequestInterceptor } from './shared/interceptors/request.inteceptor';
     CalendarModule,
     IncidenceModule,
     OrganizationModule,
+    HolidaysModule,
     StoreModule.forRoot(appReducers),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -57,6 +60,7 @@ import { RequestInterceptor } from './shared/interceptors/request.inteceptor';
       CalendarsEffects,
       IncidencesEffects,
       OrganizationEffects,
+      HolidaysEffects,
     ]),
   ],
   providers: [

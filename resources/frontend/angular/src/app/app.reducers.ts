@@ -4,6 +4,7 @@ import * as authentication from './views/authentication/reducers';
 import * as employees from './views/employee/reducers';
 import * as shifts from './views/shift/reducers';
 import * as incidences from './views/incidence/reducers';
+import * as holidays from './views/holidays/reducers';
 import * as organization from './views/organization/reducers';
 import * as calendars from './views/calendar/reducers';
 
@@ -17,6 +18,8 @@ export interface AppState {
   request: employees.RequestState;
   requests: employees.RequestsState;
   employeecalendars: employees.EmployeeCalendarsState;
+  employeeholidayperiods: employees.EmployeeHolidayPeriodsState;
+  employeeholidays: employees.EmployeeHolidaysState;
   shifts: shifts.ShiftsState;
   calendars: calendars.CalendarsState;
   calendarshifts: calendars.CalendarShiftsState;
@@ -28,6 +31,7 @@ export interface AppState {
   sections: organization.SectionsState;
   supervisiongroups: organization.SupervisionGroupsState;
   supervisiongroupsupervisors: organization.SupervisionGroupSupervisorsState;
+  holidayperiods: holidays.HolidayPeriodsState;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
@@ -40,6 +44,8 @@ export const appReducers: ActionReducerMap<AppState> = {
   request: employees.requestReducer,
   requests: employees.requestsReducer,
   employeecalendars: employees.employeecalendarsReducer,
+  employeeholidayperiods: employees.employeeholidayperiodsReducer,
+  employeeholidays: employees.employeeholidaysReducer,
   shifts: shifts.shiftsReducer,
   calendars: calendars.calendarsReducer,
   calendarshifts: calendars.calendarshiftsReducer,
@@ -51,4 +57,5 @@ export const appReducers: ActionReducerMap<AppState> = {
   sections: organization.sectionsReducer,
   supervisiongroups: organization.supervisiongroupsReducer,
   supervisiongroupsupervisors: organization.supervisiongroupsupervisorsReducer,
+  holidayperiods: holidays.holidayperiodsReducer,
 };

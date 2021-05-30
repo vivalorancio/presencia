@@ -17,8 +17,9 @@ class EmployeeHolidayPeriodResource extends JsonResource
         return [
             'id' => $this->id,
             'employee_id' =>  $this->employee_id,
-            // 'holiday_period_id' =>  $this->holiday_period_id,
-            'holiday_period' =>  $this->holiday_period,
+            'holiday_period_id' =>  $this->holiday_period_id,
+            'holiday_period' =>  new HolidayPeriodResource($this->holiday_period),
+            'assigned' => $this->holidays()->count()
         ];
     }
 }

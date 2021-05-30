@@ -7,6 +7,7 @@ import * as shiftsActions from '../../views/shift/actions';
 import * as calendarsActions from '../../views/calendar/actions';
 import * as incidencesActions from '../../views/incidence/actions';
 import * as organizationActions from '../../views/organization/actions';
+import * as holidaysActions from '../../views/holidays/actions';
 
 export interface MenuItem {
   label: string;
@@ -107,6 +108,7 @@ export function initManagementStore(store: Store, link: string): void {
       store.dispatch(organizationActions.initSupervisionGroups());
       break;
     case 'holidays':
+      store.dispatch(holidaysActions.initHolidayPeriods());
       break;
     case 'bookings':
       break;

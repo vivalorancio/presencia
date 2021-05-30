@@ -7,6 +7,12 @@ import {
   EmployeeCalendarCollection,
   EmployeeCalendarResource,
   EmployeeCollection,
+  EmployeeHoliday,
+  EmployeeHolidayCollection,
+  EmployeeHolidayPeriod,
+  EmployeeHolidayPeriodCollection,
+  EmployeeHolidayPeriodResource,
+  EmployeeHolidayResource,
   EmployeeResource,
   EmployeeSearch,
 } from 'src/app/shared/models/employee.model';
@@ -288,6 +294,78 @@ export class EmployeeService {
   deleteRequest(employee_id: number, request_id: number): Observable<any> {
     return this.http.delete<any>(
       `/api/employees/${employee_id}/requests/${request_id}`
+    );
+  }
+
+  //Employee HolidayPeriods
+
+  getEmployeeHolidayPeriods(
+    employee_id: number,
+    page: string
+  ): Observable<EmployeeHolidayPeriodCollection> {
+    return this.http.get<EmployeeHolidayPeriodCollection>(
+      `/api/employees/${employee_id}/holiday_periods/?page=${page}`
+    );
+  }
+
+  getEmployeeHolidayPeriod(
+    employee_id: number,
+    employeeholidayperiod_id: number
+  ): Observable<EmployeeHolidayPeriodResource> {
+    return this.http.get<EmployeeHolidayPeriodResource>(
+      `/api/employees/${employee_id}/holiday_periods/${employeeholidayperiod_id}`
+    );
+  }
+
+  postEmployeeHolidayPeriod(
+    employee_id: number,
+    employeeholidayperiod: EmployeeHolidayPeriod
+  ): Observable<EmployeeHolidayPeriodResource> {
+    return this.http.post<any>(
+      `/api/employees/${employee_id}/holiday_periods`,
+      employeeholidayperiod
+    );
+  }
+
+  deleteEmployeeHolidayPeriod(
+    employee_id: number,
+    employeeholidayperiod_id: number
+  ): Observable<any> {
+    return this.http.delete<any>(
+      `/api/employees/${employee_id}/holiday_periods/${employeeholidayperiod_id}`
+    );
+  }
+
+  //Employee Holidays
+
+  getEmployeeHolidays(
+    employee_id: number,
+    employeeholidayperiod_id: number,
+    page: string
+  ): Observable<EmployeeHolidayCollection> {
+    return this.http.get<EmployeeHolidayCollection>(
+      `/api/employees/${employee_id}/holiday_periods/${employeeholidayperiod_id}/holidays/?page=${page}`
+    );
+  }
+
+  postEmployeeHoliday(
+    employee_id: number,
+    employeeholidayperiod_id: number,
+    employeeholidays: EmployeeHoliday[]
+  ): Observable<EmployeeHolidayResource[]> {
+    return this.http.post<any>(
+      `/api/employees/${employee_id}/holiday_periods/${employeeholidayperiod_id}/holidays`,
+      employeeholidays
+    );
+  }
+
+  deleteEmployeeHoliday(
+    employee_id: number,
+    employeeholidayperiod_id: number,
+    employeeholiday_id: number
+  ): Observable<any> {
+    return this.http.delete<any>(
+      `/api/employees/${employee_id}/holiday_periods/${employeeholidayperiod_id}/holidays/${employeeholiday_id}`
     );
   }
 }

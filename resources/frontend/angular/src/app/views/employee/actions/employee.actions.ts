@@ -12,6 +12,12 @@ import {
   EmployeeCalendarCollection,
   EmployeeCalendarResource,
   EmployeeCollection,
+  EmployeeHoliday,
+  EmployeeHolidayCollection,
+  EmployeeHolidayPeriod,
+  EmployeeHolidayPeriodCollection,
+  EmployeeHolidayPeriodResource,
+  EmployeeHolidayResource,
   EmployeeResource,
   EmployeeSearch,
 } from 'src/app/shared/models/employee.model';
@@ -386,5 +392,95 @@ export const deleteRequestSuccess = createAction(
 );
 export const deleteRequestFailure = createAction(
   '[Employee] Delete Request Failure',
+  props<{ error: any }>()
+);
+// ------------ Load EmployeeHolidayPeriods ----------
+export const loadEmployeeHolidayPeriods = createAction(
+  '[Employee Management] Load EmployeeHolidayPeriods',
+  props<{ employee_id: number; page: string }>()
+);
+export const loadEmployeeHolidayPeriodsSuccess = createAction(
+  '[Employee Management] Load EmployeeHolidayPeriods Success',
+  props<{ employeeholidayperiods: EmployeeHolidayPeriodCollection }>()
+);
+export const loadEmployeeHolidayPeriodsFailure = createAction(
+  '[Employee Management] Load EmployeeHolidayPeriods Failure',
+  props<{ error: any }>()
+);
+// ------------ Add EmployeeHolidayPeriod ----------
+export const addEmployeeHolidayPeriod = createAction(
+  '[Employee Management] Add EmployeeHolidayPeriod',
+  props<{ employee_id: number; employeeholidayperiod: EmployeeHolidayPeriod }>()
+);
+export const addEmployeeHolidayPeriodSuccess = createAction(
+  '[Employee Management] Add EmployeeHolidayPeriod Success',
+  props<{ employeeholidayperiod: EmployeeHolidayPeriodResource }>()
+);
+export const addEmployeeHolidayPeriodFailure = createAction(
+  '[Employee Management] Add EmployeeHolidayPeriod Failure',
+  props<{ error: any }>()
+);
+// ------------ Delete EmployeeHolidayPeriod ----------
+export const deleteEmployeeHolidayPeriod = createAction(
+  '[Employee Management] Delete EmployeeHolidayPeriod',
+  props<{ employee_id: number; employeeholidayperiod_id: number }>()
+);
+export const deleteEmployeeHolidayPeriodSuccess = createAction(
+  '[Employee Management] Delete EmployeeHolidayPeriod Success',
+  props<{ message: string }>()
+);
+export const deleteEmployeeHolidayPeriodFailure = createAction(
+  '[Employee Management] Delete EmployeeHolidayPeriod Failure',
+  props<{ error: any }>()
+);
+// ------------ Load EmployeeHolidays ----------
+export const loadEmployeeHolidays = createAction(
+  '[Employee Management] Load EmployeeHolidays',
+  props<{
+    employee_id: number;
+    employeeholidayperiod_id: number;
+    page: string;
+  }>()
+);
+export const loadEmployeeHolidaysSuccess = createAction(
+  '[Employee Management] Load EmployeeHolidays Success',
+  props<{ employeeholidays: EmployeeHolidayCollection }>()
+);
+export const loadEmployeeHolidaysFailure = createAction(
+  '[Employee Management] Load EmployeeHolidays Failure',
+  props<{ error: any }>()
+);
+// ------------ Add EmployeeHoliday ----------
+export const addEmployeeHoliday = createAction(
+  '[Employee Management] Add EmployeeHoliday',
+  props<{
+    employee_id: number;
+    employeeholidayperiod_id: number;
+    employeeholidays: EmployeeHoliday[];
+  }>()
+);
+export const addEmployeeHolidaySuccess = createAction(
+  '[Employee Management] Add EmployeeHoliday Success',
+  props<{ employeeholidays: EmployeeHolidayResource[] }>()
+);
+export const addEmployeeHolidayFailure = createAction(
+  '[Employee Management] Add EmployeeHoliday Failure',
+  props<{ error: any }>()
+);
+// ------------ Delete EmployeeHoliday ----------
+export const deleteEmployeeHoliday = createAction(
+  '[Employee Management] Delete EmployeeHoliday',
+  props<{
+    employee_id: number;
+    employeeholidayperiod_id: number;
+    employeeholiday_id: number;
+  }>()
+);
+export const deleteEmployeeHolidaySuccess = createAction(
+  '[Employee Management] Delete EmployeeHoliday Success',
+  props<{ message: string }>()
+);
+export const deleteEmployeeHolidayFailure = createAction(
+  '[Employee Management] Delete EmployeeHoliday Failure',
   props<{ error: any }>()
 );

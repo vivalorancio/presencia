@@ -1,3 +1,4 @@
+import { HolidayPeriod } from './holidays.model';
 import { IncidencesGroup } from './incidence.model';
 import {
   Area,
@@ -62,6 +63,41 @@ export interface EmployeeCalendarResource {
 
 export interface EmployeeCalendarCollection {
   data: EmployeeCalendar[];
+  links: any;
+  meta: any;
+}
+
+export interface EmployeeHolidayPeriod {
+  id: number;
+  employee_id: number;
+  holiday_period_id: number;
+  holiday_period: HolidayPeriod;
+  assigned: number;
+}
+
+export interface EmployeeHolidayPeriodResource {
+  data: EmployeeHolidayPeriod;
+}
+
+export interface EmployeeHolidayPeriodCollection {
+  data: EmployeeHolidayPeriod[];
+  links: any;
+  meta: any;
+}
+
+export interface EmployeeHoliday {
+  id: number;
+  day: string;
+  employee_holiday_period_id: number;
+  employee_holiday_period: EmployeeHolidayPeriod;
+}
+
+export interface EmployeeHolidayResource {
+  data: EmployeeHoliday;
+}
+
+export interface EmployeeHolidayCollection {
+  data: EmployeeHoliday[];
   links: any;
   meta: any;
 }

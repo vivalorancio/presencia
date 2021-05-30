@@ -726,4 +726,198 @@ export class EmployeesEffects {
       )
     )
   );
+
+  loadEmployeeHolidayPeriods$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeHolidayPeriods),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.employeeService
+          .getEmployeeHolidayPeriods(action.employee_id, action.page)
+          .pipe(
+            map((employeeholidayperiods) =>
+              employeesActions.loadEmployeeHolidayPeriodsSuccess({
+                employeeholidayperiods,
+              })
+            ),
+            catchError((error) =>
+              of(employeesActions.loadEmployeeHolidayPeriodsFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  addEmployeeHolidayPeriod$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.addEmployeeHolidayPeriod),
+      mergeMap((action) =>
+        this.employeeService
+          .postEmployeeHolidayPeriod(
+            action.employee_id,
+            action.employeeholidayperiod
+          )
+          .pipe(
+            map((employeeholidayperiod) =>
+              employeesActions.addEmployeeHolidayPeriodSuccess({
+                employeeholidayperiod,
+              })
+            ),
+            //tap(() => this.router.navigate(['/management/employees'])),
+            catchError((error) =>
+              of(employeesActions.addEmployeeHolidayPeriodFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  addEmployeeHolidayPeriodSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.addEmployeeHolidayPeriodSuccess),
+      withLatestFrom(this.store.select('employeeholidayperiods')),
+      map(([action, employeeholidayperiods]) =>
+        employeesActions.loadEmployeeHolidayPeriods({
+          employee_id: employeeholidayperiods.employee_id,
+          page: employeeholidayperiods.page,
+        })
+      )
+    )
+  );
+
+  deleteEmployeeHolidayPeriod$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.deleteEmployeeHolidayPeriod),
+      mergeMap((action) =>
+        this.employeeService
+          .deleteEmployeeHolidayPeriod(
+            action.employee_id,
+            action.employeeholidayperiod_id
+          )
+          .pipe(
+            map((message) =>
+              employeesActions.deleteEmployeeHolidayPeriodSuccess({ message })
+            ),
+            //tap(() => this.router.navigate(['/management/employees'])),
+            catchError((error) =>
+              of(employeesActions.deleteEmployeeHolidayPeriodFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  deleteEmployeeHolidayPeriodSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.deleteEmployeeHolidayPeriodSuccess),
+      withLatestFrom(this.store.select('employeeholidayperiods')),
+      map(([action, employeeholidayperiods]) =>
+        employeesActions.loadEmployeeHolidayPeriods({
+          employee_id: employeeholidayperiods.employee_id,
+          page: employeeholidayperiods.page,
+        })
+      )
+    )
+  );
+
+  loadEmployeeHolidays$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.loadEmployeeHolidays),
+      // tap((action) => console.log(action)),
+      mergeMap((action) =>
+        this.employeeService
+          .getEmployeeHolidays(
+            action.employee_id,
+            action.employeeholidayperiod_id,
+            action.page
+          )
+          .pipe(
+            map((employeeholidays) =>
+              employeesActions.loadEmployeeHolidaysSuccess({
+                employeeholidays,
+              })
+            ),
+            catchError((error) =>
+              of(employeesActions.loadEmployeeHolidaysFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  addEmployeeHoliday$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.addEmployeeHoliday),
+      mergeMap((action) =>
+        this.employeeService
+          .postEmployeeHoliday(
+            action.employee_id,
+            action.employeeholidayperiod_id,
+            action.employeeholidays
+          )
+          .pipe(
+            map((employeeholidays) =>
+              employeesActions.addEmployeeHolidaySuccess({
+                employeeholidays,
+              })
+            ),
+            //tap(() => this.router.navigate(['/management/employees'])),
+            catchError((error) =>
+              of(employeesActions.addEmployeeHolidayFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  addEmployeeHolidaySuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.addEmployeeHolidaySuccess),
+      withLatestFrom(this.store.select('employeeholidays')),
+      map(([action, employeeholidays]) =>
+        employeesActions.loadEmployeeHolidays({
+          employee_id: employeeholidays.employee_id,
+          employeeholidayperiod_id: employeeholidays.employeeholidayperiod_id,
+          page: employeeholidays.page,
+        })
+      )
+    )
+  );
+
+  deleteEmployeeHoliday$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.deleteEmployeeHoliday),
+      mergeMap((action) =>
+        this.employeeService
+          .deleteEmployeeHoliday(
+            action.employee_id,
+            action.employeeholiday_id,
+            action.employeeholiday_id
+          )
+          .pipe(
+            map((message) =>
+              employeesActions.deleteEmployeeHolidaySuccess({ message })
+            ),
+            //tap(() => this.router.navigate(['/management/employees'])),
+            catchError((error) =>
+              of(employeesActions.deleteEmployeeHolidayFailure({ error }))
+            )
+          )
+      )
+    )
+  );
+
+  deleteEmployeeHolidaySuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(employeesActions.deleteEmployeeHolidaySuccess),
+      withLatestFrom(this.store.select('employeeholidays')),
+      map(([action, employeeholidays]) =>
+        employeesActions.loadEmployeeHolidays({
+          employee_id: employeeholidays.employee_id,
+          employeeholidayperiod_id: employeeholidays.employeeholidayperiod_id,
+          page: employeeholidays.page,
+        })
+      )
+    )
+  );
 }
