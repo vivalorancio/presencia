@@ -41,6 +41,7 @@ export class BookingsListComponent implements OnInit {
     { text: 'Day', sort_by: '', hides: false, search_by: '' },
     { text: 'Bookings', sort_by: '', hides: false, search_by: '' },
     { text: 'Absences', sort_by: '', hides: false, search_by: '' },
+    { text: 'Holidays', sort_by: '', hides: false, search_by: '' },
     { text: 'Total time', sort_by: '', hides: false, search_by: '' },
     { text: 'Shift time', sort_by: '', hides: false, search_by: '' },
     { text: 'Balance', sort_by: '', hides: false, search_by: '' },

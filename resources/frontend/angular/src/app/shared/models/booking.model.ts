@@ -1,3 +1,4 @@
+import { EmployeeHoliday } from './employee.model';
 import { Incidence } from './incidence.model';
 import { Shift } from './shift.model';
 
@@ -33,6 +34,7 @@ export interface DayBookings {
   shift: Shift[];
   bookings: Booking[];
   absences: Absence[];
+  holidays: EmployeeHoliday[];
   eval: DayBookingsEval;
 }
 

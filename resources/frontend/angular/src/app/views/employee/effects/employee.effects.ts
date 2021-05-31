@@ -891,7 +891,7 @@ export class EmployeesEffects {
         this.employeeService
           .deleteEmployeeHoliday(
             action.employee_id,
-            action.employeeholiday_id,
+            action.employeeholidayperiod_id,
             action.employeeholiday_id
           )
           .pipe(
