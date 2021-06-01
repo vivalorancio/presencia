@@ -17,6 +17,7 @@ import { AbsencerequestEditComponent } from './components/absencerequest-edit/ab
 import { AbsenceEditComponent } from './components/absence-edit/absence-edit.component';
 import { EmployeeholidayperiodListComponent } from './components/employeeholidayperiod-list/employeeholidayperiod-list.component';
 import { EmployeeholidaysEditComponent } from './components/employeeholidays-edit/employeeholidays-edit.component';
+import { HolidaysrequestEditComponent } from './components/holidaysrequest-edit/holidaysrequest-edit.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { EmployeeholidaysEditComponent } from './components/employeeholidays-edi
     AbsenceEditComponent,
     EmployeeholidayperiodListComponent,
     EmployeeholidaysEditComponent,
+    HolidaysrequestEditComponent,
   ],
   imports: [
     CommonModule,

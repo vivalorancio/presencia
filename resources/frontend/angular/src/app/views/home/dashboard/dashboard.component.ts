@@ -25,6 +25,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
+  is_supervisor: boolean = false;
   pending: boolean = false;
 
   pending_employee: boolean = false;
@@ -65,6 +66,7 @@ export class DashboardComponent implements OnInit {
       .select('authentication')
       .pipe(takeUntil(this.ngDestroyed$))
       .subscribe((authentication) => {
+        this.is_supervisor = authentication.user.data.is_supervisor;
         this.pending = authentication.pending;
 
         if (authentication.user.data?.employee_id && !this.employee) {

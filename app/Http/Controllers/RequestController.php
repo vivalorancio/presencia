@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\Request as RequestModel;
 use App\Models\BookingRequest;
 use App\Models\AbsenceRequest;
+use App\Models\HolidayRequest;
 use App\Models\Booking;
 use App\Models\Absence;
 use App\Models\Shift;
@@ -15,6 +16,7 @@ use App\Http\Resources\RequestResource;
 use App\Http\Requests\Request\RequestStoreRequest;
 use App\Http\Requests\Request\RequestUpdateRequest;
 use App\Http\Requests\Request\RequestDestroyRequest;
+use App\Models\EmployeeHoliday;
 use Carbon\Carbon;
 use DateTime;
 
@@ -183,6 +185,9 @@ class RequestController extends Controller
         } else if ($type == 'absence') {
             $typerequest = new AbsenceRequest($request->validated());
             $requestmodel->absencerequest()->save($typerequest);
+        } else if ($type == 'holiday') {
+            $typerequest = new HolidayRequest($request->validated());
+            $requestmodel->holidayrequest()->save($typerequest);
         }
 
 
@@ -222,12 +227,20 @@ class RequestController extends Controller
                 $booking->employee_id = $req->employee_id;
                 $booking->user_id = $employee->id;
                 $booking->save();
-            } else if ($req->type === 'absence') {
+            } else if ($req->type === 'absence' || $req->type === 'holiday') {
                 $reqemployee = $req->employee;
-                $reqabsence = $req->absencerequest;
-                $from = $reqabsence->date_from;
-                $to = $reqabsence->date_to;
-
+                $from = '';
+                $to = '';
+                if ($req->type === 'absence') {
+                    $reqabsence = $req->absencerequest;
+                    $from = $reqabsence->date_from;
+                    $to = $reqabsence->date_to;
+                }
+                if ($req->type === 'holiday') {
+                    $reqholiday = $req->holidayrequest;
+                    $from = $reqholiday->date_from;
+                    $to = $reqholiday->date_to;
+                }
 
                 $yearfrom = intval(date("Y", strtotime($from)));
                 $yearto = intval(date("Y", strtotime($to)));
@@ -287,12 +300,22 @@ class RequestController extends Controller
                     }
 
                     if ($dayshift && !$dayshift->is_holiday) {
-                        $absence = new Absence();
-                        $absence->date = $currentday;
-                        $absence->incidence_id = $reqabsence->incidence_id;
-                        $absence->employee_id = $req->employee_id;
-                        $absence->user_id = $employee->id;
-                        $absence->save();
+                        if ($req->type === 'absence') {
+                            $reqabsence = $req->absencerequest;
+                            $absence = new Absence();
+                            $absence->date = $currentday;
+                            $absence->incidence_id = $reqabsence->incidence_id;
+                            $absence->employee_id = $req->employee_id;
+                            $absence->user_id = $employee->id;
+                            $absence->save();
+                        }
+                        if ($req->type === 'holiday') {
+                            $reqholiday = $req->holidayrequest;
+                            $holiday = new EmployeeHoliday();
+                            $holiday->day = $currentday;
+                            $holiday->employee_holiday_period_id = $reqholiday->employee_holiday_period_id;
+                            $holiday->save();
+                        }
                     }
                     $currentday = $this->nextday($currentday);
                 }

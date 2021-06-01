@@ -39,4 +39,9 @@ class Request extends Model
     {
         return $this->hasOne(AbsenceRequest::class);
     }
+
+    public function holidayrequest()
+    {
+        return $this->hasOne(HolidayRequest::class);
+    }
 }

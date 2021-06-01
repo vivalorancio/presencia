@@ -4,6 +4,7 @@ export interface User {
   employee_id: number;
   is_blocked: boolean;
   is_admin: boolean;
+  is_supervisor: boolean;
 }
 
 export interface UserResource {

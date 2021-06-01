@@ -24,6 +24,12 @@ export interface AbsenceRequest extends Request {
   incidence_id: number;
 }
 
+export interface HolidayRequest extends Request {
+  date_from: string;
+  date_to: string;
+  employee_holiday_period_id: number;
+}
+
 export interface RequestResource {
   data: Request;
 }

@@ -3,6 +3,8 @@ import {
   AbstractControl,
   FormBuilder,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,49 +13,26 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/app.reducers';
 import { dateAAAAMMDD } from 'src/app/shared/calendar/calendar';
-import { getTextColourFromName } from 'src/app/shared/colour-picker/colours';
-import { Employee } from 'src/app/shared/models/employee.model';
-import { IncidenceCollection } from 'src/app/shared/models/incidence.model';
+import { ColourDropdownItem } from 'src/app/shared/colour-dropdown/colour-dropdown';
 import {
-  AbsenceRequest,
-  Request,
+  Employee,
+  EmployeeHolidayPeriod,
+  EmployeeHolidayPeriodCollection,
+} from 'src/app/shared/models/employee.model';
+import {
+  HolidayRequest,
   RequestCollection,
 } from 'src/app/shared/models/request.model';
 
 import * as employeesActions from '../../actions';
 
-const rangeValidator: any = (fg: FormGroup) => {
-  let invalid = false;
-  const from = fg.get('date_from')?.value;
-  const to = fg.get('date_to')?.value;
-  if (!from || !to) invalid = true;
-  if (from && to) {
-    invalid = new Date(from).valueOf() > new Date(to).valueOf();
-  }
-  if (invalid) {
-    fg.get('date_from')?.setErrors({ notvalid: true });
-    fg.get('date_to')?.setErrors({ notvalid: true });
-  } else {
-    fg.get('date_from')?.updateValueAndValidity({ onlySelf: true });
-    fg.get('date_to')?.updateValueAndValidity({ onlySelf: true });
-  }
-  return null;
-};
-
 @Component({
-  selector: 'app-absencerequest-edit',
-  templateUrl: './absencerequest-edit.component.html',
-  styleUrls: ['./absencerequest-edit.component.css'],
+  selector: 'app-holidaysrequest-edit',
+  templateUrl: './holidaysrequest-edit.component.html',
+  styleUrls: ['./holidaysrequest-edit.component.css'],
 })
-export class AbsencerequestEditComponent implements OnInit {
-  constructor(
-    private formBuilder: FormBuilder,
-    private store: Store<AppState>,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {}
-
-  absenceForm!: FormGroup;
+export class HolidaysrequestEditComponent implements OnInit {
+  holidayForm!: FormGroup;
   submiterror: any;
   pending: boolean = false;
   request_id!: number;
@@ -64,14 +43,22 @@ export class AbsencerequestEditComponent implements OnInit {
   showDeleteConfirmation = false;
 
   employee: Employee = {} as Employee;
-  incidences!: IncidenceCollection;
   pending_employee: boolean = false;
+  employeeholidayperiods!: EmployeeHolidayPeriodCollection;
+  pending_employeeholidayperiods: boolean = false;
 
   requests!: RequestCollection;
   pending_requests: boolean = false;
   request!: any;
 
-  selectedIncidenceId: number = -1;
+  selectedHolidayPeriodId: number = -1;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store<AppState>,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   public ngDestroyed$ = new Subject();
 
@@ -86,7 +73,7 @@ export class AbsencerequestEditComponent implements OnInit {
       .pipe(takeUntil(this.ngDestroyed$))
       .subscribe((employee) => {
         this.employee = employee.employee.data;
-        this.incidences = employee.incidences;
+        //this.incidences = employee.incidences;
         this.pending_employee = employee.pending;
 
         if (!this.employee) {
@@ -102,36 +89,51 @@ export class AbsencerequestEditComponent implements OnInit {
         this.pending_requests = requests.pending;
       });
 
+    this.store
+      .select('employeeholidayperiods')
+      .pipe(takeUntil(this.ngDestroyed$))
+      .subscribe((employeeholidayperiods) => {
+        this.employeeholidayperiods =
+          employeeholidayperiods.employeeholidayperiods;
+        this.pending_employeeholidayperiods = employeeholidayperiods.pending;
+      });
+
+    if (this.employeeholidayperiods.meta === null) {
+      this.store.dispatch(
+        employeesActions.loadEmployeeHolidayPeriods({
+          employee_id: this.employee.id,
+          page: '1',
+        })
+      );
+    }
+
     this.route.params.pipe(takeUntil(this.ngDestroyed$)).subscribe((params) => {
       this.request_id = +params.request_id;
 
       const the_request: any = (this.requests?.data.find(
-        (absence: any) => absence.id === this.request_id
+        (holiday: any) => holiday.id === this.request_id
       ) || {}) as Request;
 
       if (the_request !== {}) {
         this.request = the_request;
       }
     });
+
     this.is_supervised =
       this.route.snapshot.url[0]?.path === 'supervisedrequests';
 
-    this.absenceForm = this.formBuilder.group(
+    this.holidayForm = this.formBuilder.group(
       {
         date_from: [
           {
-            value:
-              this.request.absence?.date_from ||
-              dateAAAAMMDD(new Date(Date.now())),
+            value: this.request.holiday?.date_from || '',
             disabled: this.request.id,
           },
           Validators.required,
         ],
         date_to: [
           {
-            value:
-              this.request.absence?.date_to ||
-              dateAAAAMMDD(new Date(Date.now())),
+            value: this.request.holiday?.date_to || '',
             disabled: this.request.id,
           },
           Validators.required,
@@ -151,10 +153,11 @@ export class AbsencerequestEditComponent implements OnInit {
           },
         ],
       },
-      { validator: rangeValidator }
+      { validator: this.rangeValidator }
     );
 
-    this.selectedIncidenceId = this.request.absence?.incidence_id || -1;
+    this.selectedHolidayPeriodId =
+      this.request.holiday?.employee_holiday_period_id || -1;
 
     this.store
       .select('request')
@@ -165,10 +168,57 @@ export class AbsencerequestEditComponent implements OnInit {
       });
   }
 
-  getTextColourFromName = getTextColourFromName;
+  rangeValidator(fg: AbstractControl): ValidationErrors | null {
+    let invalid = false;
+    const from = fg.get('date_from')?.value;
+    const to = fg.get('date_to')?.value;
+    if (!from || !to) invalid = true;
+    if (from && to) {
+      invalid = new Date(from).valueOf() > new Date(to).valueOf();
+    }
+    if (invalid) {
+      fg.get('date_from')?.setErrors({ notvalid: true });
+      fg.get('date_to')?.setErrors({ notvalid: true });
+    } else {
+      fg.get('date_from')?.updateValueAndValidity({ onlySelf: true });
+      fg.get('date_to')?.updateValueAndValidity({ onlySelf: true });
+    }
+    return null;
+  }
 
   ispending() {
-    return this.pending || this.pending_employee || this.pending_requests;
+    return (
+      this.pending ||
+      this.pending_employee ||
+      this.pending_requests ||
+      this.pending_employeeholidayperiods
+    );
+  }
+
+  getColourItemsArray(items: EmployeeHolidayPeriod[]): ColourDropdownItem[] {
+    return items.map((item: EmployeeHolidayPeriod) => {
+      return {
+        id: item.id,
+        code: '' + item.holiday_period.code,
+        description: item.holiday_period.description,
+        colour: 'bg-gray-300',
+      };
+    });
+  }
+
+  getSelectedEmployeeHolidayPeriod() {
+    return (
+      this.employeeholidayperiods.data.find(
+        (item) => item.id === this.selectedHolidayPeriodId
+      ) || ({} as EmployeeHolidayPeriod)
+    );
+  }
+
+  getAvaliableDays(): number {
+    return (
+      this.getSelectedEmployeeHolidayPeriod()?.holiday_period?.days -
+      this.getSelectedEmployeeHolidayPeriod()?.assigned
+    );
   }
 
   askDelete() {
@@ -189,19 +239,19 @@ export class AbsencerequestEditComponent implements OnInit {
   }
 
   process(status: string) {
-    console.log(this.absenceForm.value);
+    console.log(this.holidayForm.value);
 
-    let absencerequestToSave = {
-      ...this.absenceForm.value,
+    let holidayrequestToSave = {
+      ...this.holidayForm.value,
       status: status,
       validator_id: this.employee.id,
       id: this.request.id,
-    } as AbsenceRequest;
-
+    } as HolidayRequest;
+    console.log(holidayrequestToSave);
     this.store.dispatch(
       employeesActions.updateRequest({
         employee_id: this.employee.id,
-        request: absencerequestToSave,
+        request: holidayrequestToSave,
       })
     );
   }
@@ -209,16 +259,20 @@ export class AbsencerequestEditComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    let absencerequestToSave = {
-      ...this.absenceForm.value,
-      type: 'absence',
-      incidence_id:
-        this.selectedIncidenceId === -1 ? null : this.selectedIncidenceId,
-    } as AbsenceRequest;
+    let holidayrequestToSave = {
+      ...this.holidayForm.value,
+      type: 'holiday',
+      employee_holiday_period_id:
+        this.selectedHolidayPeriodId === -1
+          ? null
+          : this.selectedHolidayPeriodId,
+    } as HolidayRequest;
+
+    console.log(holidayrequestToSave);
     this.store.dispatch(
       employeesActions.addRequest({
         employee_id: this.employee.id,
-        request: absencerequestToSave,
+        request: holidayrequestToSave,
       })
     );
   }

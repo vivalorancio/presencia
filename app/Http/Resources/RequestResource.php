@@ -45,6 +45,15 @@ class RequestResource extends JsonResource
                     'incidence' => $absencerequest->incidence
                 ];
             }),
+            'holiday' => $this->when($this->type == 'holiday', function () {
+                $holidayrequest = $this->holidayrequest;
+                return [
+                    'date_from' => $holidayrequest->date_from,
+                    'date_to' => $holidayrequest->date_to,
+                    'employee_holiday_period_id' => $holidayrequest->employee_holiday_period_id,
+                    'employee_holiday_period' => new EmployeeHolidayPeriodResource($holidayrequest->employee_holiday_period)
+                ];
+            }),
         ];
     }
 }

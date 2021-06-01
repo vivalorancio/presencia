@@ -14,6 +14,7 @@ import { AbsencerequestEditComponent } from './components/absencerequest-edit/ab
 import { AbsenceEditComponent } from './components/absence-edit/absence-edit.component';
 import { EmployeeholidayperiodListComponent } from './components/employeeholidayperiod-list/employeeholidayperiod-list.component';
 import { EmployeeholidaysEditComponent } from './components/employeeholidays-edit/employeeholidays-edit.component';
+import { HolidaysrequestEditComponent } from './components/holidaysrequest-edit/holidaysrequest-edit.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,14 @@ const routes: Routes = [
         component: AbsencerequestEditComponent,
       },
       {
+        path: 'requests/holiday',
+        component: HolidaysrequestEditComponent,
+      },
+      {
+        path: 'requests/holiday/:request_id',
+        component: HolidaysrequestEditComponent,
+      },
+      {
         path: 'requests',
         component: RequestsListComponent,
       },
@@ -55,6 +64,10 @@ const routes: Routes = [
       {
         path: 'supervisedrequests/absence/:request_id',
         component: AbsencerequestEditComponent,
+      },
+      {
+        path: 'supervisedrequests/holiday/:request_id',
+        component: HolidaysrequestEditComponent,
       },
     ],
     canActivate: [AuthenticationGuard],

@@ -128,61 +128,65 @@
     class="col-span-6 border-t-4 rounded-md shadow  md:col-span-3 border-secondary-500"
   >
     <div class="flex flex-col h-full px-4 py-5 bg-white rounded-md sm:p-6">
-      <h2 class="my-3 text-2xl font-semibold text-gray-700">Requests</h2>
-      <div class="items-center sm:flex sm:space-x-4">
-        <div class="items-center sm:flex sm:space-x-4">
+      <div class="sm:flex sm:justify-between">
+        <h2 class="my-3 text-2xl font-semibold text-gray-700">Requests</h2>
+        <div class="sm:flex sm:space-x-4">
           <button
-            class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+            class="relative w-full px-2 py-1 my-3 text-sm font-medium bg-white border border-gray-300 rounded-md shadow-sm  text-primary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             type="button"
-            [routerLink]="['requests/booking']"
+            [routerLink]="['requests']"
             [disabled]="isloading()"
           >
-            Forgotten Booking
+            View All
           </button>
           <button
-            class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+            *ngIf="is_supervisor"
+            class="relative w-full px-2 py-1 my-3 text-sm font-medium bg-white border border-gray-300 rounded-md shadow-sm  text-primary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
             type="button"
-            [routerLink]="['requests/absence']"
+            [routerLink]="['supervisedrequests']"
             [disabled]="isloading()"
           >
-            Absence
-          </button>
-          <button
-            class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
-            type="button"
-            [routerLink]="['requests/holiday']"
-            [disabled]="isloading()"
-          >
-            Holidays
+            Supervise
           </button>
         </div>
-        <button
-          class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
-          type="button"
-          [routerLink]="['requests']"
-          [disabled]="isloading()"
-        >
-          View Requests
-        </button>
-        <button
-          class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
-          type="button"
-          [routerLink]="['supervisedrequests']"
-          [disabled]="isloading()"
-        >
-          View Supervised Requests
-        </button>
       </div>
+      <!-- <div class="flex flex-col items-center space-y-4"> -->
+      <button
+        class="relative w-full px-4 py-4 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+        type="button"
+        [routerLink]="['requests/booking']"
+        [disabled]="isloading()"
+      >
+        Forgotten Booking
+      </button>
+      <button
+        class="relative w-full px-4 py-4 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+        type="button"
+        [routerLink]="['requests/absence']"
+        [disabled]="isloading()"
+      >
+        Absence
+      </button>
+      <button
+        class="relative w-full px-4 py-4 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+        type="button"
+        [routerLink]="['requests/holiday']"
+        [disabled]="isloading()"
+      >
+        Holidays
+      </button>
+
+      <!-- </div> -->
     </div>
   </div>
   <div
     class="col-span-6 border-t-4 rounded-md shadow  md:col-span-3 border-secondary-500"
   >
     <div class="flex flex-col h-full px-4 py-5 bg-white rounded-md sm:p-6">
-      <h2 class="my-3 text-2xl font-semibold text-gray-700">Bookings</h2>
-      <div class="items-center sm:flex sm:space-x-4">
+      <div class="sm:flex sm:justify-between">
+        <h2 class="my-3 text-2xl font-semibold text-gray-700">Bookings</h2>
         <button
-          class="inline-flex justify-center w-full px-4 py-2 my-3 text-base font-medium text-white border border-transparent rounded-md shadow-sm  disabled:opacity-70 bg-primary-500 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 sm:w-auto sm:text-sm"
+          class="relative w-full px-2 py-1 my-3 text-sm font-medium bg-white border border-gray-300 rounded-md shadow-sm  sm:w-auto text-primary-500 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           type="button"
           [routerLink]="['bookings']"
           [disabled]="isloading()"
@@ -190,7 +194,7 @@
           View All
         </button>
       </div>
-      <div>Today Bookings</div>
+      <h3 class="my-2 text-lg font-medium text-gray-700">Today Bookings</h3>
       <table class="min-w-full my-2 border-b divide-y divide-gray-200">
         <thead class="bg-gray-50">
           <tr>

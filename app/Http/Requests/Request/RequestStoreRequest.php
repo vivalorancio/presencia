@@ -41,10 +41,11 @@ class RequestStoreRequest extends EmployeeSelfRequest
             ],
             //booking, absence
             'incidence_id' => 'nullable|sometimes|required_if:type,absence|integer|exists:incidences,id',
-            //absence
-            'date_from' => 'required_if:type,absence|dateformat:Y-m-d',
-            'date_to' => 'required_if:type,absence|dateformat:Y-m-d'
+            //absence, holiday
+            'date_from' => 'required_if:type,absence|required_if:type,holiday|dateformat:Y-m-d',
+            'date_to' => 'required_if:type,absence|required_if:type,holiday|dateformat:Y-m-d',
             //holiday
+            'employee_holiday_period_id' => 'required_if:type,holiday|integer|exists:employee_holiday_periods,id'
             //            'holiday_period_id' => 'required_if:type,holiday|integer|exists:holiday_periods,id'
         ];
     }
