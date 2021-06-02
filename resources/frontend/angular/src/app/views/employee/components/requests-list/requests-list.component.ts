@@ -33,6 +33,9 @@ export class RequestsListComponent implements OnInit {
   pending_requests: boolean = false;
   display: DisplayRequestsCollection = {} as DisplayRequestsCollection;
 
+  statuses: any = { pending: true, accepted: false, rejected: false };
+  types: any = { booking: true, absence: true, holiday: true };
+
   headers: RequestsListHeader[] = [
     {
       text: 'Request Date',
@@ -92,6 +95,9 @@ export class RequestsListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.statuses = { pending: true, accepted: false, rejected: false };
+    this.types = { booking: true, absence: true, holiday: true };
+
     this.store
       .select('employee')
       .pipe(takeUntil(this.ngDestroyed$))
@@ -114,8 +120,8 @@ export class RequestsListComponent implements OnInit {
         per_page: '25',
         sort_field: 'created_at',
         sort_direction: 'asc',
-        type: '',
-        status: '',
+        type: this.getType(),
+        status: this.getStatus(),
       };
 
       this.dispatchLoad();
@@ -202,6 +208,44 @@ export class RequestsListComponent implements OnInit {
   onPerpageSelected(event: any) {
     const per_page = event.target.value;
     this.display = { ...this.display, per_page: per_page, page: '1' };
+    this.dispatchLoad();
+  }
+
+  getStatus() {
+    let status = '';
+    if (this.statuses.pending === true) status = 'pending';
+    if (this.statuses.accepted === true) {
+      if (status.length > 0) status += ',';
+      status += 'accepted';
+    }
+    if (this.statuses.rejected === true) {
+      if (status.length > 0) status += ',';
+      status += 'rejected';
+    }
+    return status;
+  }
+
+  changeStatusDisplay() {
+    this.display = { ...this.display, status: this.getStatus() };
+    this.dispatchLoad();
+  }
+
+  getType() {
+    let type = '';
+    if (this.types.booking === true) type = 'booking';
+    if (this.types.absence === true) {
+      if (type.length > 0) type += ',';
+      type += 'absence';
+    }
+    if (this.types.holiday === true) {
+      if (type.length > 0) type += ',';
+      type += 'holiday';
+    }
+    return type;
+  }
+
+  changeTypeDisplay() {
+    this.display = { ...this.display, type: this.getType() };
     this.dispatchLoad();
   }
 }

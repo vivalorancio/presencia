@@ -98,14 +98,14 @@ export class HolidaysrequestEditComponent implements OnInit {
         this.pending_employeeholidayperiods = employeeholidayperiods.pending;
       });
 
-    if (this.employeeholidayperiods.meta === null) {
-      this.store.dispatch(
-        employeesActions.loadEmployeeHolidayPeriods({
-          employee_id: this.employee.id,
-          page: '1',
-        })
-      );
-    }
+    //if (this.employeeholidayperiods.meta === null) {
+    this.store.dispatch(
+      employeesActions.loadEmployeeHolidayPeriods({
+        employee_id: this.employee.id,
+        page: '1',
+      })
+    );
+    //}
 
     this.route.params.pipe(takeUntil(this.ngDestroyed$)).subscribe((params) => {
       this.request_id = +params.request_id;
@@ -207,11 +207,15 @@ export class HolidaysrequestEditComponent implements OnInit {
   }
 
   getSelectedEmployeeHolidayPeriod() {
-    return (
-      this.employeeholidayperiods.data.find(
-        (item) => item.id === this.selectedHolidayPeriodId
-      ) || ({} as EmployeeHolidayPeriod)
-    );
+    if (this.request.id) {
+      return this.request.holiday.employee_holiday_period;
+    } else {
+      return (
+        this.employeeholidayperiods.data.find(
+          (item) => item.id === this.selectedHolidayPeriodId
+        ) || ({} as EmployeeHolidayPeriod)
+      );
+    }
   }
 
   getAvaliableDays(): number {

@@ -26,9 +26,140 @@
         </div>
       </div>
       <div
-        class="items-center  sm:flex sm:justify-between sm:space-x-4 sm:flex-row-reverse"
+        class="items-center  md:flex md:justify-between md:space-x-4 md:flex-row-reverse"
       >
-        <div>Type & Status buttonbar, etc.</div>
+        <div class="items-center sm:flex sm:flex-row sm:space-x-2">
+          <p class="text-sm text-gray-700">Status:</p>
+          <div
+            class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm"
+          >
+            <label
+              for="pending"
+              [class]="{
+                'bg-white': statuses['pending'],
+                'hover:bg-gray-50': statuses['pending'],
+                'text-gray-700': statuses['pending'],
+                'bg-gray-200': !statuses['pending'],
+                'text-gray-300': !statuses['pending']
+              }"
+              class="relative inline-flex items-center px-2 py-2 text-sm font-medium border border-gray-300 cursor-pointer  rounded-l-md"
+            >
+              <input
+                id="pending"
+                type="checkbox"
+                (change)="changeStatusDisplay()"
+                class="sr-only"
+                [(ngModel)]="statuses['pending']"
+              />
+              Pending
+            </label>
+            <label
+              for="accepted"
+              [class]="{
+                'bg-white': statuses['accepted'],
+                'hover:bg-gray-50': statuses['accepted'],
+                'text-gray-700': statuses['accepted'],
+                'bg-gray-200': !statuses['accepted'],
+                'text-gray-300': !statuses['accepted']
+              }"
+              class="relative inline-flex items-center px-2 py-2 text-sm font-medium border border-gray-300 cursor-pointer "
+            >
+              <input
+                id="accepted"
+                type="checkbox"
+                (change)="changeStatusDisplay()"
+                class="sr-only"
+                [(ngModel)]="statuses['accepted']"
+              />
+              Accepted
+            </label>
+            <label
+              for="rejected"
+              [class]="{
+                'bg-white': statuses['rejected'],
+                'hover:bg-gray-50': statuses['rejected'],
+                'text-gray-700': statuses['rejected'],
+                'bg-gray-200': !statuses['rejected'],
+                'text-gray-300': !statuses['rejected']
+              }"
+              class="relative inline-flex items-center px-2 py-2 text-sm font-medium border border-gray-300 cursor-pointer  rounded-r-md"
+            >
+              <input
+                id="rejected"
+                type="checkbox"
+                (change)="changeStatusDisplay()"
+                class="sr-only"
+                [(ngModel)]="statuses['rejected']"
+              />
+              Rejected
+            </label>
+          </div>
+          <p class="text-sm text-gray-700 sm:pl-4">Type:</p>
+          <div
+            class="relative z-0 inline-flex -space-x-px rounded-md shadow-sm"
+          >
+            <label
+              for="booking"
+              [class]="{
+                'bg-white': types['booking'],
+                'hover:bg-gray-50': types['booking'],
+                'text-gray-700': types['booking'],
+                'bg-gray-200': !types['booking'],
+                'text-gray-300': !types['booking']
+              }"
+              class="relative inline-flex items-center px-2 py-2 text-sm font-medium border border-gray-300 cursor-pointer  rounded-l-md"
+            >
+              <input
+                id="booking"
+                type="checkbox"
+                (change)="changeTypeDisplay()"
+                class="sr-only"
+                [(ngModel)]="types['booking']"
+              />
+              Booking
+            </label>
+            <label
+              for="absence"
+              [class]="{
+                'bg-white': types['absence'],
+                'hover:bg-gray-50': types['absence'],
+                'text-gray-700': types['absence'],
+                'bg-gray-200': !types['absence'],
+                'text-gray-300': !types['absence']
+              }"
+              class="relative inline-flex items-center px-2 py-2 text-sm font-medium border border-gray-300 cursor-pointer "
+            >
+              <input
+                id="absence"
+                type="checkbox"
+                (change)="changeTypeDisplay()"
+                class="sr-only"
+                [(ngModel)]="types['absence']"
+              />
+              Absence
+            </label>
+            <label
+              for="holiday"
+              [class]="{
+                'bg-white': types['holiday'],
+                'hover:bg-gray-50': types['holiday'],
+                'text-gray-700': types['holiday'],
+                'bg-gray-200': !types['holiday'],
+                'text-gray-300': !types['holiday']
+              }"
+              class="relative inline-flex items-center px-2 py-2 text-sm font-medium border border-gray-300 cursor-pointer  rounded-r-md"
+            >
+              <input
+                id="holiday"
+                type="checkbox"
+                (change)="changeTypeDisplay()"
+                class="sr-only"
+                [(ngModel)]="types['holiday']"
+              />
+              Holiday
+            </label>
+          </div>
+        </div>
         <div class="flex space-x-4">
           <app-pagination
             *ngIf="requests.meta"
