@@ -103,7 +103,7 @@
         </h3>
       </div>
       <div
-        *ngIf="!isloading() && shift !== undefined"
+        *ngIf="!isloading() && shift?.id !== undefined"
         class="flex flex-col space-y-4"
       >
         <h3 class="text-lg font-medium-text-gray-700">Today, your shift is:</h3>
