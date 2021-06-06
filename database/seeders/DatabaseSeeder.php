@@ -19,6 +19,14 @@ class DatabaseSeeder extends Seeder
 
         // Usuari administrador sense empleat.
         DB::table('users')->insert([
+            'username' => 'service',
+            'password' => Hash::make('Pr3s3nc14S3rv1c3!'),
+            'employee_id' => null,
+            'is_admin' => true,
+            'is_blocked' => false
+
+        ]);
+        DB::table('users')->insert([
             'username' => 'a',
             'password' => Hash::make('1'),
             'employee_id' => null,

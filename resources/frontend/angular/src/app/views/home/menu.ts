@@ -53,7 +53,6 @@ export const managementMenu: MenuItem[] = [
     open: false,
   } as MenuItem,
   { label: 'Holidays', link: 'holidays' } as MenuItem,
-  { label: 'Bookings', link: 'bookings' } as MenuItem,
 ];
 
 export function initDashboardStore(

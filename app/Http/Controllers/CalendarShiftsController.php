@@ -62,10 +62,10 @@ class CalendarShiftsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(AuthorizeAdminRequest $request, Calendar $calendar, CalendarShifts $calendarshifts)
-    {
-        //
-    }
+    // public function show(AuthorizeAdminRequest $request, Calendar $calendar, CalendarShifts $calendarshifts)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
