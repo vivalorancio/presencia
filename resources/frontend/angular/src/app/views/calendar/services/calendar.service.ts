@@ -43,7 +43,7 @@ export class CalendarService {
   }
 
   postCalendar(calendar: Calendar): Observable<CalendarResource> {
-    return this.http.post<any>(`/api/calendars/`, calendar);
+    return this.http.post<any>(`/api/calendars`, calendar);
   }
 
   putCalendar(calendar: Calendar): Observable<CalendarResource> {
@@ -78,6 +78,6 @@ export class CalendarService {
     calendar_id: number,
     days: { day: number; shift_id: number | null }[]
   ): Observable<CalendarShiftCollection> {
-    return this.http.post<any>(`/api/calendars/${calendar_id}/shifts/`, days);
+    return this.http.post<any>(`/api/calendars/${calendar_id}/shifts`, days);
   }
 }

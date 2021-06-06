@@ -50,7 +50,7 @@ export class IncidenceService {
   }
 
   postIncidence(incidence: Incidence): Observable<IncidenceResource> {
-    return this.http.post<any>(`/api/incidences/`, incidence);
+    return this.http.post<any>(`/api/incidences`, incidence);
   }
 
   putIncidence(incidence: Incidence): Observable<IncidenceResource> {
@@ -136,7 +136,7 @@ export class IncidenceService {
     incidencesgroupincidence: IncidencesGroupIncidence
   ): Observable<IncidencesGroupIncidenceResource> {
     return this.http.post<any>(
-      `/api/incidences_groups/${incidencesgroup_id}/incidences/`,
+      `/api/incidences_groups/${incidencesgroup_id}/incidences`,
       incidencesgroupincidence
     );
   }

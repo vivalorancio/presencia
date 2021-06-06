@@ -50,7 +50,7 @@ export class HolidaysService {
   postHolidayPeriod(
     holidayperiod: HolidayPeriod
   ): Observable<HolidayPeriodResource> {
-    return this.http.post<any>(`/api/holiday_periods/`, holidayperiod);
+    return this.http.post<any>(`/api/holiday_periods`, holidayperiod);
   }
 
   putHolidayPeriod(

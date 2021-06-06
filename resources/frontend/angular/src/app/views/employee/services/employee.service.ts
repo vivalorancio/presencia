@@ -89,7 +89,7 @@ export class EmployeeService {
   }
 
   postEmployee(employee: Employee): Observable<EmployeeResource> {
-    return this.http.post<any>(`/api/employees/`, employee);
+    return this.http.post<any>(`/api/employees`, employee);
   }
 
   putEmployee(employee: Employee): Observable<EmployeeResource> {

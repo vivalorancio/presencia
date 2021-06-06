@@ -60,7 +60,7 @@ export class OrganizationService {
   }
 
   postDepartment(department: Department): Observable<DepartmentResource> {
-    return this.http.post<any>(`/api/departments/`, department);
+    return this.http.post<any>(`/api/departments`, department);
   }
 
   putDepartment(department: Department): Observable<DepartmentResource> {
@@ -99,7 +99,7 @@ export class OrganizationService {
   }
 
   postArea(area: Area): Observable<AreaResource> {
-    return this.http.post<any>(`/api/areas/`, area);
+    return this.http.post<any>(`/api/areas`, area);
   }
 
   putArea(area: Area): Observable<AreaResource> {
@@ -138,7 +138,7 @@ export class OrganizationService {
   }
 
   postSection(section: Section): Observable<SectionResource> {
-    return this.http.post<any>(`/api/sections/`, section);
+    return this.http.post<any>(`/api/sections`, section);
   }
 
   putSection(section: Section): Observable<SectionResource> {
@@ -186,7 +186,7 @@ export class OrganizationService {
   postSupervisionGroup(
     supervisiongroup: SupervisionGroup
   ): Observable<SupervisionGroupResource> {
-    return this.http.post<any>(`/api/supervision_groups/`, supervisiongroup);
+    return this.http.post<any>(`/api/supervision_groups`, supervisiongroup);
   }
 
   putSupervisionGroup(
@@ -227,7 +227,7 @@ export class OrganizationService {
     supervisiongroupsupervisor: SupervisionGroupSupervisor
   ): Observable<SupervisionGroupSupervisorResource> {
     return this.http.post<any>(
-      `/api/supervision_groups/${supervisiongroup_id}/supervisors/`,
+      `/api/supervision_groups/${supervisiongroup_id}/supervisors`,
       supervisiongroupsupervisor
     );
   }

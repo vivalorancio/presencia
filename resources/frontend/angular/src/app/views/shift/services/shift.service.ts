@@ -41,7 +41,7 @@ export class ShiftService {
   }
 
   postShift(shift: Shift): Observable<ShiftResource> {
-    return this.http.post<any>(`/api/shifts/`, shift);
+    return this.http.post<any>(`/api/shifts`, shift);
   }
 
   putShift(shift: Shift): Observable<ShiftResource> {

@@ -1,0 +1,578 @@
+POST http://localhost:8000/api/login HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "username":"a",
+    "password":"1"
+}
+###
+POST http://localhost:8000/api/logout HTTP/1.1
+content-type: application/json
+Accept: application/json
+###
+GET http://localhost:8000/api/user HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/users HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/users/6 HTTP/1.1
+Accept: application/json
+###
+POST http://localhost:8000/api/users HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "username":"g",
+    "password":"1",
+    "employee_id":9,
+    "is_admin": false
+}
+###
+PATCH http://localhost:8000/api/users/7 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "password":"2"
+}
+###
+GET  http://localhost:8000/api/employees/?search_supervision_group=tres HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/employees/?page=1&per_page=4&sort_field=last_name&sort_direction=asc&search_name=B&search_code=1 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/employees/search HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/employees/2/supervisor HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/employees/ HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "first_name" : "Pompeu",
+    "last_name" : "O'Sullivan",
+    "code" : "00000085",
+    "national_id" : "12345678A",
+    "email" : "pompeu@empresa.com",
+    "start_date" : "2015-02-25",
+    "end_date" : "",
+    "shift_id" : "3"
+}
+###
+PUT  http://localhost:8000/api/employees/52 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+       "supervision_group_id": 1,
+}
+###
+DELETE http://localhost:8000/api/employees/52 HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/employees/39/bookings/ HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/employees/2/bookings/387 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/employees/2/bookings HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "date" : "2021-05-24",
+    "time" : "17:35",
+    "incidence_id" : null,
+    "user_id": 3
+}
+###
+PUT  http://localhost:8000/api/employees/2/bookings/354 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "date" : "2021-05-12",
+    "time" : "16:59:55",
+    "incidence_id" : null,
+    "user_id": 3
+}
+###
+DELETE http://localhost:8000/api/employees/1/bookings/12 HTTP/1.1
+Accept: application/json
+
+###
+GET  http://localhost:8000/api/employees/39/absences/ HTTP/1.1
+Accept: application/json
+
+###
+POST  http://localhost:8000/api/employees/39/absences HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "date" : "2021-05-24",
+    "incidence_id" : 1,
+    "user_id": 3
+}
+
+
+###
+GET http://localhost:8000/api/shifts?page=1&per_page=4&sort_field=code&sort_direction=asc&search_code=W HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/shifts/47 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/shifts/ HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "code": "NEW",
+     "colour": "bg-yellow-200",
+     "description": "Nou torn",
+     "start_time": "08:00",
+     "end_time": "15:00",
+     "expected_time": "06:00",
+     "recess_time": "01:00"
+ }
+###
+PUT  http://localhost:8000/api/shifts/47 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "description": "Intensiu"
+}
+###
+GET http://localhost:8000/api/calendars/?page=1&per_page=4&sort_field=year&sort_direction=asc&search_year=2022 HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/calendars/2 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/calendars/ HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "name": "Producció",
+     "year": "2021"
+}
+###
+PUT  http://localhost:8000/api/calendars/35 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "name": "Producció i Magatzem"
+}
+###
+DELETE http://localhost:8000/api/calendars/35 HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/calendars/2/shifts HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/calendars/2/shifts HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+
+[
+    {"day": 4, "shift_id": 2}
+]
+###
+GET  http://localhost:8000/api/employees/2/calendars HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/employees/2/calendars/2 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/employees/50/calendars HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "year": 2021,
+     "calendar_id": 2
+}
+###
+PUT  http://localhost:8000/api/employees/1/calendars/1 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "year": 2021,
+     "calendar_id": 5
+}
+###
+DELETE  http://localhost:8000/api/employees/1/calendars/1 HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/employees/1/shift HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/employees/1/calendar HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/employees/2/incidences HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/employees/2/supervisor HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/incidences?page=1&per_page=4&sort_field=code&sort_direction=asc HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/incidences/8 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/incidences/ HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "code": "820",
+     "colour": "bg-yellow-100",
+     "description": "Lactància"
+}
+###
+PUT  http://localhost:8000/api/incidences/38 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "code": "LAC"
+}
+###
+GET  http://localhost:8000/api/incidences_groups?page=1&per_page=4 HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/incidences_groups/6 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/incidences_groups/ HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "code": "TEM",
+     "description": "Temporals"
+}
+###
+PUT  http://localhost:8000/api/incidences_groups/20 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "code": "TMP"
+}
+###
+GET  http://localhost:8000/api/incidences_groups/2/incidences HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/incidences_groups/2/incidences/3 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/incidences_groups/2/incidences HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "incidence_id": 8
+}
+###
+DELETE http://localhost:8000/api/incidences_groups/1/incidences/1 HTTP/1.1
+Accept: application/json
+
+
+
+
+
+
+
+
+###
+GET  http://localhost:8000/api/departments/?page=1 HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/departments/2 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/departments/ HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "code": "COM",
+     "description": "Comerciall"
+ }
+###
+PUT  http://localhost:8000/api/departments/3 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "description": "Comercial"
+}
+
+
+###
+GET  http://localhost:8000/api/areas/?page=1 HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/areas/2 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/areas/ HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "code": "TRA",
+     "description": "Transport"
+ }
+###
+PUT  http://localhost:8000/api/areas/3 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "description": "Comercial"
+}
+###
+DELETE http://localhost:8000/api/areas/2 HTTP/1.1
+Accept: application/json
+
+###
+GET http://localhost:8000/api/employees/?page=1&per_page=25&sort_field=department&sort_direction=asc HTTP/1.1
+Accept: application/json
+
+###
+GET http://localhost:8000/api/employees/2/requests HTTP/1.1
+Accept: application/json
+###
+POST http://localhost:8000/api/employees/2/requests HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "type": "booking",
+    "comments": null,
+    "date": "2021-05-25",
+    "incidence_id": 1,
+    "time": "00:30:00"
+}
+
+###
+DELETE http://localhost:8000/api/employees/2/requests/1 HTTP/1.1
+Accept: application/json
+
+###
+GET  http://localhost:8000/api/supervision_groups/?page=1 HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/supervision_groups/3 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/supervision_groups/ HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "code": "RH",
+     "description": "Recursos Humans"
+ }
+###
+PUT  http://localhost:8000/api/supervision_groups/3 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "description": "Investigació i Desenvolupament"
+}
+###
+DELETE http://localhost:8000/api/supervision_groups/2 HTTP/1.1
+Accept: application/json
+
+
+###
+GET  http://localhost:8000/api/supervision_groups/1/supervisors?page=1 HTTP/1.1
+Accept: application/json
+###
+GET http://localhost:8000/api/supervision_groups/1/supervisors/1 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/supervision_groups/1/supervisors HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "employee_id": 2
+}
+###
+DELETE http://localhost:8000/api/supervision_groups/1/supervisors/1 HTTP/1.1
+Accept: application/json
+
+
+###
+GET http://localhost:8000/api/employees/2/requests HTTP/1.1
+Accept: application/json
+###
+POST http://localhost:8000/api/employees/2/requests HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "type": "booking",
+    "comments": null,
+    "date": "2021-05-21",
+    "incidence_id": null,
+    "time": "03:30:00"
+}
+
+###
+PUT http://localhost:8000/api/employees/2/requests/7 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "id":7,
+    "status": "rejected",
+    "validator_comments": null,
+    "validator_id": 2
+}
+
+
+
+###
+GET http://localhost:8000/api/employees/2/requests/?sort_direction=desc HTTP/1.1
+Accept: application/json
+
+###
+GET http://localhost:8000/api/employees/2/requests/supervised/?sort_direction=desc HTTP/1.1
+Accept: application/json
+
+
+
+###
+POST http://localhost:8000/api/employees/39/requests HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "type": "absence",
+    "comments": null,
+    "date_from": "2021-04-24",
+    "date_to": "2021-05-10",
+    "incidence_id": 2
+}
+
+###
+POST http://localhost:8000/api/employees/39/requests HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "type": "holiday",
+    "comments": null,
+    "date_from": "2021-04-24",
+    "date_to": "2021-05-10",
+    "employee_holiday_period_id": 6
+}
+
+###
+PUT http://localhost:8000/api/employees/2/requests/33 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "employee_holiday_period_id" : 7,
+    "id" : 39,
+    "status" : "accepted",
+    "validator_comments" : null,
+    "validator_id" : 2
+}
+
+###
+GET http://localhost:8000/api/holiday_periods HTTP/1.1
+Accept: application/json
+
+###
+GET http://localhost:8000/api/holiday_periods/1 HTTP/1.1
+Accept: application/json
+
+###
+POST http://localhost:8000/api/holiday_periods HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+    "code" : "AGO",
+    "description" : "Agost 2021",
+    "days" : "15",
+    "date_from" : "2021-08-01",
+    "date_to" : "2021-08-31"
+}
+
+###
+GET  http://localhost:8000/api/employees/32/holiday_periods HTTP/1.1
+Accept: application/json
+###
+GET  http://localhost:8000/api/employees/1/holiday_periods/2 HTTP/1.1
+Accept: application/json
+###
+POST  http://localhost:8000/api/employees/1/holiday_periods HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "holiday_period_id": 3
+}
+###
+PUT  http://localhost:8000/api/employees/1/holiday_periods/1 HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+{
+     "holiday_period_id": 2
+}
+###
+DELETE  http://localhost:8000/api/employees/1/holiday_periods/1 HTTP/1.1
+Accept: application/json
+
+
+###
+GET  http://localhost:8000/api/employees/32/holiday_periods/6/holidays HTTP/1.1
+Accept: application/json
+
+###
+POST  http://localhost:8000/api/employees/32/holiday_periods/6/holidays HTTP/1.1
+content-type: application/json
+Accept: application/json
+
+[
+    {"day": "2021-08-01"},
+    {"day": "2021-08-02"},
+    {"day": "2021-08-03"},
+    {"day": "2021-08-04"},
+    {"day": "2021-08-05"},
+    {"day": "2021-08-06"},
+    {"day": "2021-08-07"},
+    {"day": "2021-08-08"},
+    {"day": "2021-08-09"}
+]
+
+###
+DELETE  http://localhost:8000/api/employees/1/holiday_periods/2/holidays/34 HTTP/1.1
+content-type: application/json
+Accept: application/json
