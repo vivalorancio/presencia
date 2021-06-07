@@ -95,7 +95,7 @@ export class IncidenceService {
   postIncidencesGroup(
     incidencesgroup: IncidencesGroup
   ): Observable<IncidencesGroupResource> {
-    return this.http.post<any>(`/api/incidences_groups/`, incidencesgroup);
+    return this.http.post<any>(`/api/incidences_groups`, incidencesgroup);
   }
 
   putIncidencesGroup(
